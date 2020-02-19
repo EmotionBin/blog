@@ -25,7 +25,7 @@ module.exports = {
         sass: {
           // @/ 是 src/ 的别名
           // 所以这里假设你有 `src/variables.scss` 这个文件
-        //   data: `@import "@/sass/variables.scss";` 
+          prependData: `@import "@/sass/variables.scss";`
         }
       }
     },
