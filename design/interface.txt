@@ -1,0 +1,28 @@
+#接口说明V1.0
+
+##注册
+
+/register
+params{
+username //用户名
+password	//密码
+}
+
+res{
+stutus //1-成功 0-失败
+data //返回的数据
+message //补充说明
+}
+
+##登录
+/login
+params{
+username //用户名
+password	//密码
+}
+
+res{
+stutus //1-成功 0-失败
+data //返回的数据 失败则提示 成功则返回token
+message //补充说明
+}
