@@ -32,7 +32,7 @@
 
 <style lang="scss">
 	.loginCom{
-		
+		@include bothSidePadding;
 	}
 
 </style>

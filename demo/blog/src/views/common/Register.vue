@@ -32,7 +32,7 @@
 
 <style lang="scss">
 	.registerCom{
-		
+		@include bothSidePadding;
 	}
 
 </style>

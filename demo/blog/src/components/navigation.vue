@@ -51,27 +51,27 @@ export default {
 </script>
 
 <style lang="scss">
-.navCom{
-  @include bothSidePadding;
-  width: 100%;
-  height: 40px;
-  background-color: $priBlue;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  &_title{
-    max-width: 200px;
-    height: 100%;
-    font-size: 22px;
-    color: #fff;
+  .navCom{
+    @include bothSidePadding;
+    width: 100%;
+    height: 40px;
+    background-color: $priBlue;
     display: flex;
+    justify-content: space-between;
     align-items: center;
-  }
-  &_profile{
-    .el-button{
-      padding: 5px;
-      font-size: 14px;
+    &_title{
+      max-width: 200px;
+      height: 100%;
+      font-size: 22px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+    }
+    &_profile{
+      .el-button{
+        padding: 5px;
+        font-size: 14px;
+      }
     }
   }
-}
 </style>
