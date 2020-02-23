@@ -1,1 +1,5 @@
 //这里是可复用的scss代码
+@mixin bothSidePadding {
+    padding: 0 20%;
+    background-color: #fff;
+}

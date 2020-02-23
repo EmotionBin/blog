@@ -1,2 +1,7 @@
 //这里是定义全局scss变量
 $priBlue: #108ee9;
+
+
+
+//引入mixin，直接注入并使用
+@import "./mixin.scss";

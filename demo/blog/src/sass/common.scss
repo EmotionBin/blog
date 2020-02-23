@@ -21,6 +21,12 @@ body {
     "Segoe UI Symbol";
 }
 
+/* 块级元素边距统一 */
+div{
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
 /*
 KISSY CSS Reset
 理念：1. reset 的目的不是清除浏览器的默认样式，这仅是部分工作。清除和重置是紧密不可分的。
