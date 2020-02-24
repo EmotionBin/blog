@@ -2,14 +2,18 @@
   <div class="navCom">
     <div class="navCom_title">测试</div>
     <div class="navCom_profile">
-      <template v-if="loginStatus === 1">
+      <template v-if="getLoginStatus === 1">
         <!-- 登录成功 -->
         admin
       </template>
-      <template v-else>
+      <template v-else-if="getLoginStatus === 0">
         <!-- 未登录 -->
-        <el-button type="success" size="mini" @click="Startlogin">登录</el-button>
-        <el-button type="success" size="mini" @click="StartRegister">注册</el-button>
+        <el-button type="success" size="mini" @click="changeStatus(2,'login')">登录</el-button>
+        <el-button type="success" size="mini" @click="changeStatus(2,'register')">注册</el-button>
+      </template>
+      <template v-else>
+        <!-- 正在登陆或注册 -->
+        <el-button type="success" size="mini" @click="changeStatus(0,'')">返回</el-button>
       </template>
     </div>
   </div>
@@ -21,12 +25,13 @@ export default {
   components: {},
   data() {
     return {
-      //0未登录 1已登录 //正在注册或者登录
-      loginStatus:0,
+
     }
   },
   computed: {
-
+    getLoginStatus(){
+      return this.$store.getters.getLoginStatus;
+    }
   },
   created() {
 
@@ -38,13 +43,10 @@ export default {
     init:function () {
 
     },
-    Startlogin:function () {
+    changeStatus:function (value,status) {
       let vm = this;
-      vm.$router.push({path:'/login'});
-    },
-    StartRegister:function () {
-      let vm = this;
-      vm.$router.push({path:'/register'});
+      vm.$store.commit('loginCheck',value);
+      vm.$router.push({path:`/${status}`});
     },
   }
 }
@@ -53,8 +55,7 @@ export default {
 <style lang="scss">
   .navCom{
     @include bothSidePadding;
-    width: 100%;
-    height: 40px;
+    height: $navHeight;
     background-color: $priBlue;
     display: flex;
     justify-content: space-between;

@@ -1,7 +1,7 @@
 <!-- vue 模板文件-->
 <template>
 	<div class="loginCom">
-		登录
+		<el-button type="success" size="mini" @click="login">登录</el-button>
 	</div>
 </template>
 
@@ -24,7 +24,22 @@
 
 		},
 		methods: {
-
+			login:function () {
+				// let vm = this;
+				console.log('登陆');
+				$.ajax({
+						url: "/api/login",
+						type: "post",
+						'Content-Type':'application/x-www-form-urlencoded',
+						data: {
+							username:'test',
+							password:123456
+						},
+						success:function(res){
+							console.log(res);
+						}
+					});
+			}
 		}
 
 	}
@@ -33,6 +48,7 @@
 <style lang="scss">
 	.loginCom{
 		@include bothSidePadding;
+		height: calc(100% - #{$navHeight});
 	}
 
 </style>

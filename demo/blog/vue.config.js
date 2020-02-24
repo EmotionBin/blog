@@ -1,4 +1,6 @@
 // vue.config.js
+const webpack = require('webpack');
+
 module.exports = {
     publicPath: process.env.NODE_ENV === 'production' ?
       './' :
@@ -8,16 +10,24 @@ module.exports = {
     configureWebpack: {
       devtool: 'source-map'
     },
-    // devServer: {
-    //   // 配置多个代理
-    //   proxy: {
-    //     "gis_beta.ashx": {
-    //       target: 'http://192.168.51.243:8180/',//这里写的是访问接口的域名和端口号 
-    //       changeOrigin: true//跨域请求,
-    //       // pathRewrite: { // 重命名 
-    //     }
-    //   }
-    // },
+    //全局注册$
+    chainWebpack: config => {
+      config.plugin('provide').use(webpack.ProvidePlugin, [{
+        $: 'jquery',
+      }])
+    },
+    devServer: {
+      // 配置多个代理
+      proxy: {
+        "/api": {
+          target: 'http://localhost:5000',//这里写的是访问接口的域名和端口号 
+          changeOrigin: true, //跨域请求
+          pathRewrite: { // 重命名 
+            "^/api":""
+          }
+        }
+      }
+    },
     css: {
       sourceMap: true,
       loaderOptions: {
@@ -45,5 +55,6 @@ module.exports = {
         // 提取出来的通用 chunk 和 vendor chunk。
         chunks: ['chunk-vendors', 'chunk-common', 'index']
       }
-    }
+    },
+    lintOnSave: false //取消eslint
   }

@@ -1,7 +1,7 @@
 <!-- vue 模板文件-->
 <template>
 	<div class="registerCom">
-		注册
+		<el-button type="success" size="mini" @click="register">注册</el-button>
 	</div>
 </template>
 
@@ -24,7 +24,9 @@
 
 		},
 		methods: {
-
+			register:function () {
+				
+			}
 		}
 
 	}
