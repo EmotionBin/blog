@@ -28,17 +28,24 @@
 				// let vm = this;
 				console.log('登陆');
 				$.ajax({
-						url: "/api/login",
-						type: "post",
-						'Content-Type':'application/x-www-form-urlencoded',
-						data: {
-							username:'test',
-							password:123456
-						},
-						success:function(res){
-							console.log(res);
+					url: "/api/login",
+					type: "post",
+					'Content-Type':'application/x-www-form-urlencoded',
+					data: {
+						username:'test',
+						password:123456
+					},
+					success:function(res){
+						console.log(res);
+						var {status,data,detail} = res;
+						if(status === 0){
+							console.log('serve error');
+							return ;
 						}
-					});
+						//将拿到的token写入sessionStorage
+						sessionStorage.setItem('userToken', detail);
+					}
+				});
 			}
 		}
 

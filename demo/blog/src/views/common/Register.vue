@@ -25,7 +25,26 @@
 		},
 		methods: {
 			register:function () {
-				
+				console.log('注册');
+				//测试
+				$.ajax({
+					url: "/api/login",
+					type: "post",
+					'Content-Type':'application/x-www-form-urlencoded',
+					authority:true,
+					data: {
+						username:'test',
+						password:123456
+					},
+					success:function(res){
+						console.log(res);
+						var {status,data,detail} = res;
+						if(status === 0){
+							console.log('serve error');
+							return ;
+						}
+					}
+				});
 			}
 		}
 

@@ -10,7 +10,24 @@ import jquery from 'jquery';
     //备份opt中error和success方法  
     var fn = {
       error: function (XMLHttpRequest, textStatus, errorThrown) { },
-      success: function (data, textStatus) { }
+      success: function (data, textStatus) { },
+      beforeSend: function (XMLHttpRequest) {
+        if (opt.authority) {
+          let userToken = sessionStorage.getItem('userToken');
+          console.log(opt.authority, userToken);
+          if (userToken !== null) {
+            //如果sessionStorage中的token不为空，则在请求头中加上User-Token参数
+            XMLHttpRequest.setRequestHeader("User-Token", userToken);
+          } else {
+            //如果sessionStorage中的token为空，则说明没有登录
+            console.log('请登录');
+            //强制终止，不发送请求
+            XMLHttpRequest.abort();
+            //跳转至登录界面
+            window.location.replace(`${window.location.origin}/login`);
+          }
+        }
+      },
     }
     if (opt.error) {
       fn.error = opt.error;
@@ -21,9 +38,8 @@ import jquery from 'jquery';
 
     //扩展增强处理  
     var _opt = $.extend(opt, {
-      //拓展请求头，自动带上参数
-      headers: {
-        'User-Token': 'testToken'
+      beforeSend: function (XMLHttpRequest) {
+        fn.beforeSend(XMLHttpRequest);
       },
       error: function (XMLHttpRequest, textStatus, errorThrown) {
         //错误方法增强处理  
