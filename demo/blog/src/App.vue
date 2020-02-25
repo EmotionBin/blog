@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <navigation/>
-    <router-view/>
+    <div class="route">
+      <router-view/>
+    </div>
   </div>
 </template>
 
@@ -20,4 +22,7 @@ export default {
 <style lang="scss">
 //引入公共样式
 @import "./sass/common.scss";
+.route{
+  @include bothSidePadding;
+}
 </style>

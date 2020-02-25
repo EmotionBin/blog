@@ -45,8 +45,10 @@ export default {
     },
     changeStatus:function (value,status) {
       let vm = this;
-      vm.$store.commit('loginCheck',value);
       vm.$router.push({path:`/${status}`});
+      if(value === 0){
+        vm.$store.commit('loginCheck',value);
+      }
     },
   }
 }

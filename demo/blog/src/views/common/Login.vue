@@ -1,7 +1,19 @@
 <!-- vue 模板文件-->
 <template>
 	<div class="loginCom">
-		<el-button type="success" size="mini" @click="login">登录</el-button>
+		<!-- <el-button type="success" size="mini" @click="login">登录</el-button> -->
+		<div class="login_panel">
+			<div class="login_panel_title">登录</div>
+			<el-form :model="loginForm" label-width="80px">
+				<el-form-item label="用户名">
+					<el-input v-model="loginForm.username" prefix-icon="el-icon-user" placeholder="请输入用户名"></el-input>
+				</el-form-item>
+				<el-form-item label="密码">
+					<el-input v-model="loginForm.password" prefix-icon="el-icon-lock" placeholder="请输入密码" type="password"
+            @keyup.enter.native="login" show-password></el-input>
+				</el-form-item>
+			</el-form>
+		</div>
 	</div>
 </template>
 
@@ -11,7 +23,10 @@
 		components: {},
 		data() {
 			return {
-
+				loginForm:{
+					username:'',
+					password:''
+				}
 			}
 		},
 		computed: {
@@ -54,8 +69,19 @@
 
 <style lang="scss">
 	.loginCom{
-		@include bothSidePadding;
-		height: calc(100% - #{$navHeight});
+		width: 100%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		.login_panel{
+			&_title{
+				text-align: center;
+				font-size: 24px;
+				color: #000;
+				padding: 20px 0;
+			}
+		}
 	}
 
 </style>

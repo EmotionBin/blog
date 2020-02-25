@@ -31,7 +31,7 @@
 					url: "/api/login",
 					type: "post",
 					'Content-Type':'application/x-www-form-urlencoded',
-					authority:true,
+					// authority:true,
 					data: {
 						username:'test',
 						password:123456
@@ -53,7 +53,7 @@
 
 <style lang="scss">
 	.registerCom{
-		@include bothSidePadding;
+		
 	}
 
 </style>
