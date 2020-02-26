@@ -4,14 +4,20 @@
 		<!-- <el-button type="success" size="mini" @click="login">登录</el-button> -->
 		<div class="login_panel">
 			<div class="login_panel_title">登录</div>
-			<el-form :model="loginForm" label-width="80px">
-				<el-form-item label="用户名">
+			<el-form class="login_panel_form" :model="loginForm" label-width="80px">
+				<el-form-item label="用户名:">
 					<el-input v-model="loginForm.username" prefix-icon="el-icon-user" placeholder="请输入用户名"></el-input>
 				</el-form-item>
-				<el-form-item label="密码">
+				<el-form-item label="密码:">
 					<el-input v-model="loginForm.password" prefix-icon="el-icon-lock" placeholder="请输入密码" type="password"
             @keyup.enter.native="login" show-password></el-input>
 				</el-form-item>
+				<div class="login_panel_form_foot">
+					<div class="login_panel_form_foot_link">
+						<router-link class="login_panel_form_foot_text" to="/register">没有账号?点击注册</router-link>
+					</div>
+					<el-button class="login_panel_form_foot_btn" type="success" size="mini" @click="login">登录</el-button>
+				</div>
 			</el-form>
 		</div>
 	</div>
@@ -40,15 +46,15 @@
 		},
 		methods: {
 			login:function () {
-				// let vm = this;
+				let vm = this;
 				console.log('登陆');
 				$.ajax({
 					url: "/api/login",
 					type: "post",
 					'Content-Type':'application/x-www-form-urlencoded',
 					data: {
-						username:'test',
-						password:123456
+						username:vm.loginForm.username,
+						password:vm.loginForm.password
 					},
 					success:function(res){
 						console.log(res);
@@ -75,11 +81,37 @@
 		align-items: center;
 		justify-content: center;
 		.login_panel{
+			padding: 20px;
+			background-color: #c28e49;
+			box-shadow: 0px 0px 10px #999;
 			&_title{
 				text-align: center;
 				font-size: 24px;
 				color: #000;
-				padding: 20px 0;
+				padding-bottom: 20px;
+			}
+			&_form{
+				.el-form-item__label{
+					font-size: 16px;
+				}
+				&_foot{
+					&_link{
+						width: 100%;
+						display: flex;
+						justify-content: flex-end;
+						cursor: pointer;
+						&_text{
+							font-size: 14px;
+						}
+					}
+					&_btn{
+						width: 100%;
+						letter-spacing: 8px;
+						margin-top: 8px;
+						font-weight: 700;
+						font-size: 16px;
+					}
+				}
 			}
 		}
 	}

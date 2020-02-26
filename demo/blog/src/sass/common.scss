@@ -127,6 +127,11 @@ a {
   transition: all 218ms ease-in-out;
 }
 
+a {
+  text-decoration: none;
+  color: #333;
+}
+
 a:hover {
   text-decoration: underline;
 }
