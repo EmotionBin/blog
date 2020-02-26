@@ -4,7 +4,15 @@
     <div class="navCom_profile">
       <template v-if="getLoginStatus === 1">
         <!-- 登录成功 -->
-        admin
+        <el-dropdown class="user_list">
+          <span class="el-dropdown-link">
+            admin<i class="el-icon-arrow-down el-icon--right"></i>
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item>切换账户</el-dropdown-item>
+            <el-dropdown-item>退出</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </template>
       <template v-else-if="getLoginStatus === 0">
         <!-- 未登录 -->
@@ -74,6 +82,15 @@ export default {
       .el-button{
         padding: 5px;
         font-size: 14px;
+      }
+      .user_list{
+        .el-dropdown-link {
+          cursor: pointer;
+          color: #67C23A;
+        }
+        .el-icon-arrow-down {
+          font-size: 12px;
+        }
       }
     }
   }

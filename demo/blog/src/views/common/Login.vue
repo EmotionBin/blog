@@ -1,4 +1,4 @@
-<!-- vue 模板文件-->
+<!-- 登录文件-->
 <template>
 	<div class="loginCom">
 		<!-- <el-button type="success" size="mini" @click="login">登录</el-button> -->
@@ -20,6 +20,19 @@
 				</div>
 			</el-form>
 		</div>
+		<el-dialog
+      class="loginCom_dialog"
+      title="提示"
+      :visible.sync="dialogInfo.isShow"
+			:before-close="handleConfirm"
+      :close-on-click-modal="false"
+      width="20%"
+      :append-to-body="true">
+      <span>{{dialogInfo.msg}}</span>
+      <span slot="footer" class="dialog-footer">
+      <el-button type="primary" @click="handleConfirm">确 定</el-button>
+      </span>
+    </el-dialog>
 	</div>
 </template>
 
@@ -32,7 +45,12 @@
 				loginForm:{
 					username:'',
 					password:''
-				}
+				},
+				dialogInfo:{
+					isShow:false,
+					msg:''
+				},
+				isLogin:false
 			}
 		},
 		computed: {
@@ -62,14 +80,30 @@
 						if(status === 0){
 							console.log('serve error');
 							return ;
+						}else if(detail){
+							//将拿到的token写入sessionStorage
+							sessionStorage.setItem('userToken', detail);
+							vm.isLogin = true;
+							vm.dialogInfo.isShow = true;
+							vm.dialogInfo.msg = `${data},即将跳转至主界面`;
+						}else if(!detail){
+							vm.dialogInfo.isShow = true;
+							vm.dialogInfo.msg = data;
 						}
-						//将拿到的token写入sessionStorage
-						sessionStorage.setItem('userToken', detail);
 					}
 				});
+			},
+			handleConfirm:function () {
+				let vm = this;
+				if(vm.isLogin){
+					//登录成功跳转至首页
+					vm.$store.commit('loginCheck',1);
+					vm.$router.push({path:'/'});
+				}else{
+					vm.dialogInfo.isShow = false;
+				}
 			}
 		}
-
 	}
 </script>
 
@@ -115,5 +149,9 @@
 			}
 		}
 	}
-
+	.loginCom_dialog{
+		.el-dialog__body{
+			font-size: 16px;
+		}
+	}
 </style>
