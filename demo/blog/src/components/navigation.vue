@@ -4,13 +4,13 @@
     <div class="navCom_profile">
       <template v-if="getLoginStatus === 1">
         <!-- 登录成功 -->
-        <el-dropdown class="user_list">
+        <el-dropdown class="user_list" @command="handleClick">
           <span class="el-dropdown-link">
-            admin<i class="el-icon-arrow-down el-icon--right"></i>
+            {{getCurUsername}}<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>切换账户</el-dropdown-item>
-            <el-dropdown-item>退出</el-dropdown-item>
+            <el-dropdown-item command='login'>切换账户</el-dropdown-item>
+            <el-dropdown-item command=''>退出</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </template>
@@ -39,7 +39,10 @@ export default {
   computed: {
     getLoginStatus(){
       return this.$store.getters.getLoginStatus;
-    }
+    },
+    getCurUsername(){
+      return this.$store.getters.getCurUsername;
+    },
   },
   created() {
 
@@ -58,6 +61,20 @@ export default {
         vm.$store.commit('loginCheck',value);
       }
     },
+    //切换用户和注销
+    handleClick:function (params) {
+      let vm = this;
+      //从sessionStorage中删除所有用户信息
+      window.sessionStorage.clear();
+      if(params){
+        //切换用户 跳至登录页面
+        vm.$router.push({path:`/${params}`});
+        vm.$store.commit('loginCheck',2);
+      }else{
+        //退出
+        vm.$store.commit('loginCheck',0);
+      }
+    }
   }
 }
 </script>
@@ -86,7 +103,7 @@ export default {
       .user_list{
         .el-dropdown-link {
           cursor: pointer;
-          color: #67C23A;
+          color: #fff;
         }
         .el-icon-arrow-down {
           font-size: 12px;

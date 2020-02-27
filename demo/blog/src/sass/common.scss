@@ -174,3 +174,10 @@ table {
 
   content: '\20';
 }
+
+//统一element的dialog样式
+.el-dialog{
+  .el-dialog__body{
+    font-size: 16px;
+  }
+}

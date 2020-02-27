@@ -11,7 +11,9 @@ export default new Vuex.Store({
     dialogConfig:{
       isShow:false,
       msg:''
-    }
+    },
+    //当前用户名
+    curUsername:''
   },
   getters:{
     getLoginStatus:state => {
@@ -19,6 +21,9 @@ export default new Vuex.Store({
     },
     getDialogInfo:state => {
       return state.dialogConfig;
+    },
+    getCurUsername:state => {
+      return state.curUsername;
     }
   },
   mutations: {
@@ -26,9 +31,12 @@ export default new Vuex.Store({
       state.loginStatus = payload;
     },
     updateDialog(state, payload){
-      state.dialogConfig.isShow = payload[0];
-      state.dialogConfig.msg = payload[1];
-    }
+      state.dialogConfig.isShow = payload.isShow;
+      state.dialogConfig.msg = payload.msg;
+    },
+    updateCurUsername(state, payload){
+      state.curUsername = payload;
+    },
   },
   actions: {
   },

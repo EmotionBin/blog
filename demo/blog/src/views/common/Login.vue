@@ -4,17 +4,17 @@
 		<!-- <el-button type="success" size="mini" @click="login">登录</el-button> -->
 		<div class="login_panel">
 			<div class="login_panel_title">登录</div>
-			<el-form class="login_panel_form" :model="loginForm" label-width="80px">
-				<el-form-item label="用户名:">
+			<el-form class="login_panel_form"  ref="loginForm" :rules="rules" :model="loginForm" label-width="80px">
+				<el-form-item label="用户名:" prop="username">
 					<el-input v-model="loginForm.username" prefix-icon="el-icon-user" placeholder="请输入用户名"></el-input>
 				</el-form-item>
-				<el-form-item label="密码:">
+				<el-form-item label="密码:" prop="password">
 					<el-input v-model="loginForm.password" prefix-icon="el-icon-lock" placeholder="请输入密码" type="password"
             @keyup.enter.native="login" show-password></el-input>
 				</el-form-item>
 				<div class="login_panel_form_foot">
 					<div class="login_panel_form_foot_link">
-						<router-link class="login_panel_form_foot_text" to="/register">没有账号?点击注册</router-link>
+						<a class="login_panel_form_foot_text" href="/register">没有账号?点击注册</a>
 					</div>
 					<el-button class="login_panel_form_foot_btn" type="success" size="mini" @click="login">登录</el-button>
 				</div>
@@ -50,6 +50,16 @@
 					isShow:false,
 					msg:''
 				},
+				rules:{
+					username:[
+						{ required: true, message: '请输入用户名', trigger: 'blur' },
+            { min: 3, max: 16, message: '长度在 3 到 16 个字符', trigger: 'blur' }
+					],
+					password:[
+						{ required: true, message: '请输入密码', trigger: 'blur' },
+            { min: 3, max: 16, message: '长度在 3 到 16 个字符', trigger: 'blur' }
+					],
+				},
 				isLogin:false
 			}
 		},
@@ -65,33 +75,43 @@
 		methods: {
 			login:function () {
 				let vm = this;
-				console.log('登陆');
-				$.ajax({
-					url: "/api/login",
-					type: "post",
-					'Content-Type':'application/x-www-form-urlencoded',
-					data: {
-						username:vm.loginForm.username,
-						password:vm.loginForm.password
-					},
-					success:function(res){
-						console.log(res);
-						var {status,data,detail} = res;
-						if(status === 0){
-							console.log('serve error');
-							return ;
-						}else if(detail){
-							//将拿到的token写入sessionStorage
-							sessionStorage.setItem('userToken', detail);
-							vm.isLogin = true;
-							vm.dialogInfo.isShow = true;
-							vm.dialogInfo.msg = `${data},即将跳转至主界面`;
-						}else if(!detail){
-							vm.dialogInfo.isShow = true;
-							vm.dialogInfo.msg = data;
-						}
-					}
-				});
+				this.$refs.loginForm.validate((valid) => {
+          if (valid) {
+						console.log('登陆');
+						//通过表单验证之后发送请求
+            $.ajax({
+							url: "/api/login",
+							type: "post",
+							'Content-Type':'application/x-www-form-urlencoded',
+							data: {
+								username:vm.loginForm.username,
+								password:vm.loginForm.password
+							},
+							success:function(res){
+								console.log(res);
+								var {status,data,detail} = res;
+								if(status === 0){
+									console.log('serve error');
+									return ;
+								}else if(detail){
+									//将拿到的token写入sessionStorage
+									sessionStorage.setItem('userToken', detail);
+									//将用户名写入vuex
+									vm.$store.commit('updateCurUsername',vm.loginForm.username);
+									vm.isLogin = true;
+									vm.dialogInfo.isShow = true;
+									vm.dialogInfo.msg = `${data},即将跳转至主界面`;
+								}else if(!detail){
+									vm.dialogInfo.isShow = true;
+									vm.dialogInfo.msg = data;
+								}
+							}
+						});
+          } else {
+            this.$message.error('输入的信息有误，请仔细核对');
+            return false;
+          }
+        });
 			},
 			handleConfirm:function () {
 				let vm = this;
@@ -107,7 +127,7 @@
 	}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 	.loginCom{
 		width: 100%;
 		height: 100%;
@@ -116,8 +136,9 @@
 		justify-content: center;
 		.login_panel{
 			padding: 20px;
-			background-color: #c28e49;
+			background-color: #fff;
 			box-shadow: 0px 0px 10px #999;
+			border-radius: 5px;
 			&_title{
 				text-align: center;
 				font-size: 24px;
@@ -147,11 +168,6 @@
 					}
 				}
 			}
-		}
-	}
-	.loginCom_dialog{
-		.el-dialog__body{
-			font-size: 16px;
 		}
 	}
 </style>

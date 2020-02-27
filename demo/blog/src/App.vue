@@ -42,7 +42,10 @@ export default {
   methods:{
     handleClose:function () {
       let vm = this;
-      vm.$store.commit('updateDialog',[false,'']);
+      vm.$store.commit('updateDialog',{
+        isShow:false,
+        msg:''
+      });
     }
   }
 }
@@ -53,10 +56,5 @@ export default {
 @import "./sass/common.scss";
 .route{
   @include bothSidePadding;
-}
-.app_dialog{
-  .el-dialog__body{
-    font-size: 16px;
-  }
 }
 </style>
