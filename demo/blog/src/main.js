@@ -12,7 +12,11 @@ Vue.config.productionTip = false
 router.beforeEach((to,from,next) => {
   if(to.path === '/login' || to.path === '/register'){
     store.commit('loginCheck',2);
-    next();
+    return next();
+  }else if(to.path === '/' && !window.sessionStorage.getItem('userToken')){
+    //在主页且未登录
+    store.commit('loginCheck',0);
+    return next();
   }
   next();
 })
