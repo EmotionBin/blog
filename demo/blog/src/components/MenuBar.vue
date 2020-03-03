@@ -1,13 +1,13 @@
-<!-- vue 模板文件-->
+<!-- 左侧菜单栏-->
 <template>
-	<div class="templatecom">
-		test
+	<div class="MenuCom">
+    这是导航栏
 	</div>
 </template>
 
 <script>
 	export default {
-		name: 'templatecom',
+		name: 'MenuCom',
 		components: {},
 		data() {
 			return {
@@ -31,7 +31,7 @@
 </script>
 
 <style lang="scss" scoped>
-	.templatecom{
+	.MenuCom{
 		
 	}
 

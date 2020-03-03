@@ -55,7 +55,7 @@ export default {
 //引入公共样式
 @import "./sass/common.scss";
 .route{
-  @include bothSidePadding;
-  min-height: calc(100vh - #{$navHeight});
+  // @include bothSidePadding;
+  // min-height: calc(100vh - #{$navHeight});
 }
 </style>
