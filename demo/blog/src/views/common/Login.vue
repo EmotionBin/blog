@@ -130,7 +130,8 @@
 <style lang="scss" scoped>
 	.loginCom{
 		width: 100%;
-		height: 100%;
+		// height: 100%;
+		height: calc(100vh - #{$navHeight});
 		display: flex;
 		align-items: center;
 		justify-content: center;

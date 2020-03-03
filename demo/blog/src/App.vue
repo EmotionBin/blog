@@ -56,5 +56,6 @@ export default {
 @import "./sass/common.scss";
 .route{
   @include bothSidePadding;
+  min-height: calc(100vh - #{$navHeight});
 }
 </style>

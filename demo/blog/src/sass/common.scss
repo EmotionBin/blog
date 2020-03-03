@@ -28,13 +28,14 @@ div{
 }
 
 /* 设定页面宽高 */
-html,
-body,
-#app{
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
+// html,
+// body,
+// #app{
+//   //不允许横向滚动条，只允许纵向滚动条
+//   width: 100%;
+//   height: 100%;
+//   overflow-x: hidden;
+// }
 
 /*
 KISSY CSS Reset
@@ -191,7 +192,7 @@ table {
   border-radius: 5px;
   display: inline-block;
   border: 1px solid #E1E8EF;
-  background-color: #108ee9;
+  background-color: #888;
 }
 
 *::-webkit-scrollbar-track {
