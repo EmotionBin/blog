@@ -1,7 +1,4 @@
 //这里是可复用的scss代码
 @mixin bothSidePadding {
-  width: 100%;
-  height: calc(100% - #{$navHeight});
   padding: 0 20%;
-  background-color: $themeColor;
 }

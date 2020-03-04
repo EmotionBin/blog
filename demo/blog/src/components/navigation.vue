@@ -81,8 +81,9 @@ export default {
 
 <style lang="scss">
   .navCom{
-    @include bothSidePadding;
+    width: 100%;
     height: $navHeight;
+    @include bothSidePadding;
     background-color: $priBlue;
     display: flex;
     justify-content: space-between;

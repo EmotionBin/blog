@@ -26,12 +26,12 @@
 							</template>
 							<!-- 如果subMenu为空 -->
 							<template v-else>
-								<el-submenu :key="item.title" :index="item.title">
+								<el-menu-item :key="item.title" :index="item.title">
 									<template slot="title">
 										<i class="el-icon-menu"></i>
 										<span>{{item.title}}</span>
 									</template>
-								</el-submenu>
+								</el-menu-item>
 							</template>
 						</template>
 					</template>
@@ -159,8 +159,10 @@
 			float: left;
 		}
 		.sysmentView{
+			width: 100%;
+			min-height: calc(100vh - #{$navHeight});
 			@include bothSidePadding;
-  		min-height: calc(100vh - #{$navHeight});
+  		background-color: $themeColor;
 		}
 	}
 

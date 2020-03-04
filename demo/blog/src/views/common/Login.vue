@@ -14,7 +14,8 @@
 				</el-form-item>
 				<div class="login_panel_form_foot">
 					<div class="login_panel_form_foot_link">
-						<a class="login_panel_form_foot_text" href="/register">没有账号?点击注册</a>
+						<!-- <a class="login_panel_form_foot_text" href="/register">没有账号?点击注册</a> -->
+						<router-link class="login_panel_form_foot_text" to="/register">没有账号?点击注册</router-link>
 					</div>
 					<el-button class="login_panel_form_foot_btn" type="success" size="mini" @click="login">登录</el-button>
 				</div>
@@ -135,6 +136,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		background-color: $themeColor;
 		.login_panel{
 			padding: 20px;
 			background-color: #fff;
