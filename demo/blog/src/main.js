@@ -10,11 +10,13 @@ Vue.config.productionTip = false
 
 //全局的导航守卫
 router.beforeEach((to,from,next) => {
+  //如果要前往登录页面或者注册页面
   if(to.path === '/login' || to.path === '/register'){
+    //更新状态
     store.commit('loginCheck',2);
     return next();
   }else if(to.path === '/' && !window.sessionStorage.getItem('userToken')){
-    //在主页且未登录
+    //如果要前往主页且未登录
     store.commit('loginCheck',0);
     return next();
   }

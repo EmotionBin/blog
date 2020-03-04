@@ -1,6 +1,7 @@
 <!-- 返回顶部组件-->
 <template>
 	<div class="ReturnTopcom" v-if="btnFlag">
+		<!-- 鼠标移上去的提示框 -->
 		<el-tooltip effect="dark" content="返回顶部" placement="top">
       <div class="ReturnTopcom_content"  @click="backTop">
 				<img class="top_img" src="/images/top/rising.svg">

@@ -4,6 +4,7 @@
 		<!-- <el-button type="success" size="mini" @click="login">登录</el-button> -->
 		<div class="login_panel">
 			<div class="login_panel_title">登录</div>
+			<!-- 表单模块 -->
 			<el-form class="login_panel_form"  ref="loginForm" :rules="rules" :model="loginForm" label-width="80px">
 				<el-form-item label="用户名:" prop="username">
 					<el-input v-model="loginForm.username" prefix-icon="el-icon-user" placeholder="请输入用户名"></el-input>
@@ -51,6 +52,7 @@
 					isShow:false,
 					msg:''
 				},
+				//表单校验规则
 				rules:{
 					username:[
 						{ required: true, message: '请输入用户名', trigger: 'blur' },

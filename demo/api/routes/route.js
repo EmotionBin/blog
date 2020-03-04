@@ -5,7 +5,7 @@ const utility = require("utility");
 const jwt = require('jsonwebtoken');
 
 //引入配置文件
-const { tokenKey } = require('../public/js/config.js')
+const { tokenKey , admin } = require('../public/js/config.js')
 //引入封装好的数据库中间件
 var databaseOp = require('../public/js/dbQuery.js');
 //引入封装好的返回结果的文件
@@ -42,7 +42,7 @@ const register = async ctx => {
             //将密码进行md5加密
             var password_md5 = utility.md5(password);
             console.log(password, password_md5);
-            if (username === 'hwb') {
+            if (username === admin) {
                 //超级管理员用户
                 var writeRes = await databaseOp(`insert into userinfo values ('${username}','${password_md5}',1,1)`);
             } else {

@@ -1,9 +1,11 @@
 <template>
   <div id="app">
+    <!-- 导航栏 -->
     <Navigation/>
     <div class="route">
       <router-view/>
     </div>
+    <!-- 全局的提示框 -->
     <el-dialog
       class="app_dialog"
       title="提示"
@@ -36,12 +38,14 @@ export default {
   },
   computed:{
     getDialogInfo:function () {
+      //获取提示框信息
       return this.$store.getters.getDialogInfo;
     }
   },
   methods:{
     handleClose:function () {
       let vm = this;
+      //关闭提示框
       vm.$store.commit('updateDialog',{
         isShow:false,
         msg:''

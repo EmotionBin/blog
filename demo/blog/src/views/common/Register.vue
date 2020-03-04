@@ -4,6 +4,7 @@
 		<!-- <el-button type="success" size="mini" @click="register">注册</el-button> -->
 		<div class="register_panel">
 			<div class="register_panel_title">注册</div>
+			<!-- 表单模块 -->
 			<el-form class="register_panel_form" ref="registerForm" :rules="rules" :model="registerForm" label-width="80px">
 				<el-form-item label="用户名:" prop="username">
 					<el-input v-model="registerForm.username" prefix-icon="el-icon-user" placeholder="请输入用户名"></el-input>
@@ -51,6 +52,7 @@
 					isShow:false,
 					msg:''
 				},
+				//表单校验规则
 				rules:{
 					username:[
 						{ required: true, message: '请输入用户名', trigger: 'blur' },
