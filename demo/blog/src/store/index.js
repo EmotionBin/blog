@@ -13,7 +13,9 @@ export default new Vuex.Store({
       msg:''
     },
     //当前用户名
-    curUsername:''
+    curUsername:'',
+    //当前选择的菜单列表，默认为Home，该值为组件名
+    curMenu:'Home'
   },
   getters:{
     getLoginStatus:state => {
@@ -24,6 +26,9 @@ export default new Vuex.Store({
     },
     getCurUsername:state => {
       return state.curUsername;
+    },
+    getcurMenu:state => {
+      return state.curMenu;
     }
   },
   mutations: {
@@ -37,9 +42,14 @@ export default new Vuex.Store({
     updateCurUsername(state, payload){
       state.curUsername = payload;
     },
+    updateCurMenu(state, payload){
+      state.curMenu = payload;
+    },
   },
   actions: {
+
   },
   modules: {
+    
   }
 })

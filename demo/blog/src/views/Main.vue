@@ -7,7 +7,10 @@
 			</div>
 		</div>
 		<div class="sysmentView">
-			<Home/>
+			<keep-alive>
+				<component :is="getCurMenu"></component>
+			</keep-alive>
+			<!-- <Home/> -->
 		</div>
 	</div>
 </template>
@@ -16,36 +19,34 @@
 
 	import Home from "./Home.vue";
 	import MenuBar from "../components/MenuBar.vue";
+	import Test1 from "./menuList/Test1.vue";
+	import Test2 from "./menuList/Test2.vue";
+	import About from "./About.vue";
 
 	export default {
 		name: 'MainCom',
 		components: {
 			Home,
+			About,
+			Test1,
+			Test2,
 			MenuBar
 		},
 		data() {
 			return {
-				
 			}
 		},
+		//当前渲染的组件
 		computed: {
-
+			getCurMenu:function () {
+				return this.$store.getters.getcurMenu;
+			}
 		},
 		created() {
 
 		},
 		mounted() {
-			var array = ['0','1','2','3','4','5','6','7'];
-			var array1 = [];
-			var str = '';
-			for(let i in array){
-				str += array[i];
-				if((Number.parseInt(i) + 1) % 4 === 0){
-					array1.push(str);
-					str = '';
-				}
-			}
-			console.log(array1);
+
 		},
 		methods: {
 
