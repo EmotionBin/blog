@@ -33,7 +33,6 @@
         </div>
       </div>
     </div>
-    <ReturnTop/>
   </div>
 </template>
 
@@ -41,13 +40,10 @@
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
 
-import ReturnTop from '@/components/ReturnTop.vue'
-
 export default {
   name: 'Home',
   components: {
     // HelloWorld
-    ReturnTop
   },
   data(){
     return {

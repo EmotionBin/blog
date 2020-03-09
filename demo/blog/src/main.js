@@ -17,7 +17,7 @@ router.beforeEach((to,from,next) => {
     return next();
   }else if(to.path === '/' && !window.sessionStorage.getItem('userToken')){
     //如果要前往主页且未登录
-    store.commit('loginCheck',0);
+    // store.commit('loginCheck',0);
     return next();
   }
   next();

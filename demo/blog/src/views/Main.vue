@@ -3,13 +3,16 @@
 	<div class="MainCom">
 		<div class="menuBar">
 			<div class="menuBar_content">
-				<MenuBar/>
+				<MenuBar :curMenu="getCurMenu" />
 			</div>
 		</div>
 		<div class="sysmentView">
 			<keep-alive>
+				<!-- 动态渲染组件 -->
 				<component :is="getCurMenu"></component>
 			</keep-alive>
+			<!-- 返回顶部的组件 -->
+			<ReturnTop/>
 			<!-- <Home/> -->
 		</div>
 	</div>
@@ -19,18 +22,20 @@
 
 	import Home from "./Home.vue";
 	import MenuBar from "../components/MenuBar.vue";
-	import Test1 from "./menuList/Test1.vue";
-	import Test2 from "./menuList/Test2.vue";
+	import FrontEnd from "./menuList/FrontEnd.vue";
+	import BackEnd from "./menuList/BackEnd.vue";
 	import About from "./About.vue";
+	import ReturnTop from '@/components/ReturnTop.vue'
 
 	export default {
 		name: 'MainCom',
 		components: {
 			Home,
 			About,
-			Test1,
-			Test2,
-			MenuBar
+			FrontEnd,
+			BackEnd,
+			MenuBar,
+			ReturnTop
 		},
 		data() {
 			return {

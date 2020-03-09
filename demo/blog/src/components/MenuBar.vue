@@ -13,7 +13,7 @@
 						<template v-if="item.subMenu">
 							<el-submenu :key="item.title" :index="item.alias">
 								<template slot="title">
-									<i class="el-icon-menu"></i>
+									<i :class="item.iconStyle.class"></i>
 									<span>{{item.title}}</span>
 								</template>
 								<template v-for="subItem in item.subMenu">
@@ -27,7 +27,7 @@
 						<template v-else>
 							<el-menu-item :key="item.title" :index="item.alias">
 								<template slot="title">
-									<i class="el-icon-menu"></i>
+									<i :class="item.iconStyle.class"></i>
 									<span>{{item.title}}</span>
 								</template>
 							</el-menu-item>
@@ -42,10 +42,10 @@
 	export default {
 		name: 'MenuCom',
 		components: {},
+		//当前选中的菜单
+		props:['curMenu'],
 		data() {
 			return {
-				//当前选中的菜单
-				curMenu:'测试2-1',
 				//左侧菜单栏配置
 				menuList:[
 					{
@@ -56,7 +56,9 @@
 						//标题前方对应的图片的样式
 						iconStyle:{
 							//图片路径
-							path:''
+							path:'',
+							//通过class的方式添加图片
+							class:'el-icon-folder'
 						},
 						//对应的权限的字段
 						access:'1',
@@ -64,37 +66,37 @@
 						show:true
 					},
 					{
-						title:'测试2',
+						title:'技术交流',
 						alias:'',
 						iconStyle:{
-							path:''
+							//图片路径
+							path:'',
+							//通过class的方式添加图片
+							class:'el-icon-scissors'
 						},
 						access:'1',
 						show:true,
 						subMenu:[
 							{
-								title:'测试2-1',
-								alias:'Test1',
+								title:'关于前端',
+								alias:'FrontEnd',
 								iconStyle:{
-									path:''
+									//图片路径
+									path:'',
+									//通过class的方式添加图片
+									class:''
 								},
 								access:'1',
 								show:true,
 							},
 							{
-								title:'测试2-2',
-								alias:'Test2',
+								title:'关于后端',
+								alias:'BackEnd',
 								iconStyle:{
-									path:''
-								},
-								access:'1',
-								show:true,
-							},
-							{
-								title:'关于',
-								alias:'About',
-								iconStyle:{
-									path:''
+									//图片路径
+									path:'',
+									//通过class的方式添加图片
+									class:''
 								},
 								access:'1',
 								show:true,

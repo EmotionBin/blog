@@ -1,7 +1,7 @@
 <!-- vue 模板文件-->
 <template>
 	<div class="templatecom">
-		test1
+		BackEnd
 	</div>
 </template>
 
