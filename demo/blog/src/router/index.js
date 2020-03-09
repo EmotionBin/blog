@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
+//路由配置项
 const routes = [
   {
     path: '/',
@@ -21,6 +22,7 @@ const routes = [
   },
 ]
 
+//使用history模式 'history'或'hash'
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,

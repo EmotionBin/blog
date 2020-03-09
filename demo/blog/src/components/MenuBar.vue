@@ -43,7 +43,9 @@
 		name: 'MenuCom',
 		components: {},
 		//当前选中的菜单
-		props:['curMenu'],
+		props:{
+			curMenu:String
+		},
 		data() {
 			return {
 				//左侧菜单栏配置
