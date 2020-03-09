@@ -74,6 +74,8 @@ export default {
         //退出
         vm.$store.commit('loginCheck',0);
       }
+      //清除store中存储的用户名
+      vm.$store.commit('updateCurUsername','');
     }
   }
 }
