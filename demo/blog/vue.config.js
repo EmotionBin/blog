@@ -13,10 +13,13 @@ module.exports = {
   configureWebpack: {
     devtool: 'source-map'
   },
-  //全局注册$
+  //全局注册一些插件
   chainWebpack: config => {
     config.plugin('provide').use(webpack.ProvidePlugin, [{
+      //注册$
       $: 'jquery',
+      //注册utility，用于加密
+      utility:'utility'
     }])
   },
   devServer: {

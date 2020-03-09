@@ -80,6 +80,8 @@
 				let vm = this;
 				this.$refs.registerForm.validate((valid) => {
           if (valid) {
+						//md5加密后的密码
+						let password_md5 = utility.md5(vm.registerForm.password);
 						console.log('注册');
             $.ajax({
 							url: "/api/register",
@@ -88,7 +90,7 @@
 							// authority:true,
 							data: {
 								username:vm.registerForm.username,
-								password:vm.registerForm.password
+								password:password_md5
 							},
 							success:function(res){
 								console.log(res);

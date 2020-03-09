@@ -80,6 +80,8 @@
 				let vm = this;
 				this.$refs.loginForm.validate((valid) => {
           if (valid) {
+						//md5加密后的密码
+						let password_md5 = utility.md5(vm.loginForm.password);
 						console.log('登陆');
 						//通过表单验证之后发送请求
             $.ajax({
@@ -88,7 +90,7 @@
 							'Content-Type':'application/x-www-form-urlencoded',
 							data: {
 								username:vm.loginForm.username,
-								password:vm.loginForm.password
+								password:password_md5
 							},
 							success:function(res){
 								console.log(res);
