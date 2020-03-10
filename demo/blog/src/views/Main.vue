@@ -20,18 +20,16 @@
 
 <script>
 
-	import Home from "./Home.vue";
+	import Home from "./menuList/Home.vue";
 	import MenuBar from "../components/MenuBar.vue";
 	import FrontEnd from "./menuList/FrontEnd.vue";
 	import BackEnd from "./menuList/BackEnd.vue";
-	import About from "./About.vue";
 	import ReturnTop from '@/components/ReturnTop.vue'
 
 	export default {
 		name: 'MainCom',
 		components: {
 			Home,
-			About,
 			FrontEnd,
 			BackEnd,
 			MenuBar,
