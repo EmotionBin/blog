@@ -1,4 +1,16 @@
 //这里是可复用的scss代码
+
+// 页面中两侧的内边距
 @mixin bothSidePadding {
   padding: 0 20%;
+}
+
+// 文章模块中的内边距
+@mixin articlePadding{
+  padding: 20px;
+}
+
+//文章字体样式
+@mixin articleFontStyle{
+  font-size: 22px;
 }
