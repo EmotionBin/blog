@@ -68,7 +68,7 @@
 						show:true
 					},
 					{
-						title:'技术交流',
+						title:'技术档案',
 						alias:'',
 						iconStyle:{
 							//图片路径

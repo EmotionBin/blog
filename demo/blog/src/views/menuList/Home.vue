@@ -162,7 +162,7 @@ export default {
     width: 100%;
     height: 100%;
     // background-color: #d1d1d1;
-    padding: 20px;
+    @include articlePadding;
   }
   &_body{
     width: 100%;
