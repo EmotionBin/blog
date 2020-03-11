@@ -13,16 +13,6 @@ var customRes = require('../public/js/customRes.js');
 
 var router = new Router();
 
-//根路径测试请求
-const index = async ctx => {
-    databaseOp(`select * from user`).then(res => {
-        console.log(res);
-    });
-    ctx.body = {
-        data: 'Hello Koa!'
-    }
-}
-
 //注册请求
 const register = async ctx => {
     var resObj;
@@ -101,66 +91,9 @@ const login = async ctx => {
     ctx.response.body = resObj;
 }
 
-//测试请求
-const test = async ctx => {
-    var userinfo = jwt.decode(ctx.request.header.authorization);
-    console.log(JSON.stringify(jwt.decode(ctx.request.header.authorization)));
-    console.log(userinfo);
-    ctx.response.type = 'json';
-    ctx.response.body = {
-        message: 'test'
-    };
-}
-
-//测试请求
-const getNavList = async ctx => {
-    const data = {
-        navList: [
-            {
-                title: '标题1',
-                id: 0
-            },
-            {
-                title: '标题2',
-                id: 1
-            },
-            {
-                title: '标题3',
-                id: 2
-            },
-            {
-                title: '标题4',
-                id: 3
-            },
-            {
-                title: '标题5',
-                id: 4
-            },
-            {
-                title: '标题6',
-                id: 5
-            },
-            {
-                title: '标题7',
-                id: 6
-            },
-            {
-                title: '标题8',
-                id: 7
-            }
-        ]
-    }
-    resObj = customRes(1, data);
-    ctx.response.type = 'json';
-    ctx.response.body = resObj;
-}
-
 //路由菜单
-router.get('/', index);
 router.post('/register', register);
 router.post('/login', login);
-router.post('/test', test);
-router.get('/getNavList', getNavList);
 
 module.exports = (app) => {
     app.use(bodyParser())

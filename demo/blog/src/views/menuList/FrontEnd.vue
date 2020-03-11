@@ -5,7 +5,10 @@
 			<div class="front_module" v-for="(item,index) in articleList" :key="index">
 				<div class="module_title">{{item.issueYear}}</div>
 				<div class="article_list" v-for="(item1,index) in item.data" :key="index">
-					<div class="article_title">{{item1.articleTitle}}</div>
+					<div class="article_title">
+						<div class="title_radius"></div>
+						<span class="title_text">{{item1.articleTitle}}</span>
+					</div>
 					<div class="article_date">{{item1.issueDate}}</div>
 				</div>
 			</div>
@@ -24,6 +27,29 @@
 					{
 						issueYear:'2020年',
 						data:[
+							{
+								articleId:'发布的时间戳+内容(如1532159631_JavaScript)',
+								articleTitle:'测试的标题内容',
+								issueDate:'2020-3-11',
+								articleContent:''
+							},
+							{
+								articleId:'发布的时间戳+内容(如1532159631_JavaScript)',
+								articleTitle:'测试的标题内容',
+								issueDate:'2020-3-11',
+								articleContent:''
+							}
+						]
+					},
+					{
+						issueYear:'2020年',
+						data:[
+							{
+								articleId:'发布的时间戳+内容(如1532159631_JavaScript)',
+								articleTitle:'测试的标题内容',
+								issueDate:'2020-3-11',
+								articleContent:''
+							},
 							{
 								articleId:'发布的时间戳+内容(如1532159631_JavaScript)',
 								articleTitle:'测试的标题内容',
@@ -62,7 +88,35 @@
 			width: 100%;
 			.front_module{
 				width: 100%;
-				@include articleFontStyle;
+				display: flex;
+				flex-direction: column;
+				margin-bottom: 30px;
+				.module_title{
+					font-weight: bold;
+					font-size: 28px;
+				}
+				.article_list{
+					@include articleFontStyle;
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					.article_title{
+						margin: 2px 0;
+					}
+					.title_radius{
+						display: inline-block;
+						width: 10px;
+						height: 10px;
+						border-radius: 50%;
+						background-color: #000;
+						margin: 0 10px;
+					}
+					.title_text{
+						text-decoration: underline;
+						color: #000;
+						cursor: pointer;
+					}
+				}
 			}
 		}
 	}
