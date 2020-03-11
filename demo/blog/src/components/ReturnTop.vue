@@ -75,7 +75,7 @@
 			border-radius: 50%;
 			border-color: #666;
 			background-color: rgba(153,153,153,0.2);
-			box-shadow: 0 0 3px #666;
+			@include commonShadow;
 			cursor: pointer;
 			.top_img{
 				width: 100%;

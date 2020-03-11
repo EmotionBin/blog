@@ -144,7 +144,7 @@
 		.login_panel{
 			padding: 20px;
 			background-color: #fff;
-			box-shadow: 0px 0px 10px #999;
+			@include commonShadow;
 			border-radius: 5px;
 			&_title{
 				text-align: center;

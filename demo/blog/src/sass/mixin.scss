@@ -2,3 +2,8 @@
 @mixin bothSidePadding {
   padding: 0 20%;
 }
+
+//通用阴影
+@mixin commonShadow {
+  box-shadow: 0 0 3px #666;
+}

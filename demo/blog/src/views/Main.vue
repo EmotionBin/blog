@@ -67,7 +67,7 @@
 			top: 0;
 			//为了让div的position:sticky，这里选择用float让这个div靠左，不选择使用position:absolute
 			float: left;
-			box-shadow: 0 0 3px #888;
+			@include commonShadow;
 		}
 		.sysmentView{
 			width: 100%;
