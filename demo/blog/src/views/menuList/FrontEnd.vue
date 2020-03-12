@@ -2,16 +2,23 @@
 <template>
 	<div class="frontEndCom">
 		<div class="front_content">
-			<div class="front_module" v-for="(item,index) in articleList" :key="index">
+			<template v-if="articleData === ''">
+				<div class="front_module" v-for="(item,index) in articleList" :key="index">
 				<div class="module_title">{{item.issueYear}}</div>
 				<div class="article_list" v-for="(item1,index) in item.data" :key="index">
 					<div class="article_title">
 						<div class="title_radius"></div>
-						<span class="title_text">{{item1.articleTitle}}</span>
+						<span class="title_text" @click="checkArticle(item1.articleName)">{{item1.articleTitle}}</span>
 					</div>
 					<div class="article_date">{{item1.issueDate}}</div>
 				</div>
 			</div>
+			</template>
+			<template v-show="articleData">
+				<div v-html="articleData" class="article_md">
+					{{articleData}}
+				</div>
+			</template>
 		</div>
 	</div>
 </template>
@@ -31,13 +38,13 @@
 								articleId:'发布的时间戳+内容(如1532159631_JavaScript)',
 								articleTitle:'测试的标题内容',
 								issueDate:'2020-3-11',
-								articleContent:''
+								articleName:'front.md'
 							},
 							{
 								articleId:'发布的时间戳+内容(如1532159631_JavaScript)',
 								articleTitle:'测试的标题内容',
 								issueDate:'2020-3-11',
-								articleContent:''
+								articleName:''
 							}
 						]
 					},
@@ -48,17 +55,19 @@
 								articleId:'发布的时间戳+内容(如1532159631_JavaScript)',
 								articleTitle:'测试的标题内容',
 								issueDate:'2020-3-11',
-								articleContent:''
+								articleName:''
 							},
 							{
 								articleId:'发布的时间戳+内容(如1532159631_JavaScript)',
 								articleTitle:'测试的标题内容',
 								issueDate:'2020-3-11',
-								articleContent:''
+								articleName:''
 							}
 						]
 					}
-				]
+				],
+				//这里存放文章内容
+				articleData:''
 			}
 		},
 		computed: {
@@ -72,11 +81,27 @@
 			this.initArticleList();
 		},
 		methods: {
+			//初始化文章列表的渲染
 			initArticleList:function () {
 				console.log('init article');
+			},
+			//点击文章列表获取文章详情内容
+			checkArticle:function (articleName) {
+				let that = this;
+				$.ajax({
+					url: "/api/front/front.md",
+					type: "get",
+					'Content-Type':'application/x-www-form-urlencoded',
+					data: {
+
+					},
+					success:res => {
+						//保存文章内容
+						that.articleData = marked(res);
+					}
+				});
 			}
 		}
-
 	}
 </script>
 

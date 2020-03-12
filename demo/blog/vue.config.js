@@ -19,7 +19,9 @@ module.exports = {
       //注册$
       $: 'jquery',
       //注册utility，用于加密
-      utility:'utility'
+      utility:'utility',
+      //marked插件解析markdown文件(.md)
+      marked:'marked'
     }])
   },
   devServer: {

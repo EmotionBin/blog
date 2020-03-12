@@ -92,7 +92,7 @@
 								username:vm.registerForm.username,
 								password:password_md5
 							},
-							success:function(res){
+							success:res => {
 								console.log(res);
 								var {status,data,detail} = res;
 								if(status === 0){

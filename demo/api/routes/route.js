@@ -10,6 +10,9 @@ const { tokenKey , admin } = require('../public/js/config.js')
 var databaseOp = require('../public/js/dbQuery.js');
 //引入封装好的返回结果的文件
 var customRes = require('../public/js/customRes.js');
+//引入加载文章的路由模块
+var articles = require('./articlesRoute.js');
+
 
 var router = new Router();
 
@@ -94,6 +97,8 @@ const login = async ctx => {
 //路由菜单
 router.post('/register', register);
 router.post('/login', login);
+//加载文章
+router.get('/:direction/:articleName', articles);
 
 module.exports = (app) => {
     app.use(bodyParser())
