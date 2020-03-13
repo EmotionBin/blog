@@ -1,5 +1,7 @@
 //这里是全局的公共样式
 body {
+  //不允许有横向滚动条
+  overflow-x: hidden;
   margin: 0;
   -webkit-font-smoothing: antialiased;
   /*chrome、safari*/

@@ -3,7 +3,10 @@
     <!-- 导航栏 -->
     <Navigation/>
     <div class="route">
-      <router-view/>
+      <!-- 每个路由切换的时候添加上切换的动画效果 -->
+      <transition name="view-fade">
+        <router-view/>
+      </transition>
     </div>
     <!-- 全局的提示框 -->
     <el-dialog
@@ -61,5 +64,17 @@ export default {
 .route{
   // @include bothSidePadding;
   // min-height: calc(100vh - #{$navHeight});
+  
+  /* 可以设置不同的进入和离开动画 */
+  /* 设置持续时间和动画函数 */
+  .view-fade-enter-active {
+    transition: transform .5s cubic-bezier(.9, 0, .3, .7);
+  }
+  .view-fade-leave-active {
+    transition: transform .5s cubic-bezier(.9, 0, .3, .7);
+  }
+  .view-fade-enter, .view-fade-leave-to {
+    transform: translateX(100%);
+  }
 }
 </style>
