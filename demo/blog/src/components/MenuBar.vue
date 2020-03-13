@@ -68,42 +68,42 @@
 						show:true
 					},
 					{
-						title:'技术档案',
-						alias:'',
+						title:'文章',
+						alias:'Articles',
 						iconStyle:{
 							//图片路径
 							path:'',
 							//通过class的方式添加图片
-							class:'el-icon-scissors'
+							class:'el-icon-reading'
 						},
 						access:'1',
 						show:true,
-						subMenu:[
-							{
-								title:'关于前端',
-								alias:'FrontEnd',
-								iconStyle:{
-									//图片路径
-									path:'',
-									//通过class的方式添加图片
-									class:''
-								},
-								access:'1',
-								show:true,
-							},
-							{
-								title:'关于后端',
-								alias:'BackEnd',
-								iconStyle:{
-									//图片路径
-									path:'',
-									//通过class的方式添加图片
-									class:''
-								},
-								access:'1',
-								show:true,
-							}
-						]
+						// subMenu:[
+						// 	{
+						// 		title:'关于前端',
+						// 		alias:'FrontEnd',
+						// 		iconStyle:{
+						// 			//图片路径
+						// 			path:'',
+						// 			//通过class的方式添加图片
+						// 			class:''
+						// 		},
+						// 		access:'1',
+						// 		show:true,
+						// 	},
+						// 	{
+						// 		title:'关于后端',
+						// 		alias:'BackEnd',
+						// 		iconStyle:{
+						// 			//图片路径
+						// 			path:'',
+						// 			//通过class的方式添加图片
+						// 			class:''
+						// 		},
+						// 		access:'1',
+						// 		show:true,
+						// 	}
+						// ]
 					}
 				]
 			}

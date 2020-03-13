@@ -22,16 +22,14 @@
 
 	import Home from "./menuList/Home.vue";
 	import MenuBar from "../components/MenuBar.vue";
-	import FrontEnd from "./menuList/FrontEnd.vue";
-	import BackEnd from "./menuList/BackEnd.vue";
+	import Articles from "./menuList/Articles.vue";
 	import ReturnTop from '@/components/ReturnTop.vue'
 
 	export default {
 		name: 'MainCom',
 		components: {
 			Home,
-			FrontEnd,
-			BackEnd,
+			Articles,
 			MenuBar,
 			ReturnTop
 		},

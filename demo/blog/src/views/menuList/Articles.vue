@@ -1,9 +1,9 @@
 <!-- vue 模板文件-->
 <template>
-	<div class="frontEndCom">
-		<div class="front_content">
+	<div class="articleCom">
+		<div class="articleCom_content">
 			<template v-if="articleData === ''">
-				<div class="front_module" v-for="(item,index) in articleList" :key="index">
+				<div class="article_module" v-for="(item,index) in articleList" :key="index">
 				<div class="module_title">{{item.issueYear}}</div>
 				<div class="article_list" v-for="(item1,index) in item.data" :key="index">
 					<div class="article_title">
@@ -15,7 +15,7 @@
 			</div>
 			</template>
 			<template v-show="articleData">
-				<div v-html="articleData" class="article_md">
+				<div v-html="articleData" v-highlight class="article_md">
 					{{articleData}}
 				</div>
 			</template>
@@ -25,7 +25,7 @@
 
 <script>
 	export default {
-		name: 'frontEndCom',
+		name: 'articleCom',
 		components: {},
 		data() {
 			return {
@@ -44,7 +44,7 @@
 								articleId:'发布的时间戳+内容(如1532159631_JavaScript)',
 								articleTitle:'测试的标题内容',
 								issueDate:'2020-3-11',
-								articleName:''
+								articleName:'README.md'
 							}
 						]
 					},
@@ -55,13 +55,13 @@
 								articleId:'发布的时间戳+内容(如1532159631_JavaScript)',
 								articleTitle:'测试的标题内容',
 								issueDate:'2020-3-11',
-								articleName:''
+								articleName:'front.md'
 							},
 							{
 								articleId:'发布的时间戳+内容(如1532159631_JavaScript)',
 								articleTitle:'测试的标题内容',
 								issueDate:'2020-3-11',
-								articleName:''
+								articleName:'README.md'
 							}
 						]
 					}
@@ -89,7 +89,7 @@
 			checkArticle:function (articleName) {
 				let that = this;
 				$.ajax({
-					url: "/api/front/front.md",
+					url: `/api/articles/${articleName}`,
 					type: "get",
 					'Content-Type':'application/x-www-form-urlencoded',
 					data: {
@@ -106,12 +106,12 @@
 </script>
 
 <style lang="scss" scoped>
-	.frontEndCom{
+	.articleCom{
 		width: 100%;
 		@include articlePadding;
-		.front_content{
+		.articleCom_content{
 			width: 100%;
-			.front_module{
+			.article_module{
 				width: 100%;
 				display: flex;
 				flex-direction: column;

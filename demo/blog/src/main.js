@@ -5,6 +5,9 @@ import store from './store'
 import './plugins/globalAjax.js'
 import './plugins/storeDataCache.js'
 import './plugins/element.js'
+import './plugins/vueDirective.js'
+
+//还有部分插件配置在vue.config.js中的chainWebpack中
 
 Vue.config.productionTip = false
 

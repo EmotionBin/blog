@@ -98,7 +98,7 @@ const login = async ctx => {
 router.post('/register', register);
 router.post('/login', login);
 //加载文章
-router.get('/:direction/:articleName', articles);
+router.get('/articles/:articleName', articles);
 
 module.exports = (app) => {
     app.use(bodyParser())

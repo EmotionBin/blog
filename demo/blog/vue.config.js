@@ -16,12 +16,12 @@ module.exports = {
   //全局注册一些插件
   chainWebpack: config => {
     config.plugin('provide').use(webpack.ProvidePlugin, [{
-      //注册$
+      //全局注册$
       $: 'jquery',
-      //注册utility，用于加密
+      //全局注册utility，用于加密
       utility:'utility',
-      //marked插件解析markdown文件(.md)
-      marked:'marked'
+      //全局注册marked插件，用于解析markdown文件(.md)
+      marked:'marked',
     }])
   },
   devServer: {

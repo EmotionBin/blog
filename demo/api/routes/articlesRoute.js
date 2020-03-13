@@ -10,7 +10,7 @@ var customRes = require('../public/js/customRes.js');
 const loadArticles = async ctx => {
   // console.log(`这是传递过来的参数${ctx.params.articleName}`)
   try{
-    const file = `../public/articles/${ctx.params.direction}/${ctx.params.articleName}`;
+    const file = `../public/articles/${ctx.params.articleName}`;
     const filePath = path.join(__dirname, file);
     // console.log(filePath);
     var fileData = await readFile(filePath);
