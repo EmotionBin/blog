@@ -22,6 +22,8 @@ module.exports = {
       utility:'utility',
       //全局注册marked插件，用于解析markdown文件(.md)
       marked:'marked',
+      //jwt解密token工具
+      jwt:'jsonwebtoken'
     }])
   },
   devServer: {

@@ -66,6 +66,7 @@ export default {
       let vm = this;
       //从sessionStorage中删除所有用户信息
       window.sessionStorage.clear();
+      vm.$store.commit('updateUserToken','');
       if(params){
         //切换用户 跳至登录页面
         vm.$router.push({path:`/${params}`});

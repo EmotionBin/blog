@@ -23,6 +23,7 @@
 	import Home from "./menuList/Home.vue";
 	import MenuBar from "../components/MenuBar.vue";
 	import Articles from "./menuList/Articles.vue";
+	import Write from "./menuList/Write.vue";
 	import ReturnTop from '@/components/ReturnTop.vue'
 
 	export default {
@@ -31,6 +32,7 @@
 			Home,
 			Articles,
 			MenuBar,
+			Write,
 			ReturnTop
 		},
 		data() {

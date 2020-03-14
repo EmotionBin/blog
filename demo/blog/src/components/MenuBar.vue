@@ -39,6 +39,7 @@
 </template>
 
 <script>
+
 	export default {
 		name: 'MenuCom',
 		components: {},
@@ -104,18 +105,72 @@
 						// 		show:true,
 						// 	}
 						// ]
-					}
+					},
+					{
+						title:'管理',
+						alias:'Manage',
+						iconStyle:{
+							path:'',
+							class:'el-icon-goods'
+						},
+						access:'Edit',
+						show:false,
+						subMenu:[
+							{
+								title:'写作',
+								alias:'Write',
+								iconStyle:{
+									//图片路径
+									path:'',
+									//通过class的方式添加图片
+									class:''
+								},
+								access:'1',
+								show:true,
+							}
+						]
+					},
 				]
 			}
 		},
 		computed: {
-
+			//从token中解密获取用户信息
+			getUserToken:function () {
+				return this.$store.getters.getUserToken;
+			}
+		},
+		watch: {
+			//加载权限控制控制菜单显示
+			getUserToken:{
+				handler() {
+					let that = this;
+					let isEdit_bool;
+					//遍历菜单，修改权限
+					if(!that.getUserToken){
+						//token为空，说明未登录
+						isEdit_bool = false;
+						//如果没有权限直接跳转到Home页面
+						that.$store.commit('updateCurMenu','Home');
+					}else{
+						//已经登录，解密token获取权限
+						const { isEdit } = jwt.decode(that.getUserToken);
+						isEdit_bool = Number.parseInt(isEdit) == 1;
+					}
+					console.log(isEdit_bool);
+					for(let i in that.menuList){
+						if(that.menuList[i].access === 'Edit'){
+							that.menuList[i].show = isEdit_bool;
+						}
+					}
+				},
+				immediate: true
+			}
 		},
 		created() {
 
 		},
 		mounted() {
-
+			
 		},
 		methods: {
 			selectMenu:function (params) {

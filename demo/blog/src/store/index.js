@@ -15,7 +15,9 @@ export default new Vuex.Store({
     //当前用户名
     curUsername:'',
     //当前选择的菜单列表，默认为Home，该值为组件名
-    curMenu:'Home'
+    curMenu:'Home',
+    //用户的token,保存在vuex中的目的的为了动态的获取用户token，方便操作
+    userToken:'',
   },
   getters:{
     getLoginStatus:state => {
@@ -29,6 +31,9 @@ export default new Vuex.Store({
     },
     getcurMenu:state => {
       return state.curMenu;
+    },
+    getUserToken:state => {
+      return state.userToken;
     }
   },
   mutations: {
@@ -44,6 +49,9 @@ export default new Vuex.Store({
     },
     updateCurMenu(state, payload){
       state.curMenu = payload;
+    },
+    updateUserToken(state, payload){
+      state.userToken = payload;
     },
   },
   actions: {

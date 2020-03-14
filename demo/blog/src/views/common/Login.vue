@@ -101,6 +101,7 @@
 								}else if(detail){
 									//将拿到的token写入sessionStorage
 									sessionStorage.setItem('userToken', detail);
+									vm.$store.commit('updateUserToken',detail);
 									//将用户名写入vuex
 									vm.$store.commit('updateCurUsername',vm.loginForm.username);
 									vm.isLogin = true;
