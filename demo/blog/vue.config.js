@@ -4,8 +4,8 @@ const webpack = require('webpack');
 module.exports = {
   //打包后的路径
   publicPath: process.env.NODE_ENV === 'production' ?
-    './' :
-    './',
+    '/' :
+    '/',
   //是否使用包含运行时编译器的Vue内核版本
   runtimeCompiler: true,
   //productionSourceMap: true,
