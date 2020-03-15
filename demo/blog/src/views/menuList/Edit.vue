@@ -32,7 +32,7 @@
 
 <style lang="scss" scoped>
 	.editCom{
-		
+		width: 100%;
 	}
 
 </style>

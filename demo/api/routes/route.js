@@ -3,6 +3,18 @@ const Router = require('koa-router');
 const bodyParser = require('koa-bodyparser');
 const utility = require("utility");
 const jwt = require('jsonwebtoken');
+//引入解析fromdata的koa-body
+const koaBody = require('koa-body')({
+    /**
+     * 这里必须要设置multipart字段为true，否则无法解析fromdata数据
+     * formidable对文件进行保存设置
+     */
+    multipart: true,  // 允许上传多个文件
+    formidable: { 
+        // uploadDir: 'public/articles',// 上传的文件存储的路径 
+        keepExtensions: true //  保存文件的扩展名
+    }
+});
 
 //引入配置文件
 const { tokenKey , admin } = require('../public/js/config.js')
@@ -11,7 +23,7 @@ var databaseOp = require('../public/js/dbQuery.js');
 //引入封装好的返回结果的文件
 var customRes = require('../public/js/customRes.js');
 //引入加载文章的路由模块
-var articles = require('./articlesRoute.js');
+var { getArticles,addArticle } = require('./articlesRoute.js');
 
 
 var router = new Router();
@@ -98,10 +110,12 @@ const login = async ctx => {
 router.post('/register', register);
 router.post('/login', login);
 //加载文章
-router.get('/articles/:articleName', articles);
+router.get('/articles/:articleName', getArticles);
+router.post('/addArticle', koaBody,addArticle);
 
 module.exports = (app) => {
     app.use(bodyParser())
+        // .use(koaBody)
         .use(router.routes())
         .use(router.allowedMethods())
 }
