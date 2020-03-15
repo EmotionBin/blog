@@ -24,6 +24,7 @@
 	import MenuBar from "../components/MenuBar.vue";
 	import Articles from "./menuList/Articles.vue";
 	import Write from "./menuList/Write.vue";
+	import Edit from "./menuList/Edit.vue";
 	import ReturnTop from '@/components/ReturnTop.vue'
 
 	export default {
@@ -33,6 +34,7 @@
 			Articles,
 			MenuBar,
 			Write,
+			Edit,
 			ReturnTop
 		},
 		data() {

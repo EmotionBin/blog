@@ -127,6 +127,18 @@
 								},
 								access:'1',
 								show:true,
+							},
+							{
+								title:'编辑',
+								alias:'Edit',
+								iconStyle:{
+									//图片路径
+									path:'',
+									//通过class的方式添加图片
+									class:''
+								},
+								access:'1',
+								show:true,
 							}
 						]
 					},
