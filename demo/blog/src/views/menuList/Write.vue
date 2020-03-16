@@ -17,7 +17,7 @@
 					<div class="file_text">文章的文件名:</div>
 					<div class="file_input">
 						<el-input
-							placeholder="请输入文章的文件名"
+							placeholder="请输入文章的文件名，命名规则xxx_xxx_xx,如javascript_promise_01，不需要添加后缀名，默认为.md后缀名"
 							v-model="articleData.filename"
 							clearable>
 						</el-input>
@@ -97,6 +97,14 @@
 			},
 			upload:function () {
 				let that = this;
+				//对表单内容进行校验,三者都不为空的时候才发送请求
+				if(!that.articleData.title || !that.articleData.filename || !that.articleData.fileList[0]){
+					that.$message({
+						message: '请选择正确的参数',
+						type: 'error'
+					});
+					return;
+				}
 				let formdata = new FormData();
 				//组装请求数据formmdata
 				formdata.append('title',that.articleData.title);
@@ -111,6 +119,14 @@
 						data:formdata,
 						success:function(res){
 							console.log(res);
+							const { status,data,detail } = res;
+							if(status == 0){
+								that.$message({
+									message: '上传失败',
+									type: 'error'
+								});
+								return;
+							}
 							that.$message({
 								message: '上传成功',
 								type: 'success'
