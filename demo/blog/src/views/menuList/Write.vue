@@ -121,8 +121,10 @@
 							console.log(res);
 							const { status,data,detail } = res;
 							if(status == 0){
+								//若返回的data字段为空，则提示上传失败，不为空则提示data信息
+								let msg = data ? data:'上传失败';
 								that.$message({
-									message: '上传失败',
+									message: msg,
 									type: 'error'
 								});
 								return;

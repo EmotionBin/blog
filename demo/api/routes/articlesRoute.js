@@ -46,27 +46,27 @@ const addArticle = async ctx => {
     await mkdirFile(filePath);
     //保存文件
     filePath_res = await saveFile(file.path,`${filePath}\\${filename}.md`);
-    //先用article的住建articleId查询该文章是否存在，不存在则直接写入，存在则更新
-    let queryRes = await databaseOp(sqlString);
-    console.log(queryRes);
-    if (queryRes){
-      //文章存在，则更新
+    //先用article的articleName查询该文章是否存在，不存在则直接写入，存在则更新
+    let queryRes = await databaseOp(`select * from articles where articleName = '${filename}'`);
+    // console.log(queryRes);
+    if (queryRes.length){
+      //文章存在，则上传失败
+      console.log('文章已经存在，上传失败');
+      ctx.response.type = 'json';
+      ctx.response.body = customRes(0, '文件已经存在，请重新修改文件名');
     }else{
-      //文章不存在，则直接写入
-      //将参数写入数据库中存储
+      //文章不存在，则直接将参数写入数据库中存储
       const sqlString = `insert into articles values ('${year}','${articleId}','${title}','${fullDate}','${filename}')`;
       await databaseOp(sqlString);
       console.log('数据写入成功');
+      ctx.response.type = 'json';
+      ctx.body = customRes(1, filePath_res);
     }
-    ctx.body = customRes(1, filePath_res);
   }catch(err){
     console.log(err);
     ctx.response.type = 'json';
     ctx.response.body = customRes(0, '失败了');
   }
-  // console.log(articleId);
-  // console.log(title,filename);
-  // console.log(file);
 }
 
 //生成时间,年,月,日,时间戳
