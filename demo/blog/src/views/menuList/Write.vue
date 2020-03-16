@@ -79,7 +79,7 @@
 				var isMd = file.raw.name.substring(file.raw.name.length - 3) === '.md';
 				console.log(isMd);
 				if (!isMd) {
-					this.$message.error('上传的图片只能是.md格式!');
+					this.$message.error('上传的文件只能是.md格式!');
 					//清空文件
 					that.articleData.fileList = [];
 					return;
@@ -100,7 +100,7 @@
 				//对表单内容进行校验,三者都不为空的时候才发送请求
 				if(!that.articleData.title || !that.articleData.filename || !that.articleData.fileList[0]){
 					that.$message({
-						message: '请选择正确的参数',
+						message: '请确保选择的参数正确并且完整',
 						type: 'error'
 					});
 					return;

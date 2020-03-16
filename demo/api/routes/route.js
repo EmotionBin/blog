@@ -12,7 +12,7 @@ const koaBody = require('koa-body')({
     multipart: true,  // 允许上传多个文件
     formidable: { 
         // uploadDir: 'public/articles',// 上传的文件存储的路径 
-        keepExtensions: true //  保存文件的扩展名
+        // keepExtensions: true //  保存文件的扩展名
     }
 });
 

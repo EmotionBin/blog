@@ -14,7 +14,9 @@
 				</div>
 			</div>
 			</template>
-			<template v-show="articleData">
+			<template v-else>
+				<!-- 返回按钮 -->
+				<el-button class="returnBtn" size="small" type="warning" @click="returnListPanel">返 回</el-button>
 				<div v-html="articleData" v-highlight class="article_md">
 					{{articleData}}
 				</div>
@@ -44,7 +46,7 @@
 								articleId:'发布的时间戳+内容(如1532159631_JavaScript)',
 								articleTitle:'测试的标题内容',
 								issueDate:'2020-3-11',
-								articleName:'README.md'
+								articleName:'2020/test.md'
 							}
 						]
 					},
@@ -96,10 +98,20 @@
 
 					},
 					success:res => {
+						if(res.status == 0) {
+							console.log('请求异常');
+							return;
+						}
 						//保存文章内容
 						that.articleData = marked(res);
 					}
 				});
+			},
+			//点击返回文章列表页面
+			returnListPanel:function () {
+				let that = this;
+				//清空文章数据，返回列表页面
+				that.articleData = '';
 			}
 		}
 	}
@@ -108,6 +120,7 @@
 <style lang="scss" scoped>
 	.articleCom{
 		width: 100%;
+		position: relative;
 		@include articlePadding;
 		.articleCom_content{
 			width: 100%;
@@ -142,6 +155,11 @@
 						cursor: pointer;
 					}
 				}
+			}
+			.returnBtn{
+				position: absolute;
+				top: 10px;
+				right: 0;
 			}
 		}
 	}
