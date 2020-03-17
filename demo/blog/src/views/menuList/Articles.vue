@@ -96,6 +96,10 @@
 					success:res => {
 						if(res.status == 0) {
 							console.log('请求异常');
+							that.$message({
+								message: res.data,
+								type: 'error'
+							});
 							return;
 						}
 						console.log(res);
@@ -116,6 +120,10 @@
 					success:res => {
 						if(res.status == 0) {
 							console.log('请求异常');
+							that.$message({
+								message: res.data,
+								type: 'error'
+							});
 							return;
 						}
 						//保存文章内容

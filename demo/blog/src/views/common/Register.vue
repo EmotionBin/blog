@@ -97,6 +97,10 @@
 								var {status,data,detail} = res;
 								if(status === 0){
 									console.log('serve error');
+									vm.$message({
+										message: res.data,
+										type: 'error'
+									});
 									return ;
 								}else if(detail){
 									vm.isRegister = true;
