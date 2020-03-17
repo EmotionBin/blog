@@ -23,7 +23,7 @@ var databaseOp = require('../public/js/dbQuery.js');
 //引入封装好的返回结果的文件
 var customRes = require('../public/js/customRes.js');
 //引入加载文章的路由模块
-var { getArticles,addArticle } = require('./articlesRoute.js');
+const { getArticlesList,getArticles,addArticle } = require('./articlesRoute.js');
 
 
 var router = new Router();
@@ -110,7 +110,8 @@ const login = async ctx => {
 router.post('/register', register);
 router.post('/login', login);
 //加载文章
-router.get('/articles/:articleName', getArticles);
+router.get('/getArticlesList', getArticlesList);
+router.get('/articles/:year/:articleName', getArticles);
 router.post('/addArticle', koaBody,addArticle);
 
 module.exports = (app) => {

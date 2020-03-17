@@ -13,11 +13,54 @@ const fileOptions = {
   path:`../public/articles`
 }
 
-//请求文章内容
+//获取文章列表数据
+const getArticlesList = async ctx => {
+  try {
+    let queryRes = await databaseOp(`select * from articles order by issueYear desc`);
+    // console.log(queryRes,queryRes[0].issueYear);
+    let resArray = [];
+    //记录存在几个年份
+    let j = 0;
+    for (let i in queryRes){
+      let { issueYear, articleId, articleTitle, issueDate, articleName } = queryRes[i];
+      //对数据库的时间格式进行格式化
+      issueDate = `${issueDate.getUTCFullYear()}-${issueDate.getUTCMonth() + 1}-${issueDate.getUTCDate() + 1}`;
+      //格式化文章名字，拼接成完整的路径
+      articleName = `${issueYear}/${articleName}.md`
+      // 如果是第一条数据
+      if(i == 0){
+        resArray.push({
+          issueYear,
+          data: [{ articleId, articleTitle, issueDate, articleName }]
+        });
+      }else{
+        //如果后一条数据的issueYear等于前一条数据的issueYear
+        if (queryRes[i - 1].issueYear == issueYear) {
+          resArray[j].data.push({ articleId, articleTitle, issueDate, articleName });
+        } else {
+          j ++;
+          resArray.push({
+            issueYear,
+            data: [{ articleId, articleTitle, issueDate, articleName }]
+          });
+        }
+      }
+    }
+    console.log(JSON.stringify(resArray));
+    ctx.response.type = 'json';
+    ctx.response.body = customRes(1, resArray);
+  } catch (err) {
+    console.log(err);
+    ctx.response.type = 'json';
+    ctx.response.body = customRes(0, '失败了');
+  }
+}
+
+//获取文章详细内容
 const getArticles = async ctx => {
   // console.log(`这是传递过来的参数${ctx.params.articleName}`)
   try{
-    const file = `${fileOptions.path}/${ctx.params.articleName}`;
+    const file = `${fileOptions.path}/${ctx.params.year}/${ctx.params.articleName}`;
     const filePath = path.join(__dirname, file);
     // console.log(filePath);
     var fileData = await readFile(filePath);
@@ -40,14 +83,8 @@ const addArticle = async ctx => {
   const file = ctx.request.files.file;
   const articleId = `${filename}_${stamp}`;
   try{
-    //将相对路径转换成绝对路径
-    const filePath = path.join(__dirname, `${fileOptions.path}/${year}`);
-    //创建文件夹
-    await mkdirFile(filePath);
-    //保存文件
-    filePath_res = await saveFile(file.path,`${filePath}\\${filename}.md`);
-    //先用article的articleName查询该文章是否存在，不存在则直接写入，存在则更新
-    let queryRes = await databaseOp(`select * from articles where articleName = '${filename}'`);
+    //先用article的articleName查询该文章是否存在，不存在则直接写入，存在则停止操作
+    let queryRes = await databaseOp(`select * from articles where articleName = '${year}_${filename}'`);
     // console.log(queryRes);
     if (queryRes.length){
       //文章存在，则上传失败
@@ -55,8 +92,14 @@ const addArticle = async ctx => {
       ctx.response.type = 'json';
       ctx.response.body = customRes(0, '文件已经存在，请重新修改文件名');
     }else{
+      //将相对路径转换成绝对路径
+      const filePath = path.join(__dirname, `${fileOptions.path}/${year}`);
+      //创建文件夹
+      await mkdirFile(filePath);
+      //保存文件
+      filePath_res = await saveFile(file.path, `${filePath}\\${year}_${filename}.md`);
       //文章不存在，则直接将参数写入数据库中存储
-      const sqlString = `insert into articles values ('${year}','${articleId}','${title}','${fullDate}','${filename}')`;
+      const sqlString = `insert into articles values ('${year}','${articleId}','${title}','${fullDate}','${year}_${filename}')`;
       await databaseOp(sqlString);
       console.log('数据写入成功');
       ctx.response.type = 'json';
@@ -88,6 +131,7 @@ const getDate = () => {
 }
 
 module.exports = {
+  getArticlesList,
   getArticles,
   addArticle
 };

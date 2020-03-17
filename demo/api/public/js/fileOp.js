@@ -31,16 +31,20 @@ const readFile  = filePath => {
 //保存文件
 const saveFile = (file, path) => {
   return new Promise((resolve, reject) => {
-      let render = fs.createReadStream(file);
-      // 创建写入流
-      let upStream = fs.createWriteStream(path);
-      render.pipe(upStream);
-      upStream.on('finish', () => {
-          resolve(path);
-      });
-      upStream.on('error', (err) => {
-          reject(err);
-      });
+    let render = fs.createReadStream(file, {
+        encoding: 'utf8'
+    });
+    // 创建写入流
+    let upStream = fs.createWriteStream(path, {
+        encoding: 'utf8'
+    });
+    render.pipe(upStream);
+    upStream.on('finish', () => {
+        resolve(path);
+    });
+    upStream.on('error', (err) => {
+        reject(err);
+    });
   })
 }
 

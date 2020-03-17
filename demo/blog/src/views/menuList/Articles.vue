@@ -33,40 +33,40 @@
 			return {
 				//这里存放文章列表数据
 				articleList:[
-					{
-						issueYear:'2020年',
-						data:[
-							{
-								articleId:'发布的时间戳+内容(如1532159631_JavaScript)',
-								articleTitle:'测试的标题内容',
-								issueDate:'2020-3-11',
-								articleName:'front.md'
-							},
-							{
-								articleId:'发布的时间戳+内容(如1532159631_JavaScript)',
-								articleTitle:'测试的标题内容',
-								issueDate:'2020-3-11',
-								articleName:'2020/test.md'
-							}
-						]
-					},
-					{
-						issueYear:'2020年',
-						data:[
-							{
-								articleId:'发布的时间戳+内容(如1532159631_JavaScript)',
-								articleTitle:'测试的标题内容',
-								issueDate:'2020-3-11',
-								articleName:'front.md'
-							},
-							{
-								articleId:'发布的时间戳+内容(如1532159631_JavaScript)',
-								articleTitle:'测试的标题内容',
-								issueDate:'2020-3-11',
-								articleName:'README.md'
-							}
-						]
-					}
+					// {
+					// 	issueYear:'2020年',
+					// 	data:[
+					// 		{
+					// 			articleId:'发布的时间戳+内容(如1532159631_JavaScript)',
+					// 			articleTitle:'测试的标题内容',
+					// 			issueDate:'2020-3-11',
+					// 			articleName:'front.txt'
+					// 		},
+					// 		{
+					// 			articleId:'发布的时间戳+内容(如1532159631_JavaScript)',
+					// 			articleTitle:'测试的标题内容',
+					// 			issueDate:'2020-3-11',
+					// 			articleName:'2020/test.txt'
+					// 		}
+					// 	]
+					// },
+					// {
+					// 	issueYear:'2020年',
+					// 	data:[
+					// 		{
+					// 			articleId:'发布的时间戳+内容(如1532159631_JavaScript)',
+					// 			articleTitle:'测试的标题内容',
+					// 			issueDate:'2020-3-11',
+					// 			articleName:'front.txt'
+					// 		},
+					// 		{
+					// 			articleId:'发布的时间戳+内容(如1532159631_JavaScript)',
+					// 			articleTitle:'测试的标题内容',
+					// 			issueDate:'2020-3-11',
+					// 			articleName:'README.txt'
+					// 		}
+					// 	]
+					// }
 				],
 				//这里存放文章内容
 				articleData:''
@@ -85,7 +85,23 @@
 		methods: {
 			//初始化文章列表的渲染
 			initArticleList:function () {
-				console.log('init article');
+				let that = this;
+				$.ajax({
+					url: `/api/getArticlesList`,
+					type: "get",
+					'Content-Type':'application/x-www-form-urlencoded',
+					data: {
+
+					},
+					success:res => {
+						if(res.status == 0) {
+							console.log('请求异常');
+							return;
+						}
+						console.log(res);
+						that.articleList = res.data;
+					}
+				});
 			},
 			//点击文章列表获取文章详情内容
 			checkArticle:function (articleName) {
