@@ -24,7 +24,7 @@ const getArticlesList = async ctx => {
     for (let i in queryRes){
       let { issueYear, articleId, articleTitle, issueDate, articleName } = queryRes[i];
       //对数据库的时间格式进行格式化
-      issueDate = `${issueDate.getUTCFullYear()}-${issueDate.getUTCMonth() + 1}-${issueDate.getUTCDate() + 1}`;
+      issueDate = getDate(issueDate).date_UTC;
       //格式化文章名字，拼接成完整的路径
       articleName = `${issueYear}/${articleName}.md`
       // 如果是第一条数据
@@ -112,20 +112,48 @@ const addArticle = async ctx => {
   }
 }
 
-//生成时间,年,月,日,时间戳
-const getDate = () => {
+//查询文章数据 
+const queryAticle = async ctx => {
+  const { articleId } = ctx.request.query;
+  console.log(articleId);
+  try {
+    if (!articleId) {
+      //如果传过来的Id不为空，则查找为对应ID的文章
+      let queryRes = await databaseOp(`select * from articles where articleId = '${articleId}'`);
+      console.log(queryRes);
+      ctx.response.type = 'json';
+      ctx.response.body = customRes(1, queryRes); 
+    } else {
+      //如果传过来的ID为空，则返回所有数据
+      let queryRes1 = await databaseOp(`select * from articles`);
+      console.log('所有',queryRes1);
+      ctx.response.type = 'json';
+      ctx.response.body = customRes(1, queryRes1); 
+    }
+  } catch (err) {
+    console.log(err);
+    ctx.response.type = 'json';
+    ctx.response.body = customRes(0, '失败了'); 
+  }
+}
+
+//生成时间,年,月,日,时间戳,UTC时间转换
+const getDate = (timer) => {
   const date = new Date();
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const day = date.getDate();
   const fullDate = `${year}-${month}-${day}`;
   const stamp = Date.parse(new Date());
+  //对数据库的时间格式进行格式化
+  const date_UTC = `${timer.getUTCFullYear()}-${timer.getUTCMonth() + 1}-${timer.getUTCDate() + 1}`;
   const customDate = {
     year,
     month,
     day,
     fullDate,
-    stamp
+    stamp,
+    date_UTC
   }
   return customDate;
 }
@@ -133,5 +161,6 @@ const getDate = () => {
 module.exports = {
   getArticlesList,
   getArticles,
-  addArticle
+  addArticle,
+  queryAticle
 };
