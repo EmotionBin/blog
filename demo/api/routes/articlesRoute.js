@@ -112,12 +112,12 @@ const addArticle = async ctx => {
   }
 }
 
-//查询文章数据 
+//查询文章
 const queryAticle = async ctx => {
   const { articleId } = ctx.request.query;
   console.log(articleId);
   try {
-    if (!articleId) {
+    if (articleId) {
       //如果传过来的Id不为空，则查找为对应ID的文章
       let queryRes = await databaseOp(`select * from articles where articleId = '${articleId}'`);
       console.log(queryRes);
@@ -137,6 +137,36 @@ const queryAticle = async ctx => {
   }
 }
 
+//更新文章
+const updataArticle = async ctx => {
+  console.log(ctx.request.body);
+  const {articleId,title} = ctx.request.body;
+  //拿到上传的文件
+  const file = ctx.request.files.file;
+  try {
+    //如果上传了文件则更新文件，否则不更新
+    if(file){
+      console.log('修改了文件');
+      //上传了文件
+      let queryRes = await databaseOp(`select * from articles`);
+      //将相对路径转换成绝对路径
+      const filePath = path.join(__dirname, `${fileOptions.path}/${queryRes[0].issueYear}`);
+      //创建文件夹
+      await mkdirFile(filePath);
+      //保存文件
+      await saveFile(file.path, `${filePath}\\${queryRes[0].articleName}.md`);
+    }
+    //写入数据库
+    await databaseOp(`update articles set articleTitle='${title}' WHERE articleId='${articleId}'`);
+    ctx.response.type = 'json';
+    ctx.response.body = customRes(1, '操作成功'); 
+  } catch (err) {
+    console.log(err);
+    ctx.response.type = 'json';
+    ctx.response.body = customRes(0, '失败了'); 
+  }
+}
+
 //生成时间,年,月,日,时间戳,UTC时间转换
 const getDate = (timer) => {
   const date = new Date();
@@ -146,7 +176,7 @@ const getDate = (timer) => {
   const fullDate = `${year}-${month}-${day}`;
   const stamp = Date.parse(new Date());
   //对数据库的时间格式进行格式化
-  const date_UTC = `${timer.getUTCFullYear()}-${timer.getUTCMonth() + 1}-${timer.getUTCDate() + 1}`;
+  const date_UTC = timer ? `${timer.getUTCFullYear()}-${timer.getUTCMonth() + 1}-${timer.getUTCDate() + 1}` : 0;
   const customDate = {
     year,
     month,
@@ -162,5 +192,6 @@ module.exports = {
   getArticlesList,
   getArticles,
   addArticle,
-  queryAticle
+  queryAticle,
+  updataArticle
 };

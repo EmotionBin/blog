@@ -97,12 +97,60 @@
 
 		},
 		mounted() {
-
+			//初始化，获取文章列表信息
+			this.init();
 		},
 		methods: {
+			//初始化，请求文章列表信息
+			init:function () {
+				let that = this;
+				//获取文章列表数据
+				$.ajax({
+					url: "/api/queryAticle",
+					type: "get",
+					'Content-Type':'application/x-www-form-urlencoded',
+					data:{
+						articleId:that.searchKey
+					},
+					success:function(res){
+						console.log(res);
+						const { status,data,detail } = res;
+						if(status == 0){
+							that.$message({
+								message: data,
+								type: 'error'
+							});
+							return;
+						}
+						that.articlesList = data;
+					}
+				});
+			},
 			//搜索操作
 			doSearch:function () {
+				let that = this;
 				console.log('搜索',this.searchKey);
+				// 发送请求
+				$.ajax({
+					url: "/api/queryAticle",
+					type: "get",
+					'Content-Type':'application/x-www-form-urlencoded',
+					data:{
+						articleId:that.searchKey
+					},
+					success:function(res){
+						console.log(res);
+						const { status,data,detail } = res;
+						if(status == 0){
+							that.$message({
+								message: data,
+								type: 'error'
+							});
+							return;
+						}
+						that.articlesList = data;
+					}
+				});
 			},
 			//修改操作
 			doModify:function (articleId,index) {
@@ -152,41 +200,44 @@
 				}
 				let formdata = new FormData();
 				//组装请求数据formmdata
+				formdata.append('articleId',articleId);
 				formdata.append('title',that.curModifyData.articleTitle);
 				//重新上传而文件是可选项，有则上传，无也无所谓
 				let file = that.curModifyData.articleFile.length ? that.curModifyData.articleFile[0] : '';
 				formdata.append('file',file);
 				// 发送请求
-				// $.ajax({
-				// 	url: "/api/addArticle",
-				// 	type: "post",
-				// 	contentType:false,
-				// 	processData:false,
-				// 	data:formdata,
-				// 	success:function(res){
-				// 		console.log(res);
-				// 		const { status,data,detail } = res;
-				// 		if(status == 0){
-				// 			//若返回的data字段为空，则提示上传失败，不为空则提示data信息
-				// 			let msg = data ? data:'上传失败';
-				// 			that.$message({
-				// 				message: msg,
-				// 				type: 'error'
-				// 			});
-				// 			return;
-				// 		}
-				// 		that.$message({
-				// 			message: '上传成功',
-				// 			type: 'success'
-				// 		});
-				// 		//清空数据
-				// 		that.curActive = '';
-				// 		that.curModifyData = {
-				// 			articleTitle:'',
-				// 			articleFile:[]
-				// 		}
-				// 	}
-				// });
+				$.ajax({
+					url: "/api/updataArticle",
+					type: "post",
+					contentType:false,
+					processData:false,
+					data:formdata,
+					success:function(res){
+						console.log(res);
+						const { status,data,detail } = res;
+						if(status == 0){
+							//若返回的data字段为空，则提示上传失败，不为空则提示data信息
+							let msg = data ? data:'上传失败';
+							that.$message({
+								message: msg,
+								type: 'error'
+							});
+							return;
+						}
+						that.$message({
+							message: data,
+							type: 'success'
+						});
+						//更新文章标题
+						that.articlesList[index].articleTitle = that.curModifyData.articleTitle;
+						//清空数据
+						that.curActive = '';
+						that.curModifyData = {
+							articleTitle:'',
+							articleFile:[]
+						}
+					}
+				});
 			},
 			handleExceed:function () {
 				this.$message.warning(`当前限制选择 1 个文件，最多只能上传一个文件`);
