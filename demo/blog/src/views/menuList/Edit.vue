@@ -16,13 +16,38 @@
 		<!-- 文章列表 -->
 		<div class="articles_panel">
 			<div class="article_data" v-for="(item,index) in articlesList" :key="index">
-				<div class="article_title" >{{item.articleTitle}}</div>
+				<div class="article_title" >
+					<template v-if="item.articleId == curActive">
+						<el-input size="small" v-model="curModifyData.articleTitle" placeholder="请输入内容"></el-input>
+					</template>
+					<template v-else>
+						{{item.articleTitle}}
+					</template>
+					</div>
 				<div class="operation">
-					<el-button v-if="item.articleId == curActive" size="mini" type="primary" @click="doUpload(item.articleId,index)">重新上传</el-button>
-					<el-button v-if="item.articleId == curActive" size="mini" type="success" @click="doSave(item.articleId,index)">保存</el-button>
-					<el-button v-if="item.articleId != curActive" size="mini" type="primary" @click="doModify(item.articleId,index)">修改</el-button>
-					<el-button v-if="item.articleId == curActive" size="mini" type="warning" @click="doModify(item.articleId,index)">修改</el-button>
-					<el-button size="mini" type="primary" @click="doDelete(item.articleId,index)">删除</el-button>
+					<template v-if="item.articleId == curActive">
+						<el-upload
+							class="upload_op"
+							action="#"
+							accept=".txt"
+							ref="upload"
+							:auto-upload="false"
+							:limit="1"
+							:on-exceed="handleExceed"
+							:on-change="beforeUpload"
+							:on-remove="handleRemove"
+							:file-list="curModifyData.articleFile"
+						>
+							<el-button size="mini" type="primary">重新上传</el-button>
+							<!-- <div slot="tip" class="el-upload__tip">只能上传.txt文件,上传后自动保存为.md文件</div> -->
+						</el-upload>
+						<el-button size="mini" type="success" @click="doSave(item.articleId,index)">保存</el-button>
+						<el-button size="mini" type="warning" @click="doModify(item.articleId,index)">修改</el-button>
+					</template>
+					<template v-else>
+						<el-button size="mini" type="primary" @click="doModify(item.articleId,index)">修改</el-button>
+					</template>
+					<el-button size="mini" type="danger" @click="doDelete(item.articleId,index)">删除</el-button>
 				</div>
 			</div>
 		</div>
@@ -36,26 +61,33 @@
 		data() {
 			return {
 				//所有文章的标题
-				articlesList: [{
-          articleId: '选项1',
-          articleTitle: '黄金糕'
-        }, {
-          articleId: '选项2',
-          articleTitle: '双皮奶'
-        }, {
-          articleId: '选项3',
-          articleTitle: '蚵仔煎'
-        }, {
-          articleId: '选项4',
-          articleTitle: '龙须面'
-        }, {
-          articleId: '选项5',
-          articleTitle: '北京烤鸭'
-        }],
+				articlesList: [
+					{
+						articleId: '选项1',
+						articleTitle: '黄金糕'
+					}, {
+						articleId: '选项2',
+						articleTitle: '双皮奶'
+					}, {
+						articleId: '选项3',
+						articleTitle: '蚵仔煎'
+					}, {
+						articleId: '选项4',
+						articleTitle: '龙须面'
+					}, {
+						articleId: '选项5',
+						articleTitle: '北京烤鸭'
+					}
+				],
 				//搜索栏关键字
 				searchKey:'',
 				//当前选择要修改的文章
-				curActive:''
+				curActive:'',
+				//当前修改的内容
+				curModifyData:{
+					articleTitle:'',
+					articleFile:[]
+				}
 			}
 		},
 		computed: {
@@ -70,30 +102,114 @@
 		methods: {
 			//搜索操作
 			doSearch:function () {
-				console.log('搜索');
+				console.log('搜索',this.searchKey);
 			},
 			//修改操作
 			doModify:function (articleId,index) {
 				console.log(articleId,index);
 				let that = this;
 				that.curActive = articleId == that.curActive ? '' : articleId;
+				if(that.curActive){
+					//获取文章标题并渲染到输入框中
+					that.curModifyData.articleTitle = that.articlesList[index].articleTitle;
+				}else{
+					//再次点击则取消，清空当前数据
+					that.curModifyData.articleTitle = '';
+					that.curModifyData.articleFile = [];
+				}
 			},
 			//删除操作
 			doDelete:function (articleId,index) {
 				console.log(articleId,index);
-			},
-			//重新上传操作
-			doUpload:function (articleId,index) {
-				console.log(articleId,index);
+				this.$confirm('此操作将永久删除该文章, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+					//发送请求
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+					});
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
 			},
 			//保存操作
 			doSave:function (articleId,index) {
 				console.log(articleId,index);
 				let that = this;
-				//清空当前激活的选项
-				that.curActive = '';
-				//发送请求
+				//对表单内容进行校验,标题不能为空
+				if(!that.curModifyData.articleTitle){
+					that.$message({
+						message: '文章的标题不能为空!',
+						type: 'error'
+					});
+					return;
+				}
+				let formdata = new FormData();
+				//组装请求数据formmdata
+				formdata.append('title',that.curModifyData.articleTitle);
+				//重新上传而文件是可选项，有则上传，无也无所谓
+				let file = that.curModifyData.articleFile.length ? that.curModifyData.articleFile[0] : '';
+				formdata.append('file',file);
+				// 发送请求
+				// $.ajax({
+				// 	url: "/api/addArticle",
+				// 	type: "post",
+				// 	contentType:false,
+				// 	processData:false,
+				// 	data:formdata,
+				// 	success:function(res){
+				// 		console.log(res);
+				// 		const { status,data,detail } = res;
+				// 		if(status == 0){
+				// 			//若返回的data字段为空，则提示上传失败，不为空则提示data信息
+				// 			let msg = data ? data:'上传失败';
+				// 			that.$message({
+				// 				message: msg,
+				// 				type: 'error'
+				// 			});
+				// 			return;
+				// 		}
+				// 		that.$message({
+				// 			message: '上传成功',
+				// 			type: 'success'
+				// 		});
+				// 		//清空数据
+				// 		that.curActive = '';
+				// 		that.curModifyData = {
+				// 			articleTitle:'',
+				// 			articleFile:[]
+				// 		}
+				// 	}
+				// });
 			},
+			handleExceed:function () {
+				this.$message.warning(`当前限制选择 1 个文件，最多只能上传一个文件`);
+			},
+			beforeUpload:function (file) {
+				let that = this;
+				console.log(file);
+				var isTxt = file.raw.name.substring(file.raw.name.length - 4) === '.txt';
+				console.log(isTxt);
+				if (!isTxt) {
+					this.$message.error('上传的文件只能是.txt格式!');
+					//清空文件
+					that.curModifyData.articleFile = [];
+					return;
+        }
+				//将照片加入待上传数组
+				that.curModifyData.articleFile.push(file.raw);
+				
+			},
+			handleRemove:function () {
+				//清空文件
+				this.curModifyData.articleFile = [];
+			}
 		}
 
 	}
@@ -116,8 +232,17 @@
 			.article_data{
 				display: flex;
 				justify-content: space-between;
+				align-items: center;
 				.article_title{
 					padding: 6px 0;
+				}
+				.operation{
+					display: flex;
+					align-items: center;
+					.upload_op{
+						display: inline-block;
+						margin-right: 10px;
+					}
 				}
 			}
 		}

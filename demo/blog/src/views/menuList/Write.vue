@@ -37,9 +37,9 @@
 							:on-remove="handleRemove"
 							:file-list="articleData.fileList"
 						>
-						<el-button size="small" type="primary">点击上传</el-button>
-  					<div slot="tip" class="el-upload__tip">只能上传.txt文件,上传后自动保存为.md文件</div>
-					</el-upload>
+							<el-button size="small" type="primary">点击上传</el-button>
+							<div slot="tip" class="el-upload__tip">只能上传.txt文件,上传后自动保存为.md文件</div>
+						</el-upload>
 					</div>
 				</div>
 				<div class="article_setting">
@@ -76,9 +76,9 @@
 			beforeUpload:function (file) {
 				let that = this;
 				console.log(file);
-				var isMd = file.raw.name.substring(file.raw.name.length - 4) === '.txt';
-				console.log(isMd);
-				if (!isMd) {
+				var isTxt = file.raw.name.substring(file.raw.name.length - 4) === '.txt';
+				console.log(isTxt);
+				if (!isTxt) {
 					this.$message.error('上传的文件只能是.txt格式!');
 					//清空文件
 					that.articleData.fileList = [];
@@ -87,10 +87,10 @@
 				//将照片加入待上传数组
 				that.articleData.fileList.push(file.raw);
 			},
-			handleExceed:function (files, fileList) {
+			handleExceed:function () {
 				this.$message.warning(`当前限制选择 1 个文件，最多只能上传一个文件`);
 			},
-			handleRemove:function (file) {
+			handleRemove:function () {
 				let that = this;
 				//清空文件
 				that.articleData.fileList = [];
@@ -111,36 +111,36 @@
 				formdata.append('filename',that.articleData.filename);
 				formdata.append('file',that.articleData.fileList[0]);
 				//发送请求
-					$.ajax({
-						url: "/api/addArticle",
-						type: "post",
-						contentType:false,
-						processData:false,
-						data:formdata,
-						success:function(res){
-							console.log(res);
-							const { status,data,detail } = res;
-							if(status == 0){
-								//若返回的data字段为空，则提示上传失败，不为空则提示data信息
-								let msg = data ? data:'上传失败';
-								that.$message({
-									message: msg,
-									type: 'error'
-								});
-								return;
-							}
+				$.ajax({
+					url: "/api/addArticle",
+					type: "post",
+					contentType:false,
+					processData:false,
+					data:formdata,
+					success:function(res){
+						console.log(res);
+						const { status,data,detail } = res;
+						if(status == 0){
+							//若返回的data字段为空，则提示上传失败，不为空则提示data信息
+							let msg = data ? data:'上传失败';
 							that.$message({
-								message: '上传成功',
-								type: 'success'
+								message: msg,
+								type: 'error'
 							});
-							//清空数据
-							that.articleData = {
-								title:'',
-								filename:'',
-								fileList:[]
-							}
+							return;
 						}
-					});
+						that.$message({
+							message: '上传成功',
+							type: 'success'
+						});
+						//清空数据
+						that.articleData = {
+							title:'',
+							filename:'',
+							fileList:[]
+						}
+					}
+				});
 			}
 		}
 
