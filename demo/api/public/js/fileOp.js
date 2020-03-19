@@ -20,6 +20,7 @@ const readFile  = filePath => {
     return new Promise((resolve, reject) => {
         fs.readFile(filePath, 'utf-8', (err, data) => {
             if (err) {
+                console.log('读取文件失败');
                 reject(err);
             } else {
                 resolve(data);
@@ -43,13 +44,30 @@ const saveFile = (file, path) => {
         resolve(path);
     });
     upStream.on('error', (err) => {
+        console.log('保存文件失败');
         reject(err);
     });
   })
 }
 
+//删除文件
+const deleteFile = (filePath) => {
+    return new Promise((resolve, reject) => {
+        fs.unlink(filePath, function (err) {
+            if (err) {
+                console.log('删除文件夹失败');
+                reject(err);
+            }else{
+                console.log('删除文件成功');
+                resolve(filePath);
+            }
+        })
+    })
+}
+
 module.exports = {
     mkdirFile,
     readFile,
-    saveFile
+    saveFile,
+    deleteFile
 };

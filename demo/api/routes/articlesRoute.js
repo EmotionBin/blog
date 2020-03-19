@@ -1,8 +1,8 @@
 //关于文章的请求模块
 const path = require('path');
 
-//引入基于Promise的读取文件、写入文件的js
-const { mkdirFile,readFile,saveFile } = require('../public/js/fileOp.js');
+//引入基于Promise的相关文件操作的js
+const { mkdirFile, readFile, saveFile, deleteFile } = require('../public/js/fileOp.js');
 //引入封装好的返回结果的文件
 var customRes = require('../public/js/customRes.js');
 //关于数据库的操作
@@ -151,8 +151,6 @@ const updataArticle = async ctx => {
       let queryRes = await databaseOp(`select * from articles where articleId='${articleId}'`);
       //将相对路径转换成绝对路径
       const filePath = path.join(__dirname, `${fileOptions.path}/${queryRes[0].issueYear}`);
-      //创建文件夹
-      await mkdirFile(filePath);
       //保存文件
       await saveFile(file.path, `${filePath}\\${queryRes[0].articleName}.md`);
     }
@@ -160,6 +158,30 @@ const updataArticle = async ctx => {
     await databaseOp(`update articles set articleTitle='${title}' where articleId='${articleId}'`);
     ctx.response.type = 'json';
     ctx.response.body = customRes(1, '操作成功'); 
+  } catch (err) {
+    console.log(err);
+    ctx.response.type = 'json';
+    ctx.response.body = customRes(0, '失败了'); 
+  }
+}
+
+//删除文章
+const deleteArticle = async ctx => {
+  console.log(ctx.request.body);
+  const { articleId } = ctx.request.body;
+  try {
+    //先去数据库中查找关于要删除的这篇文章的数据
+    let queryRes = await databaseOp(`select * from articles where articleId='${articleId}'`);
+    console.log(queryRes);
+    //拼接路径，这里是绝对路径
+    const filePath = path.join(__dirname, `${fileOptions.path}/${queryRes[0].issueYear}/${queryRes[0].articleName}.md`);
+    console.log(filePath);
+    //删除文件
+    await deleteFile(filePath);
+    //在数据库中删除数据
+    const filePath_delete = await databaseOp(`delete from articles where articleId='${articleId}'`);
+    ctx.response.type = 'json';
+    ctx.response.body = customRes(1, filePath_delete);
   } catch (err) {
     console.log(err);
     ctx.response.type = 'json';
@@ -193,5 +215,6 @@ module.exports = {
   getArticles,
   addArticle,
   queryAticle,
-  updataArticle
+  updataArticle,
+  deleteArticle
 };

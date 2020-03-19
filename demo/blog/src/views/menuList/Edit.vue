@@ -168,19 +168,41 @@
 			},
 			//删除操作
 			doDelete:function (articleId,index) {
+				let that = this;
 				console.log(articleId,index);
-				this.$confirm('此操作将永久删除该文章, 是否继续?', '提示', {
+				that.$confirm('此操作将永久删除该文章, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
 					//发送请求
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
+					$.ajax({
+						url: "/api/deleteArticle",
+						type: "post",
+						'Content-Type':'application/x-www-form-urlencoded',
+						data:{
+							articleId:articleId
+						},
+						success:function(res){
+							console.log(res);
+							const { status,data,detail } = res;
+							if(status == 0){
+								that.$message({
+									message: data,
+									type: 'error'
+								});
+								return;
+							}
+							that.$message({
+								type: 'success',
+								message: '删除成功!'
+							});
+							//删除成功后前端更新数据显示
+							that.articlesList.splice(index,1);
+						}
 					});
         }).catch(() => {
-          this.$message({
+          that.$message({
             type: 'info',
             message: '已取消删除'
           });          
