@@ -80,7 +80,7 @@ const addArticle = async ctx => {
   //获取上传到这里的标题和文件名称
   const {title,filename} = ctx.request.body;
   //获取上传的附件
-  const file = ctx.request.files.file;
+  const {file} = ctx.request.files;
   const articleId = `${filename}_${stamp}`;
   try{
     //先用article的articleName查询该文章是否存在，不存在则直接写入，存在则停止操作
@@ -142,13 +142,13 @@ const updataArticle = async ctx => {
   console.log(ctx.request.body);
   const {articleId,title} = ctx.request.body;
   //拿到上传的文件
-  const file = ctx.request.files.file;
+  const {file} = ctx.request.files;
   try {
     //如果上传了文件则更新文件，否则不更新
     if(file){
       console.log('修改了文件');
       //上传了文件
-      let queryRes = await databaseOp(`select * from articles`);
+      let queryRes = await databaseOp(`select * from articles where articleId='${articleId}'`);
       //将相对路径转换成绝对路径
       const filePath = path.join(__dirname, `${fileOptions.path}/${queryRes[0].issueYear}`);
       //创建文件夹
@@ -157,7 +157,7 @@ const updataArticle = async ctx => {
       await saveFile(file.path, `${filePath}\\${queryRes[0].articleName}.md`);
     }
     //写入数据库
-    await databaseOp(`update articles set articleTitle='${title}' WHERE articleId='${articleId}'`);
+    await databaseOp(`update articles set articleTitle='${title}' where articleId='${articleId}'`);
     ctx.response.type = 'json';
     ctx.response.body = customRes(1, '操作成功'); 
   } catch (err) {
@@ -174,7 +174,7 @@ const getDate = (timer) => {
   const month = date.getMonth() + 1;
   const day = date.getDate();
   const fullDate = `${year}-${month}-${day}`;
-  const stamp = Date.parse(new Date());
+  const stamp = Date.now();
   //对数据库的时间格式进行格式化
   const date_UTC = timer ? `${timer.getUTCFullYear()}-${timer.getUTCMonth() + 1}-${timer.getUTCDate() + 1}` : 0;
   const customDate = {
