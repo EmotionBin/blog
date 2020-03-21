@@ -127,8 +127,8 @@
 				let vm = this;
 				if(vm.isLogin){
 					//登录成功跳转至首页
-					vm.$store.commit('loginCheck',1);
-					vm.$router.push({path:'/'});
+					// vm.$store.commit('loginCheck',1);
+					vm.$router.push({path:'/home'});
 				}else{
 					vm.dialogInfo.isShow = false;
 				}

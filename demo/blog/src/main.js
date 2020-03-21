@@ -18,10 +18,17 @@ router.beforeEach((to,from,next) => {
     //更新状态
     store.commit('loginCheck',2);
     return next();
-  }else if(to.path === '/' && !window.sessionStorage.getItem('userToken')){
-    //如果要前往主页且未登录
-    // store.commit('loginCheck',0);
-    return next();
+  }else if(to.path === '/home'){
+    //每次进入home页面的时候判断登录状态
+    if(!window.sessionStorage.getItem('userToken')){
+      console.log('未登录');
+      //如果没登录
+      store.commit('loginCheck',0);
+    }else{
+      //登录了
+      console.log('已登录');
+      store.commit('loginCheck',1);
+    }
   }
   next();
 })

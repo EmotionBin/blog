@@ -21,7 +21,7 @@
       </template>
       <template v-else>
         <!-- 正在登陆或注册 -->
-        <el-button type="success" size="mini" @click="changeStatus(0,'')">返回</el-button>
+        <el-button type="success" size="mini" @click="changeStatus(0,'home')">返回</el-button>
       </template>
     </div>
   </div>
@@ -57,9 +57,9 @@ export default {
     changeStatus:function (value,status) {
       let vm = this;
       vm.$router.push({path:`/${status}`});
-      if(value === 0){
-        vm.$store.commit('loginCheck',value);
-      }
+      // if(value === 0){
+      //   vm.$store.commit('loginCheck',value);
+      // }
     },
     //切换用户和注销
     handleClick:function (params) {
@@ -70,7 +70,7 @@ export default {
       if(params){
         //切换用户 跳至登录页面
         vm.$router.push({path:`/${params}`});
-        vm.$store.commit('loginCheck',2);
+        // vm.$store.commit('loginCheck',2);
       }else{
         //退出
         vm.$store.commit('loginCheck',0);

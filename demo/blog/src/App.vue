@@ -1,13 +1,6 @@
 <template>
   <div id="app">
-    <!-- 导航栏 -->
-    <Navigation/>
-    <div class="route">
-      <!-- 每个路由切换的时候添加上切换的动画效果 -->
-      <transition name="view-fade">
-        <router-view/>
-      </transition>
-    </div>
+    <router-view/>
     <!-- 全局的提示框 -->
     <el-dialog
       class="app_dialog"
@@ -22,21 +15,37 @@
       <el-button type="primary" @click="handleClose">确 定</el-button>
       </span>
     </el-dialog>
+    <!-- 初次进入时显示的页面 -->
+    <!-- <template v-if="getIsFirst">
+      <FirstPage @enterHome="enterHome"/>
+    </template>
+    <template v-else> -->
+      <!-- 导航栏 -->
+      <!-- <Navigation/>
+      <div class="route"> -->
+        <!-- 每个路由切换的时候添加上切换的动画效果 -->
+        <!-- <transition name="view-fade">
+          <router-view/>
+        </transition>
+      </div> -->
+    <!-- </template>  -->
   </div>
 </template>
 
 <script>
 
 import Navigation from '@/components/Navigation.vue'
+import FirstPage from '@/components/FirstPage.vue'
 
 export default {
   name: 'app',
   components: {
-    Navigation
+    Navigation,
+    FirstPage
   },
   data(){
     return {
-      
+
     }
   },
   computed:{
@@ -53,6 +62,10 @@ export default {
         isShow:false,
         msg:''
       });
+    },
+    enterHome:function () {
+      console.log('enterHome');
+      this.$router.push({path:'/home'});
     }
   }
 }
@@ -64,7 +77,7 @@ export default {
 .route{
   // @include bothSidePadding;
   // min-height: calc(100vh - #{$navHeight});
-  
+
   /* 可以设置不同的进入和离开动画 */
   /* 设置持续时间和动画函数 */
   .view-fade-enter-active {
