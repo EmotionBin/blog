@@ -2,7 +2,9 @@
 <template>
 	<div class="firstCom">
     <!-- 星空特效 -->
-    <Star class="starCom"/>
+    <Star/>
+    <!-- 时钟 -->
+    <Clock/>
     <router-link to="/home">
       <el-button type="primary">let's get it started!</el-button>
     </router-link>
@@ -12,6 +14,7 @@
 <script>
 
   import Star from '@/components/Star.vue'
+  import Clock from '@/components/Clock.vue'
 
 	export default {
 		name: 'firstCom',
@@ -22,7 +25,8 @@
 			}
     },
     components:{
-      Star
+      Star,
+      Clock
     },
 		computed: {
 
@@ -47,6 +51,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
     .starCom{
       z-index: -1;
     }
