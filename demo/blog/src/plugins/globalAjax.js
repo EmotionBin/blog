@@ -1,5 +1,5 @@
 //这里重写ajax请求，配置全局的请求拦截，方便控制权限
-import jquery from 'jquery';
+// import $ from 'jquery';
 
 (function ($) {
   //备份jquery的ajax方法  
@@ -54,4 +54,4 @@ import jquery from 'jquery';
     });
     return _ajax(_opt);
   };
-})(jquery);
+})($);

@@ -8,12 +8,14 @@ const routes = [
   {
     path: '/',
     name: 'FirstPage',
-    component: () => import('../components/FirstPage.vue'),
+    // component: () => import('../components/FirstPage.vue'),
+    component: resolve => require(['../components/FirstPage.vue'],resolve),
   },
   {
     path: '/home',
     name: 'Main',
     component: () => import('../views/Main.vue'),
+    // component: resolve => require(['../views/Main.vue'],resolve),
     children:[
       /**
        * 这里的子路由没有用相对路径，因为这个属于个人小项目，是想让url更简洁，如果项目太大，则考虑使用相对路径
@@ -24,16 +26,19 @@ const routes = [
         path: '/home',
         name: 'Home',
         component: () => import('../views/common/Homeland.vue')
+        // component: resolve => require(['../views/common/Homeland.vue'],resolve),
       },
       {
         path: '/login',
         name: 'Login',
         component: () => import('../views/common/Login.vue')
+        // component: resolve => require(['../views/common/Login.vue'],resolve),
       },
       {
         path: '/register',
         name: 'Register',
         component: () => import('../views/common/Register.vue')
+        // component: resolve => require(['../views/common/Register.vue'],resolve),
       },
     ]
   },
