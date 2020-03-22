@@ -8,8 +8,8 @@ module.exports = {
     '/',
   //是否使用包含运行时编译器的Vue内核版本
   runtimeCompiler: true,
-  //productionSourceMap: true,
   //方便调试，显示代码路径
+  productionSourceMap: true,
   configureWebpack: {
     devtool: 'source-map'
   },
