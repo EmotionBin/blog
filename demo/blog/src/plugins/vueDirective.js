@@ -2,7 +2,7 @@
  * Vue自定义指令
  */
 
-import Vue from 'vue';
+// import Vue from 'vue';
 import hljs from'highlight.js';
 //highlight代码高亮的样式
 import 'highlight.js/styles/default.css';

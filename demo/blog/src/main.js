@@ -4,8 +4,11 @@ import router from './router'
 import store from './store'
 import './plugins/globalAjax.js'
 import './plugins/storeDataCache.js'
-import './plugins/element.js'
+// import './plugins/element.js'
 import './plugins/vueDirective.js'
+import ELEMENT from 'element-ui'
+
+Vue.use(ELEMENT)
 
 //还有部分插件配置在vue.config.js中的chainWebpack中
 

@@ -8,10 +8,20 @@ module.exports = {
     '/',
   //是否使用包含运行时编译器的Vue内核版本
   runtimeCompiler: true,
-  //productionSourceMap: true,
   //方便调试，显示代码路径
+  productionSourceMap: false,
   configureWebpack: {
-    devtool: 'source-map'
+    devtool: 'source-map',
+    /**
+     * 这里说明这些库不需要打包，因为在index.html中引用了cdn
+     * 前一个key是引用的第三方库名，后一个value是在项目中起的别名
+     */
+    externals:{
+      'vue': 'Vue',
+      'vuex': 'Vuex',
+      'vue-router': 'VueRouter',
+      'element-ui': 'ELEMENT',
+    }
   },
   //全局注册一些插件
   chainWebpack: config => {
@@ -67,5 +77,5 @@ module.exports = {
     }
   },
   //取消代码eslint语法检测
-  lintOnSave: false 
+  lintOnSave: false
 }
