@@ -20,6 +20,39 @@
     <script src="https://cdn.bootcss.com/highlight.js/9.18.1/highlight.min.js"></script>
     <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/marked/0.8.1/marked.min.js"></script>
+    <!-- 如果第三方csn挂掉，则引用本地资源 -->
+    <script type='text/javascript'>
+      if (typeof Vue == 'undefined') {
+        console.log('Vue挂了');
+        document.write(unescape("%3Cscript src='/js/vue.min.js'%3E%3C/script%3E"))
+      }
+      if (typeof Vuex == 'undefined') {
+        console.log('Vuex挂了');
+        document.write(unescape("%3Cscript src='/js/vue-router.min.js'%3E%3C/script%3E"))
+      }
+      if (typeof VueRouter == 'undefined') {
+        console.log('VueRouter挂了');
+        document.write(unescape("%3Cscript src='/js/vue-router.min.js'%3E%3C/script%3E"))
+      }
+      if (typeof ELEMENT == 'undefined') {
+        console.log('ELEMENT挂了');
+        document.write(unescape("%3Cscript src='/js/element-index.js'%3E%3C/script%3E"))
+        document.write(unescape("%3Clink rel='stylesheet' href='/css/element-index.css'%3E%3C/link%3E"))
+      }
+      if (typeof hljs == 'undefined') {
+        console.log('highlight.js挂了');
+        document.write(unescape("%3Cscript src='/js/highlight.min.js'%3E%3C/script%3E"))
+        document.write(unescape("%3Clink rel='stylesheet' href='/css/vs.min.css'%3E%3C/link%3E"))
+      }
+      if (typeof $ == 'undefined') {
+        console.log('jquery挂了');
+        document.write(unescape("%3Cscript src='/js/jquery.min.js'%3E%3C/script%3E"))
+      }
+      if (typeof marked == 'undefined') {
+        console.log('marked挂了');
+        document.write(unescape("%3Cscript src='/js/marked.min.js'%3E%3C/script%3E"))
+      }
+    </script>
     <noscript>
       <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
