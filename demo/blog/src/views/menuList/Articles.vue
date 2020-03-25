@@ -14,10 +14,10 @@
 				</div>
 			</div>
 			</template>
-			<template v-show="articleData">
+			<template v-show="!articleData">
 				<!-- 返回按钮 -->
 				<el-button class="returnBtn" size="small" type="warning" @click="returnListPanel">返 回</el-button>
-				<div v-html="articleData" v-highlight class="article_md"></div>
+				<div ref="article_ref" v-highlight class="article_md"></div>
 			</template>
 		</div>
 	</div>
@@ -126,8 +126,13 @@
 						}
 						//保存文章内容
 						that.articleData = marked(res);
+						const articleDom = that.$refs.article_ref;
+						articleDom.innerHTML = that.articleData;
 						//手动给a标签加上属性
-						console.log(that.articleData,document.querySelector(".returnBtn"));
+						var aSymbol = articleDom.getElementsByTagName("a");
+						for(let i = 0; i < aSymbol.length;i ++){
+							aSymbol[i].setAttribute("target", "_blank");
+						}
 					}
 				});
 			},
