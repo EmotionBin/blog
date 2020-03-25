@@ -2,7 +2,7 @@
 <template>
 	<div class="articleCom">
 		<div class="articleCom_content">
-			<template v-if="articleData === ''">
+			<template v-if="!articleData">
 				<div class="article_module" v-for="(item,index) in articleList" :key="index">
 				<div class="module_title">{{item.issueYear}}</div>
 				<div class="article_list" v-for="(item1,index) in item.data" :key="index">
@@ -14,13 +14,11 @@
 				</div>
 			</div>
 			</template>
-			<template v-else>
+			<div v-show="articleData">
 				<!-- 返回按钮 -->
 				<el-button class="returnBtn" size="small" type="warning" @click="returnListPanel">返 回</el-button>
-				<div v-html="articleData" v-highlight class="article_md">
-					{{articleData}}
-				</div>
-			</template>
+				<div ref="article_ref" v-highlight class="article_md"></div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -117,7 +115,7 @@
 					data: {
 
 					},
-					success:res => {
+					success: res => {
 						if(res.status == 0) {
 							console.log('请求异常');
 							that.$message({
@@ -128,6 +126,13 @@
 						}
 						//保存文章内容
 						that.articleData = marked(res);
+						const articleDom = that.$refs.article_ref;
+						articleDom.innerHTML = that.articleData;
+						//手动给a标签加上属性
+						var aSymbol = articleDom.getElementsByTagName("a");
+						for(let i = 0; i < aSymbol.length;i ++){
+							aSymbol[i].setAttribute("target", "_blank");
+						}
 					}
 				});
 			},
@@ -141,7 +146,12 @@
 	}
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+	// 这里要特别的声明一下,这里的style标签没有加上scoped，加上scoped的作用是让style标签的样式只能影响本组件的元素，不会影响到外部的元素
+	// 但是这里渲染文章的时候使用了innerHtml，而v-html相当于引入外部组件内容，为了修改innerHtml内的元素的样式，这里的style必须不能加上
+	// scoped，若加上了，则样式无效。一般组件内的style标签都会加上scoped，这样比较好，这里比较例外。如果必须要加上的话也不是不可以，可以
+	// 再写一个新的style标签，新的style标签不能加上scope，直接在那里面给innerHtml添加样式，这样写的话，也就是说这个组件存在两个style标签，
+	// 比较臃肿，不推荐这种写法
 	.articleCom{
 		width: 100%;
 		position: relative;
@@ -174,7 +184,7 @@
 						margin: 0 10px;
 					}
 					.title_text{
-						text-decoration: underline;
+						// text-decoration: underline;
 						color: #000;
 						cursor: pointer;
 					}
@@ -185,7 +195,14 @@
 				top: 10px;
 				right: 0;
 			}
+			//markdown渲染的文章的样式写在这里
+			.article_md{
+				//1.5倍的行高看起来更加舒服
+				line-height: 1.5;
+				a{
+					color: $priBlue;
+				}
+			}
 		}
 	}
-
 </style>
