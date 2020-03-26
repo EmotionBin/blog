@@ -202,6 +202,11 @@
 				a{
 					color: $priBlue;
 				}
+				hr{
+					border: none;
+					height: 1px;
+					background-color: #d2d2d2;
+				}
 			}
 		}
 	}
