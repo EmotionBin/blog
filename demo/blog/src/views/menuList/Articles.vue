@@ -148,7 +148,7 @@
 
 <style lang="scss">
 	// 这里要特别的声明一下,这里的style标签没有加上scoped，加上scoped的作用是让style标签的样式只能影响本组件的元素，不会影响到外部的元素
-	// 但是这里渲染文章的时候使用了innerHtml，而v-html相当于引入外部组件内容，为了修改innerHtml内的元素的样式，这里的style必须不能加上
+	// 但是这里渲染文章的时候使用了innerHtml，而innerHtml相当于引入外部组件内容，为了修改innerHtml内的元素的样式，这里的style必须不能加上
 	// scoped，若加上了，则样式无效。一般组件内的style标签都会加上scoped，这样比较好，这里比较例外。如果必须要加上的话也不是不可以，可以
 	// 再写一个新的style标签，新的style标签不能加上scope，直接在那里面给innerHtml添加样式，这样写的话，也就是说这个组件存在两个style标签，
 	// 比较臃肿，不推荐这种写法
