@@ -1,0 +1,49 @@
+# 关于MVC与MVVM
+之前一直对MVC和MVVM一知半解，直到最近看了一些相关的文章，才弄懂了MVC和MVVM，于是就打算写这边文章，来谈谈我对MVC和MVVM的理解。
+## MVC
+MVC到底是什么意思，下面引用阮一峰老师的一张图：
+![GKx1wF.png](https://s1.ax1x.com/2020/03/31/GKx1wF.png)
+从这张图中可以看出MVC就是M（Model）+V（View）+C（Controller），下面来详细讨论他们之间的关系。
+
+- 视图（View）：用户界面
+- 控制器（Controller）：业务逻辑
+- 模型（Model）：数据保存
+
+再引用阮一峰老师的一张图说明一下他们之间的通信关系：
+![GMiU4U.png](https://s1.ax1x.com/2020/03/31/GMiU4U.png)
+
+1. View 传送指令到 Controller
+2. Controller 完成业务逻辑后，要求 Model 改变状态
+3. Model 将新的数据发送到 View，用户得到反馈
+
+view（视图）上发生变化，通过Controller（控件）将响应传入到Model（数据源），由数据源改变View上面的数据。这种方式看似可行，**但是如果以后业务逻辑越来越复杂，这种架构就会暴露出很多弊端**：
+
+1. 需要大量调用DOM的API，冗余而繁琐，这样一来代码很难维护
+2. 大量DOM操作有可能会使页面渲染性能降低，加载速度变慢，影响用户体验
+3. Model每变化一次，就要手动触发View的渲染更新，如果Model频繁变化，就要不停的手动更新，操作繁琐，这样只会越来越臃肿，而且很难维护复杂多变的数据状态
+
+其实，早期jquery的出现就是为了前端能更简洁的操作DOM而设计的，但是它只解决了第一个问题，它只是封装了DOM的API的调用方式，确实使得操作DOM的时候变得简洁了，但假如在项目中大量用到了DOM操作，大量的数据变化，这样一来，根本的问题还是没有得到解决。于是到后来MVVM的出现，才解决了以上的问题。
+
+## MVVM
+MVVM又是什么？MVVM其实就是M（Model）+V（View）+VM（ViewModel）
+
+- 数据模型（Model）：保存数据
+- 视图（View）：负责将数据模型转化成UI 展现出来
+- ViewModel：一个同步View 和 Model的对象，起到一个连接桥的作用
+
+这样解释可能还是有点抽象，下面再来看一张图：
+![GM1osP.png](https://s1.ax1x.com/2020/03/31/GM1osP.png)
+由上图可以看到，View通过ViewModel的DOM Listeners将事件绑定到Model上，而Model则通过Data Bindings来管理View中的数据，ViewModel从中起到一个连接桥的作用。在MVVM架构下，View和Model之间并没有直接的联系，而是通过ViewModel进行交互，Model和 ViewModel之间的交互是双向的，因此View数据的变化会同步到Model中，而Model数据的变化也会立即反应到View上。  
+**可以得出结论，MVVM架构与MVC架构的区别可以概括为：  
+
+1. 实现数据与视图的分离
+2. 数据驱动视图，只需要关心数据变化，DOM操作被封装了**
+
+### MVVM实现原理
+MVVM的实现主要是三个核心点：  
+
+1. **响应式：vue如何监听data的属性变化**
+2. **模板解析：vue的模板是如何被解析的**
+3. **渲染：vue模板是如何被渲染成HTML的**
+
+#### 响应式
