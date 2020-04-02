@@ -25,6 +25,10 @@ const getArticlesList = async ctx => {
       let { issueYear, articleId, articleTitle, issueDate, articleName } = queryRes[i];
       //对数据库的时间格式进行格式化
       issueDate = getDate(issueDate).date_UTC;
+      let dateFormat = issueDate.split('-');
+      let Month = dateFormat[1] > 9 ? dateFormat[1] : '0' + dateFormat[1];
+      let day = dateFormat[2] > 9 ? dateFormat[2] : '0' + dateFormat[2];
+      issueDate = `${dateFormat[0]}-${Month}-${day}`
       //格式化文章名字，拼接成完整的路径
       articleName = `${issueYear}/${articleName}.md`
       // 如果是第一条数据
