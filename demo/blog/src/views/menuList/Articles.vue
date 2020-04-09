@@ -133,6 +133,11 @@
 						for(let i = 0; i < aSymbol.length;i ++){
 							aSymbol[i].setAttribute("target", "_blank");
 						}
+						//让图片居中
+						var imgSymbol = articleDom.getElementsByTagName("img");
+						for(let i = 0; i < imgSymbol.length;i ++){
+							imgSymbol[i].parentNode.style['text-align'] = 'center';
+						}
 					}
 				});
 			},

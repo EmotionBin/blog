@@ -1,6 +1,6 @@
 <template>
   <div class="navCom">
-    <div class="navCom_title">测试</div>
+    <div class="navCom_title">黄伟斌的博客</div>
     <div class="navCom_profile">
       <template v-if="getLoginStatus === 1">
         <!-- 登录成功 -->
