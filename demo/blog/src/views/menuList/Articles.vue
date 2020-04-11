@@ -133,6 +133,16 @@
 						for(let i = 0; i < aSymbol.length;i ++){
 							aSymbol[i].setAttribute("target", "_blank");
 						}
+						//对图片进行处理
+						var imgSymbol = articleDom.getElementsByTagName("img");
+						for(let i = 0; i < imgSymbol.length;i ++){
+							//图片居中
+							imgSymbol[i].parentNode.style['text-align'] = 'center';
+							//设置图片最大宽度等于父元素宽度，防止图片过大造成溢出
+							imgSymbol[i].style['max-width'] = '100%';
+							//给图片统一设置白色背景
+							imgSymbol[i].parentNode.style['background-color'] = '#fff';
+						}
 					}
 				});
 			},
