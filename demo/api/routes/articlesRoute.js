@@ -16,7 +16,7 @@ const fileOptions = {
 //获取文章列表数据
 const getArticlesList = async ctx => {
   try {
-    let queryRes = await databaseOp(`select * from articles order by issueYear desc`);
+    let queryRes = await databaseOp(`select * from articles order by issueDate desc`);
     // console.log(queryRes,queryRes[0].issueYear);
     let resArray = [];
     //记录存在几个年份
