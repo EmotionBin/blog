@@ -62,9 +62,12 @@
 
 <style lang="scss" scoped>
 	.homelandCom{
+		//防止路由切换的过渡效果出现滚动条
+		position: absolute;
+		width: 100%;
 		.menuBar{
-			width: 15%;
 			position: sticky;
+			width: 15%;
 			left: 0;
 			top: 0;
 			//为了让div的position:sticky，这里选择用float让这个div靠左，不选择使用position:absolute

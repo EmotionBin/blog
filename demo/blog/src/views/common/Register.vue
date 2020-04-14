@@ -132,6 +132,8 @@
 
 <style lang="scss" scoped>
 	.registerCom{
+		//防止路由切换的过渡效果出现滚动条
+		position: absolute;
 		width: 100%;
 		// height: 100%;
 		height: calc(100vh - #{$navHeight});
