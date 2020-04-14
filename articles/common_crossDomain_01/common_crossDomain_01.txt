@@ -84,6 +84,8 @@
 #### 跨域资源共享(CORS) 
 跨域资源共享(CORS) 是一种机制，它使用额外的 HTTP 头来告诉浏览器 让运行在一个origin (domain)上的Web应用被准许访问来自不同源服务器上的指定的资源。  
 
+对于简单请求，浏览器直接发出CORS请求。具体来说，就是在头信息之中，增加一个**Origin**字段，用来说明，本次请求来自哪个域(协议 + 域名 + 端口)。服务器根据这个值，决定是否同意这次请求。如果Origin指定的源，不在许可范围内，服务器会返回一个正常的 HTTP 回应。浏览器发现，这个回应的头信息没有包含Access-Control-Allow-Origin字段（详见下文），就知道出错了，从而抛出一个错误，被XMLHttpRequest的onerror回调函数捕获。注意，这种错误无法通过状态码识别，因为 HTTP 回应的状态码有可能是200。
+
 出于安全原因，浏览器限制从脚本内发起的跨源HTTP请求。 例如，XMLHttpRequest和Fetch API遵循同源策略。 这意味着使用这些API的Web应用程序只能从加载应用程序的同一个域请求HTTP资源，**除非响应报文包含了正确CORS响应头！** 所以要想实现跨域资源访问，这也就要求后端服务程序，应该[根据CORS策略来配置好相应的HTTP响应头](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS) 。  
 ```javascript
 Access-Control-Allow-Origin: *
