@@ -47,7 +47,7 @@
 		/* 可以设置不同的进入和离开动画 */
 		/* 设置持续时间和动画函数 */
 		.view-fade-enter-active {
-			transition: transform .5s cubic-bezier(.9, 0, .3, .7);
+			transition: transform .7s cubic-bezier(.9, 0, .3, .7);
 		}
 		.view-fade-leave-active {
 			transition: transform .5s cubic-bezier(.9, 0, .3, .7);

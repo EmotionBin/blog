@@ -51,15 +51,25 @@ JavaScript的单线程，与它的用途有关，JavaScript的主要用途是与
 		// clickA end
 		// ajaxA completed
 ```
+
 这是JavaScript开始执行的时候的状态，先执行一些静态的代码:
+
 ![GP39w8.png](https://s1.ax1x.com/2020/03/27/GP39w8.png)
+
 执行完毕后，过了一会儿，用户点击按钮，触发了clickA事件，clickA事件进入执行栈:
+
 ![GP8OKI.png](https://s1.ax1x.com/2020/03/27/GP8OKI.png)
+
 因为clickA事件中发送了一个异步请求ajaxA，ajaxA异步请求进入任务队列，暂时挂起：
+
 ![GPJz9g.png](https://s1.ax1x.com/2020/03/27/GPJz9g.png)
+
 clickA事件执行结束后，再去任务队列中执行ajaxA的回调函数:
+
 ![GPYxVx.png](https://s1.ax1x.com/2020/03/27/GPYxVx.png)
+
 在执行完ajaxA的回调函数后，这整个过程也就结束了。
+
 #### 总结一下JavaScript异步执行的运行机制
 1.所有任务都在主线程上执行，形成一个执行栈。  
 2.主线程之外，还存在一个"任务队列"（task queue）。只要异步任务有了运行结果，就在"任务队列"之中放置一个事件。  
