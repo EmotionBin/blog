@@ -169,7 +169,8 @@
 						display: flex;
 						justify-content: flex-end;
 						cursor: pointer;
-						&_text{
+						.login_panel_form_foot_text{
+							color: $priBlue;
 							font-size: 14px;
 						}
 					}
