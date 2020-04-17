@@ -181,6 +181,12 @@ table {
     font-size: 16px;
   }
 }
+.MessageBoard_elPopover {
+  min-width: 50px !important;
+  .comment_btn {
+    cursor: pointer;
+  }
+}
 
 //全局的滚动条样式
 *::-webkit-scrollbar-button {
