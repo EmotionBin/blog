@@ -29,7 +29,7 @@
 						adasd:大厦硕大的
 					</div>
 					<div class="footer_additional">
-						<span class="additional_floor">1楼</span>
+						<span class="additional_floor">1-1楼</span>
 						<span class="additional_time">2020-04-15 16:59</span>
 					</div>
 				</div>
