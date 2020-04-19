@@ -107,6 +107,16 @@
 						// ]
 					},
 					{
+						title:'留言板',
+						alias:'MessageBoard',
+						iconStyle:{
+							path:'',
+							class:'el-icon-chat-line-square'
+						},
+						access:'1',
+						show:true
+					},
+					{
 						title:'管理',
 						alias:'Manage',
 						iconStyle:{

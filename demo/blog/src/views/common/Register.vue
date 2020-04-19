@@ -5,12 +5,16 @@
 		<div class="register_panel">
 			<div class="register_panel_title">注册</div>
 			<!-- 表单模块 -->
-			<el-form class="register_panel_form" ref="registerForm" :rules="rules" :model="registerForm" label-width="80px">
+			<el-form class="register_panel_form" ref="registerForm" :rules="rules" :model="registerForm" label-width="86px">
 				<el-form-item label="用户名:" prop="username">
 					<el-input v-model="registerForm.username" prefix-icon="el-icon-user" placeholder="请输入用户名"></el-input>
 				</el-form-item>
 				<el-form-item label="密码:" prop="password">
 					<el-input v-model="registerForm.password" prefix-icon="el-icon-lock" placeholder="请输入密码" type="password"
+          	show-password></el-input>
+				</el-form-item>
+				<el-form-item label="确认密码:" prop="passwordCopy">
+					<el-input v-model="registerForm.passwordCopy" prefix-icon="el-icon-lock" placeholder="请再次输入密码" type="password"
             @keyup.enter.native="register" show-password></el-input>
 				</el-form-item>
 				<div class="register_panel_form_foot">
@@ -46,7 +50,8 @@
 			return {
 				registerForm:{
 					username:'',
-					password:''
+					password:'',
+					passwordCopy:''
 				},
 				dialogInfo:{
 					isShow:false,
@@ -60,6 +65,10 @@
 					],
 					password:[
 						{ required: true, message: '请输入密码', trigger: 'blur' },
+            { min: 3, max: 16, message: '长度在 3 到 16 个字符', trigger: 'blur' }
+					],
+					passwordCopy:[
+						{ required: true, message: '请再次输入密码', trigger: 'blur' },
             { min: 3, max: 16, message: '长度在 3 到 16 个字符', trigger: 'blur' }
 					],
 				},
@@ -80,6 +89,10 @@
 				let vm = this;
 				this.$refs.registerForm.validate((valid) => {
           if (valid) {
+						if(vm.registerForm.password !== vm.registerForm.passwordCopy){
+							this.$message.error('两次输入的密码不一致');
+							return ;
+						}
 						//md5加密后的密码
 						let password_md5 = utility.md5(vm.registerForm.password);
 						console.log('注册');
@@ -162,7 +175,8 @@
 						display: flex;
 						justify-content: flex-end;
 						cursor: pointer;
-						&_text{
+						.register_panel_form_foot_text{
+							color: $priBlue;
 							font-size: 14px;
 						}
 					}

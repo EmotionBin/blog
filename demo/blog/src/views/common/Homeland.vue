@@ -22,6 +22,7 @@
   import Home from "../menuList/Home.vue";
 	import MenuBar from "@/components/MenuBar.vue";
 	import Articles from "../menuList/Articles.vue";
+	import MessageBoard from "../menuList/MessageBoard.vue";
 	import Write from "../menuList/Write.vue";
 	import Edit from "../menuList/Edit.vue";
 	import ReturnTop from '@/components/ReturnTop.vue'
@@ -31,6 +32,7 @@
 		components: {
       Home,
 			Articles,
+			MessageBoard,
 			MenuBar,
 			Write,
 			Edit,
