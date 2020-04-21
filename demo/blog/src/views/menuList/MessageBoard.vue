@@ -2,9 +2,9 @@
 <template>
 	<div class="messageBoardCom">
 		<div class="message_wrap">
-			<div class="message_content">
+			<div class="message_content" v-for="(value,index) in messageList">
 				<div class="content_head">
-					<span class="head_username">hwb</span>
+					<span class="head_username">{{value.username}}</span>
 					<div class="head_option">
 						 <el-popover
 							popper-class="MessageBoard_elPopover"
@@ -17,20 +17,27 @@
 				</div>
 				<div class="content_body">
 					<div class="body_data">
-						<span class="data_text">大叔大婶大所多撒所大所大叔大婶大所多撒所大所大所多大叔大婶大所多撒所大所大所多大叔大婶大所多撒所大所大所多大叔大婶大所多撒所大所大所多大叔大婶大所多撒所大所大所多大叔大婶大所多撒所大所大所多大叔大婶大所多撒所大所大所多大叔大婶大所多撒所大所大所多大叔大婶大所多撒所大所大所多大叔大婶大所多撒所大所大所多大叔大婶大所多撒所大所大所多大叔大婶大所多撒所大所大所多大叔大婶大所多撒所大所大所多大所多大叔大婶大所多撒所大所大叔大婶大所多撒所大所大所多大叔大婶大所多撒所大所大所多大叔大婶大所多撒所大所大所多大叔大婶大所多撒所大所大所多大叔大婶大所多撒所大所大所多大叔大婶大所多撒所大所大所多大叔大婶大所多撒所大所大所多大叔大婶大所多撒所大所大所多大叔大婶大所多撒所大所大所多大叔大婶大所多撒所大所大所多大叔大婶大所多撒所大所大所多大叔大婶大所多撒所大所大所多大叔大婶大所多撒所大所大所多大所多</span>
+						<span class="data_text">{{value.content}}</span>
 					</div>
 					<div class="body_additional">
-						<span class="additional_floor">1楼</span>
-						<span class="additional_time">2020-04-15 16:59</span>
+						<span class="additional_floor">{{value.floor}}楼</span>
+						<span class="additional_time">{{value.date}}</span>
 					</div>
 				</div>
 				<div class="content_footer">
-					<div class="footer_data">
-						adasd:大厦硕大的
-					</div>
-					<div class="footer_additional">
-						<span class="additional_floor">1-1楼</span>
-						<span class="additional_time">2020-04-15 16:59</span>
+					<div class="foot_wrap" v-for="(value1,index1) in value.comment" :class="{'isLastComment':index1 === value.comment.length - 1}">
+						<div class="footer_data">
+							<span class="data_username">
+								{{value1.username}}
+							</span>
+							<span class="data_text">
+								: {{value1.content}}
+							</span>
+						</div>
+						<div class="footer_additional">
+							<span class="additional_floor">{{value1.floor}}楼</span>
+							<span class="additional_time">{{value1.date}}</span>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -117,7 +124,7 @@
 				display: flex;
 				flex-direction: column;
 				width: 100%;
-				padding: 4px 10px;
+				padding: 4px 10px 20px 10px;
 				.content_head{
 					display: flex;
 					width: 100%;
@@ -146,6 +153,8 @@
 					.body_additional{
 						display: flex;
 						justify-content: flex-end;
+						color: #6b6b6b;
+    				font-size: 14px;
 						.additional_floor{
 							margin-right: 20px;
 						}
@@ -153,16 +162,33 @@
 				}
 				.content_footer{
 					width: 100%;
-					padding: 10px;
+					padding: 0 10px;
 					background-color: #e0dfcc;
 					border-radius: 6px;
 					box-shadow: 0 0 2px #d1d1d1;
+					.foot_wrap{
+						width: 100%;
+						padding: 20px 10px;
+						position: relative;
+						border-bottom: 1px solid #6b4a4a38;
+						&.isLastComment{
+							border-bottom: none;
+						}
+					}
 					.footer_data{
-
+						.data_username{
+							font-size: 18px;
+							font-weight: 600;
+						}
 					}
 					.footer_additional{
+						position: absolute;
+						right: 10px;
+						bottom: 2px;
 						display: flex;
 						justify-content: flex-end;
+						color: #6b6b6b;
+    				font-size: 14px;
 						.additional_floor{
 							margin-right: 20px;
 						}
