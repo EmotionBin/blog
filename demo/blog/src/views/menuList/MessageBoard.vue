@@ -234,7 +234,6 @@
 				console.log(floor,target);
 				that.editData.floor = floor;
 				that.editData.username = target;
-
 			}
 		}
 

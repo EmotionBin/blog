@@ -3,7 +3,7 @@
 	<div class="replyCom">
 		<div class="reply_wrap">
 			<div class="reply_info">
-				回复信息:{{replyInfo.floor}},{{replyInfo.username}}
+				Tips : {{replyTips}}
 			</div>
 			<div class="reply_content">
 				<div class="content_data">
@@ -40,7 +40,20 @@
 			}
 		},
 		computed: {
-
+			//提示当前的 评论或回复 信息
+			replyTips(){
+				const that = this;
+				let {floor,username} = that.replyInfo;
+				let replyTips;
+				if(username){
+					//在楼层中对某个用户的评论进行回复
+					replyTips = `您当前对${floor}楼用户${username}的评论进行回复`;
+				}else{
+					//新开一个楼层进行评论
+					replyTips = `您当前对${floor}楼进行回复`;
+				}
+				return replyTips;
+			}
 		},
 		created() {
 
@@ -67,6 +80,7 @@
 			display: flex;
 			align-items: center;
 			flex-direction: column;
+			overflow: auto;
 			.reply_info{
 				width: 100%;
 				padding: $commonPadding;
@@ -87,7 +101,7 @@
 					width: 10%;
     			padding: 0 $commonPadding;
 					.op_emoji{
-
+						cursor: pointer;
 					}
 					.op_issue{
 
