@@ -10,7 +10,7 @@
 							popper-class="MessageBoard_elPopover"
 							placement="bottom"
 							trigger="hover">
-							<div class="comment_btn">评论</div>
+							<div class="comment_btn" @click="handleComment(value.floor)">评论</div>
 							<el-button slot="reference" type="info" size="mini" icon="el-icon-more"></el-button>
 						</el-popover>
 					</div>
@@ -25,7 +25,8 @@
 					</div>
 				</div>
 				<div class="content_footer">
-					<div class="foot_wrap" v-for="(value1,index1) in value.comment" :class="{'isLastComment':index1 === value.comment.length - 1}">
+					<div class="foot_wrap" v-for="(value1,index1) in value.comment" :class="{'isLastComment':index1 === value.comment.length - 1}"
+					@click="handleComment(value1.floor,value1.username)">
 						<div class="footer_data">
 							<span class="data_username">
 								{{value1.username}}
@@ -42,151 +43,168 @@
 				</div>
 			</div>
 		</div>
-		<div class="comment_input" :class="{'isEdit':isEdit}" @click="handleEdit">
+		<div class="message_bottom">
+			<span class="bottom_text">我是有底线的~</span>
+		</div>
+		<div class="comment_input" :class="{'isEdit':isEdit}">
 			<div class="arrow_wrap">
-				<div class="arrow_icon"></div>
+				<div class="arrow_icon" @click="handleEdit"></div>
 				<div class="arrow_mask"></div>
 			</div>
 			<div class="input_wrap">
-
+				<Reply :replyInfo="editData" />
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
+
+	import Reply from "@/components/Reply.vue";
+
 	export default {
 		name: 'messageBoardCom',
-		components: {},
+		components: {
+			Reply
+		},
 		data() {
 			return {
 				//是否输入文本
 				isEdit:false,
+				//要 评论/回复 的信息
+				editData:{
+					// 楼层
+					floor:'',
+					// 要回复的用户名
+					username:'',
+					//内容
+					content:''
+				},
 				//评论的数据
 				messageList:[
 					{
 						username:'hwb',
 						date:'这是一个时间戳',
 						floor:'1-0',
-						content:'测试',
+						content:'测试1-0',
 						comment:[
 							{
 								username:'test',
 								date:'这是一个时间戳',
 								floor:'1-1',
-								content:'测试回复1',
+								content:'测试回复1-1',
 								reply:''
 							},
 							{
 								username:'test1',
 								date:'这是一个时间戳',
 								floor:'1-2',
-								content:'测试回复2',
+								content:'测试回复1-2',
 								reply:'test'
 							}
 						]
 					},{
 						username:'hwb',
 						date:'这是一个时间戳',
-						floor:'1-0',
-						content:'测试',
+						floor:'2-0',
+						content:'测试2-0',
 						comment:[
 							{
 								username:'test',
 								date:'这是一个时间戳',
-								floor:'1-1',
-								content:'测试回复1',
+								floor:'2-1',
+								content:'测试回复2-1',
 								reply:''
 							},
 							{
 								username:'test1',
 								date:'这是一个时间戳',
-								floor:'1-2',
-								content:'测试回复2',
+								floor:'2-2',
+								content:'测试回复2-2',
 								reply:'test'
 							}
 						]
 					},{
 						username:'hwb',
 						date:'这是一个时间戳',
-						floor:'1-0',
-						content:'测试',
+						floor:'3-0',
+						content:'测试3-0',
 						comment:[
 							{
 								username:'test',
 								date:'这是一个时间戳',
-								floor:'1-1',
-								content:'测试回复1',
+								floor:'3-1',
+								content:'测试回复3-1',
 								reply:''
 							},
 							{
 								username:'test1',
 								date:'这是一个时间戳',
-								floor:'1-2',
-								content:'测试回复2',
+								floor:'3-2',
+								content:'测试回复3-2',
 								reply:'test'
 							}
 						]
 					},{
 						username:'hwb',
 						date:'这是一个时间戳',
-						floor:'1-0',
-						content:'测试',
+						floor:'4-0',
+						content:'测试4-0',
 						comment:[
 							{
 								username:'test',
 								date:'这是一个时间戳',
-								floor:'1-1',
-								content:'测试回复1',
+								floor:'4-1',
+								content:'测试回复4-1',
 								reply:''
 							},
 							{
 								username:'test1',
 								date:'这是一个时间戳',
-								floor:'1-2',
-								content:'测试回复2',
+								floor:'4-2',
+								content:'测试回复4-2',
 								reply:'test'
 							}
 						]
 					},{
 						username:'hwb',
 						date:'这是一个时间戳',
-						floor:'1-0',
-						content:'测试',
+						floor:'5-0',
+						content:'测试5-0',
 						comment:[
 							{
 								username:'test',
 								date:'这是一个时间戳',
-								floor:'1-1',
-								content:'测试回复1',
+								floor:'5-1',
+								content:'测试回复5-1',
 								reply:''
 							},
 							{
 								username:'test1',
 								date:'这是一个时间戳',
-								floor:'1-2',
-								content:'测试回复2',
+								floor:'5-2',
+								content:'测试回复5-2',
 								reply:'test'
 							}
 						]
 					},{
 						username:'hwb',
 						date:'这是一个时间戳',
-						floor:'1-0',
-						content:'测试',
+						floor:'6-0',
+						content:'测试6-0',
 						comment:[
 							{
 								username:'test',
 								date:'这是一个时间戳',
-								floor:'1-1',
-								content:'测试回复1',
+								floor:'6-1',
+								content:'测试回复6-1',
 								reply:''
 							},
 							{
 								username:'test1',
 								date:'这是一个时间戳',
-								floor:'1-2',
-								content:'测试回复2',
+								floor:'6-2',
+								content:'测试回复6-2',
 								reply:'test'
 							}
 						]
@@ -204,9 +222,19 @@
 
 		},
 		methods: {
+			//点击 打开/收起 输入区域
 			handleEdit(){
 				const that = this;
 				that.isEdit = ! that.isEdit;
+			},
+			//点击评论
+			handleComment(floor,target = ''){
+				const that = this;
+				that.isEdit = true;
+				console.log(floor,target);
+				that.editData.floor = floor;
+				that.editData.username = target;
+
 			}
 		}
 
@@ -275,6 +303,7 @@
 						padding: $padding_value 10px;
 						position: relative;
 						border-bottom: 1px solid #6b4a4a38;
+						cursor: pointer;
 						&.isLastComment{
 							border-bottom: none;
 						}
@@ -300,37 +329,49 @@
 				}
 			}
 		}
+		.message_bottom{
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 100%;
+			padding: 50px;
+			color: #4e4646;
+			font-size: 24px;
+			border-top: 1px solid #d1d1d1;
+		}
 		.comment_input{
 			position: fixed;
 			bottom: 0;
 			width: calc(60% - 2 * #{$padding_value});
 			padding: 10px;
-			transform: translateY(20px);
+			transform: translateY(85%);
+			transition: transform .3s cubic-bezier(.9, 0, .3, .7);
 			.arrow_wrap{
 				width: 100%;
 				display: flex;
 				justify-content: center;
 				.arrow_icon{
 					width: 60px;
-					height: 30px;
+					height: 24px;
 					background-image: url('/images/arrow/arrow.svg');
 					background-position: center center;
 					background-size: 40%;
 					background-repeat: no-repeat;
 					background-color: #fff;
 					border-radius: 3px;
+					transform:rotate(180deg);
 					cursor: pointer;
 					@include commonShadow;
 				}
 				.arrow_mask{
 					position: absolute;
 					z-index: 300;
-					top: 36px;
+					top: 30px;
 					left: 50%;
-					transform: translateX(-50%);
 					width: 60px;
-					height: 6px;
+					height: 10px;
 					background-color: #fff;
+					transform: translateX(-50%);
 				}
 			}
 			.input_wrap{
@@ -341,9 +382,9 @@
 				@include commonShadow;
 			}
 			&.isEdit{
-				transform: translateY(85%);
+				transform: translateY(20px);
 				.arrow_icon{
-					transform:rotate(180deg);
+					transform:rotate(0deg);
 				}
 			}
 		}
