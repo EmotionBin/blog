@@ -3,7 +3,16 @@
 	<div class="replyCom">
 		<div class="reply_wrap">
 			<div class="reply_info">
-				Tips : {{replyTips}}
+				Tips : 
+				<span class="info_text" v-if="replyInfo.username && replyInfo.floor">
+					您当前对 <span class="info_blod"> {{replyInfo.floor}} </span> 楼用户 <span class="info_blod"> {{replyInfo.username}} </span> 回复
+					<el-button size="mini" type="primary" @click="handleNewFloor">我要新开一层楼~</el-button>
+				</span>
+				<span class="info_text" v-else-if="replyInfo.floor">
+					您当前对 <span class="info_blod"> {{replyInfo.floor}} </span> 楼回复
+					<el-button size="mini" type="primary" @click="handleNewFloor">我要新开一层楼~</el-button>
+				</span>
+				<span class="info_text" v-else>您当前新开一层楼留言或评论~</span>
 			</div>
 			<div class="reply_content">
 				<div class="content_data">
@@ -16,10 +25,16 @@
 				</div>
 				<div class="content_op">
 					<div class="op_emoji">
-						😃
+						<el-popover
+							popper-class="Reply_elPopover"
+							placement="top"
+							trigger="click">
+							<div class="emoji_expression" v-for="(value,index) in emojiStore" @click="handleChooseExpression(value)">{{value}}</div>
+							<div slot="reference">😃</div>
+						</el-popover>
 					</div>
 					<div class="op_issue">
-						<el-button size="mini" type="primary">发送</el-button>
+						<el-button size="mini" type="success" @click="handleSendReply">发送</el-button>
 					</div>
 				</div>
 			</div>
@@ -36,24 +51,14 @@
 		},
 		data() {
 			return {
-				replyData:'asdasd'
+				//评论或留言的文本
+				replyData:'asdasd',
+				//emoji表情库
+				emojiStore:['😃','😆','😊','😅','😒','😕','😢']
 			}
 		},
 		computed: {
-			//提示当前的 评论或回复 信息
-			replyTips(){
-				const that = this;
-				let {floor,username} = that.replyInfo;
-				let replyTips;
-				if(username){
-					//在楼层中对某个用户的评论进行回复
-					replyTips = `您当前对${floor}楼用户${username}的评论进行回复`;
-				}else{
-					//新开一个楼层进行评论
-					replyTips = `您当前对${floor}楼进行回复`;
-				}
-				return replyTips;
-			}
+
 		},
 		created() {
 
@@ -62,7 +67,21 @@
 
 		},
 		methods: {
-
+			//Tips中，点击新建一层楼进行评论或回复
+			handleNewFloor(){
+				const that = this;
+				that.$emit('newFloor');
+			},
+			//点击发表发送评论或回复
+			handleSendReply(){
+				const that = this;
+				that.$emit('sendReply',that.replyData);
+			},
+			//点击选择emoji表情
+			handleChooseExpression(expression){
+				const that = this;
+				that.replyData += expression;
+			}
 		}
 
 	}
@@ -72,7 +91,7 @@
 	$commonPadding:10px;
 	.replyCom{
 		width: 100%;
-		height: 200px;
+		height: 160px;
 		padding: 20px;
 		.reply_wrap{
 			width: 100%;
@@ -84,6 +103,11 @@
 			.reply_info{
 				width: 100%;
 				padding: $commonPadding;
+				color: #95a5a6;
+				.info_blod{
+					color: #000;
+					font-weight: bold;
+				}
 			}
 			.reply_content{
 				display: flex;

@@ -6,7 +6,7 @@
 				<div class="content_head">
 					<span class="head_username">{{value.username}}</span>
 					<div class="head_option">
-						 <el-popover
+						<el-popover
 							popper-class="MessageBoard_elPopover"
 							placement="bottom"
 							trigger="hover">
@@ -52,7 +52,7 @@
 				<div class="arrow_mask"></div>
 			</div>
 			<div class="input_wrap">
-				<Reply :replyInfo="editData" />
+				<Reply :replyInfo="editData" @newFloor="handleNewFloor" @sendReply="handleSendReply"/>
 			</div>
 		</div>
 	</div>
@@ -221,6 +221,11 @@
 		mounted() {
 
 		},
+		beforedestory(){
+			//每次组件销毁前，取消对各个事件的监听
+			this.$off('newFloor');
+			this.$off('sendReply');
+		},
 		methods: {
 			//点击 打开/收起 输入区域
 			handleEdit(){
@@ -234,6 +239,18 @@
 				console.log(floor,target);
 				that.editData.floor = floor;
 				that.editData.username = target;
+			},
+			//新建一层楼进行评论或回复
+			handleNewFloor(){
+				const that = this;
+				that.editData.floor = '';
+				that.editData.username = '';
+			},
+			//点击发表评论或回复
+			handleSendReply(data){
+				const that = this;
+				console.log(data);
+				//发送请求....
 			}
 		}
 
@@ -343,7 +360,7 @@
 			bottom: 0;
 			width: calc(60% - 2 * #{$padding_value});
 			padding: 10px;
-			transform: translateY(85%);
+			transform: translateY(80%);
 			transition: transform .3s cubic-bezier(.9, 0, .3, .7);
 			.arrow_wrap{
 				width: 100%;
@@ -364,7 +381,7 @@
 				}
 				.arrow_mask{
 					position: absolute;
-					z-index: 300;
+					z-index: 1;
 					top: 30px;
 					left: 50%;
 					width: 60px;
@@ -375,7 +392,6 @@
 			}
 			.input_wrap{
 				width: 100%;
-				height: 300px;
 				background-color: #fff;
 				border-radius: 10px;
 				@include commonShadow;
