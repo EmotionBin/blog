@@ -16,6 +16,8 @@ export default new Vuex.Store({
     curUsername:'',
     //当前选择的菜单列表，默认为Home，该值为组件名
     curMenu:'Home',
+    //当前的articleId
+    curArticleId:'',
     //用户的token,保存在vuex中的目的的为了动态的获取用户token，方便操作
     userToken:'',
   },
@@ -29,8 +31,11 @@ export default new Vuex.Store({
     getCurUsername:state => {
       return state.curUsername;
     },
-    getcurMenu:state => {
+    getCurMenu:state => {
       return state.curMenu;
+    },
+    getCurArticleId:state => {
+      return state.curArticleId;
     },
     getUserToken:state => {
       return state.userToken;
@@ -49,6 +54,9 @@ export default new Vuex.Store({
     },
     updateCurMenu(state, payload){
       state.curMenu = payload;
+    },
+    updateArticleId(state, payload){
+      state.curArticleId = payload;
     },
     updateUserToken(state, payload){
       state.userToken = payload;

@@ -2,7 +2,7 @@
 <template>
 	<div class="messageBoardCom">
 		<div class="message_wrap">
-			<div class="message_content" v-for="(value,index) in messageList">
+			<div class="message_content" v-for="value in messageList" :key="value.floor">
 				<div class="content_head">
 					<span class="head_username">{{value.username}}</span>
 					<div class="head_option">
@@ -25,11 +25,24 @@
 					</div>
 				</div>
 				<div class="content_footer">
-					<div class="foot_wrap" v-for="(value1,index1) in value.comment" :class="{'isLastComment':index1 === value.comment.length - 1}"
+					<div class="foot_wrap" v-for="(value1,index1) in value.comment" :key="value1.floor" :class="{'isLastComment':index1 === value.comment.length - 1}"
 					@click="handleComment(value1.floor,value1.username)">
 						<div class="footer_data">
 							<span class="data_username">
-								{{value1.username}}
+								<template v-if="value1.reply">
+									<span class="username_text">
+										{{value1.username}}
+									</span>
+									回复 
+									<span class="username_text">
+									{{value1.reply}}
+									</span>
+								</template>
+								<template v-else>
+									<span class="username_text">
+										{{value1.username}}
+									</span>
+								</template>
 							</span>
 							<span class="data_text">
 								: {{value1.content}}
@@ -44,7 +57,12 @@
 			</div>
 		</div>
 		<div class="message_bottom">
-			<span class="bottom_text">我是有底线的~</span>
+			<template v-if="messageList.length">
+				<span class="bottom_text">我是有底线的~</span>
+			</template>
+			<template v-else>
+				<span class="bottom_text">评论区空空如也~</span>
+			</template>
 		</div>
 		<div class="comment_input" :class="{'isEdit':isEdit}">
 			<div class="arrow_wrap">
@@ -213,7 +231,19 @@
 			}
 		},
 		computed: {
-
+			getCurArticleId(){
+				return this.$store.getters.getCurArticleId;
+			}
+		},
+		watch:{
+			getCurArticleId:{
+				handler(val){
+					const that = this;
+					console.log('当前的ID为:',val);
+					that.getCommentList(val);
+				},
+				immediate: true
+			}
 		},
 		created() {
 
@@ -227,6 +257,32 @@
 			this.$off('sendReply');
 		},
 		methods: {
+			//查询评论信息
+			getCommentList(articleId){
+				const that = this;
+				$.ajax({
+					url: "/api/getCommentList",
+					type: "get",
+					'Content-Type':'application/x-www-form-urlencoded',
+					data: {
+						articleId:articleId
+					},
+					success:res => {
+						console.log(res);
+						var {status,data,detail} = res;
+						if(status === 0){
+							console.log('serve error');
+							that.$message({
+								message: res.data,
+								type: 'error'
+							});
+							return ;
+						}else{
+							that.messageList = data;
+						}
+					}
+				});
+			},
 			//点击 打开/收起 输入区域
 			handleEdit(){
 				const that = this;
@@ -261,7 +317,7 @@
 	$padding_value:20px;
 	.messageBoardCom{
 		width: 100%;
-		padding: $padding_value;
+		// padding: $padding_value;
 		.message_wrap{
 			width: 100%;
 			.message_content{
@@ -326,8 +382,10 @@
 					}
 					.footer_data{
 						.data_username{
-							font-size: 18px;
-							font-weight: 600;
+							.username_text{
+								font-size: 18px;
+								font-weight: 600;
+							}
 						}
 					}
 					.footer_additional{
@@ -358,8 +416,9 @@
 		.comment_input{
 			position: fixed;
 			bottom: 0;
-			width: calc(60% - 2 * #{$padding_value});
-			padding: 10px;
+			// width: calc(60% - 2 * #{$padding_value});
+			width: 60%;
+			// padding: 10px;
 			transform: translateY(80%);
 			transition: transform .3s cubic-bezier(.9, 0, .3, .7);
 			.arrow_wrap{
@@ -382,7 +441,7 @@
 				.arrow_mask{
 					position: absolute;
 					z-index: 1;
-					top: 30px;
+					top: 20px;
 					left: 50%;
 					width: 60px;
 					height: 10px;

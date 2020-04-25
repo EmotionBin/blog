@@ -200,6 +200,10 @@
 				// console.log(params);
 				//将当前选择的导航菜单提交到vuex存储
 				vm.$store.commit('updateCurMenu',params);
+				if(params === 'MessageBoard'){
+					//更新articleId
+					vm.$store.commit('updateArticleId',params);
+				}
 			}
 		}
 

@@ -29,7 +29,7 @@
 							popper-class="Reply_elPopover"
 							placement="top"
 							trigger="click">
-							<div class="emoji_expression" v-for="(value,index) in emojiStore" @click="handleChooseExpression(value)">{{value}}</div>
+							<div class="emoji_expression" v-for="(value,index) in emojiStore" :key="index" @click="handleChooseExpression(value)">{{value}}</div>
 							<div slot="reference">😃</div>
 						</el-popover>
 					</div>
@@ -122,13 +122,13 @@
 					display: flex;
 					justify-content: space-between;
 					align-items: center;
-					width: 10%;
     			padding: 0 $commonPadding;
 					.op_emoji{
+						margin: 0 4px;
 						cursor: pointer;
 					}
 					.op_issue{
-
+						margin: 0 4px;
 					}
 				}
 			}

@@ -46,7 +46,7 @@
 		computed: {
       //当前渲染的组件
       getCurMenu:function () {
-				return this.$store.getters.getcurMenu;
+				return this.$store.getters.getCurMenu;
 			}
 		},
 		created() {
