@@ -75,7 +75,12 @@
 			//点击发表发送评论或回复
 			handleSendReply(){
 				const that = this;
-				that.$emit('sendReply',that.replyData);
+				const replyContent = {
+					//floor
+					//content
+					//reply
+				}
+				that.$emit('sendReply',replyContent);
 			},
 			//点击选择emoji表情
 			handleChooseExpression(expression){

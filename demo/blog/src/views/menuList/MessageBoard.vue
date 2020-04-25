@@ -233,6 +233,9 @@
 		computed: {
 			getCurArticleId(){
 				return this.$store.getters.getCurArticleId;
+			},
+			getCurUsername(){
+				return this.$store.getters.getCurUsername;
 			}
 		},
 		watch:{
@@ -306,7 +309,32 @@
 			handleSendReply(data){
 				const that = this;
 				console.log(data);
-				//发送请求....
+				// $.ajax({
+				// 	url: "/api/addComment",
+				// 	type: "get",
+				// 	'Content-Type':'application/x-www-form-urlencoded',
+				// 	data: {
+				// 		username:that.getCurUsername,
+				// 		floor:'',
+				// 		content:data,
+				// 		reply:'',
+				// 		articleId:that.getCurArticleId
+				// 	},
+				// 	success:res => {
+				// 		console.log(res);
+				// 		var {status,data,detail} = res;
+				// 		if(status === 0){
+				// 			console.log('serve error');
+				// 			that.$message({
+				// 				message: res.data,
+				// 				type: 'error'
+				// 			});
+				// 			return ;
+				// 		}else{
+				// 			that.messageList = data;
+				// 		}
+				// 	}
+				// });
 			}
 		}
 
