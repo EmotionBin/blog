@@ -19,7 +19,7 @@
 				<el-button class="returnBtn" size="small" type="warning" @click="returnListPanel">返 回</el-button>
 				<div ref="article_ref" v-highlight class="article_md"></div>
 				<!-- 评论组件 -->
-				<MessageBoard/>
+				<MessageBoard v-if="$store.getters.getCurMenu === 'Articles'"/>
 			</div>
 		</div>
 	</div>
@@ -27,7 +27,7 @@
 
 <script>
 
-	import MessageBoard from "./MessageBoard.vue";
+	import MessageBoard from "@/components/MessageBoard.vue";
 
 	export default {
 		name: 'articleCom',

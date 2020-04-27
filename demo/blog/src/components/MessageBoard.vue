@@ -265,6 +265,12 @@
 			//查询评论信息
 			getCommentList(articleId){
 				const that = this;
+				//每次查数据前判断一下,若符合以下条件直接返回
+				//1. articleId为空
+				//2. articleId为Articles
+				if(!articleId || articleId === 'Articles'){
+					return;
+				}
 				$.ajax({
 					url: "/api/getCommentList",
 					type: "get",
