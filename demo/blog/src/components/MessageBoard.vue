@@ -271,6 +271,9 @@
 				if(!articleId || articleId === 'Articles'){
 					return;
 				}
+				//待优化!!
+				//每次请求成功后将数据放入localStorage中，并给该数据加上一个时间戳
+				//每次请求前都判断一下，当前时间戳与localStorage中的时间戳是否大于1分钟，如果大于则重新请求，不大于则使用缓存
 				$.ajax({
 					url: "/api/getCommentList",
 					type: "get",
