@@ -8,11 +8,11 @@
 					您当前对 <span class="info_blod"> {{replyInfo.floor}} </span> 楼用户 <span class="info_blod"> {{replyInfo.username}} </span> 回复
 					<el-button size="mini" type="primary" @click="handleNewFloor">我要新开一层楼~</el-button>
 				</span>
-				<span class="info_text" v-else-if="replyInfo.floor">
+				<span class="info_text" v-else-if="replyInfo.floor && !replyInfo.isNew">
 					您当前对 <span class="info_blod"> {{replyInfo.floor}} </span> 楼回复
 					<el-button size="mini" type="primary" @click="handleNewFloor">我要新开一层楼~</el-button>
 				</span>
-				<span class="info_text" v-else>您当前新开一层楼留言或评论~</span>
+				<span class="info_text" v-else-if="replyInfo.isNew">您当前新开一层楼留言或评论~</span>
 			</div>
 			<div class="reply_content">
 				<div class="content_data">
@@ -76,11 +76,13 @@
 			handleSendReply(){
 				const that = this;
 				const replyContent = {
-					//floor
-					//content
-					//reply
+					floor:that.replyInfo.floor,
+					content:that.replyData,
+					reply:that.replyInfo.username
 				}
 				that.$emit('sendReply',replyContent);
+				//清空数据
+				that.replyData = '';
 			},
 			//点击选择emoji表情
 			handleChooseExpression(expression){

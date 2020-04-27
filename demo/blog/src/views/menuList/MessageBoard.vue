@@ -96,7 +96,9 @@
 					// 要回复的用户名
 					username:'',
 					//内容
-					content:''
+					content:'',
+					//是否新开楼层
+					isNew:true
 				},
 				//评论的数据
 				messageList:[
@@ -282,6 +284,10 @@
 							return ;
 						}else{
 							that.messageList = data;
+							//把楼层定位到最新一层楼
+							that.editData.floor = `${data.length + 1}-0`;
+							that.editData.isNew = true;
+							that.editData.username = that.getCurUsername;
 						}
 					}
 				});
@@ -298,12 +304,14 @@
 				console.log(floor,target);
 				that.editData.floor = floor;
 				that.editData.username = target;
+				that.editData.isNew = false;
 			},
 			//新建一层楼进行评论或回复
 			handleNewFloor(){
 				const that = this;
-				that.editData.floor = '';
+				that.editData.floor = `${that.messageList.length + 1}-0`;
 				that.editData.username = '';
+				that.editData.isNew = true;
 			},
 			//点击发表评论或回复
 			handleSendReply(data){
