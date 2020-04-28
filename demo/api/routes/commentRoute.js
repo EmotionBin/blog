@@ -36,6 +36,8 @@ const getCommentList = async ctx => {
       console.log(username, time, floor, content, reply);
       //对时间戳进行转换
       time = getDate(Number.parseInt(time));
+      //对内容进行解码，解码出emoji表情
+      content = decodeURI(content);
       const floorIndex = floor.split('-');
       if(Number.parseInt(floorIndex[1]) === 0){
         //这是每层楼的第一条数据

@@ -102,133 +102,133 @@
 				},
 				//评论的数据
 				messageList:[
-					{
-						username:'hwb',
-						date:'这是一个时间戳',
-						floor:'1-0',
-						content:'测试1-0',
-						comment:[
-							{
-								username:'test',
-								date:'这是一个时间戳',
-								floor:'1-1',
-								content:'测试回复1-1',
-								reply:''
-							},
-							{
-								username:'test1',
-								date:'这是一个时间戳',
-								floor:'1-2',
-								content:'测试回复1-2',
-								reply:'test'
-							}
-						]
-					},{
-						username:'hwb',
-						date:'这是一个时间戳',
-						floor:'2-0',
-						content:'测试2-0',
-						comment:[
-							{
-								username:'test',
-								date:'这是一个时间戳',
-								floor:'2-1',
-								content:'测试回复2-1',
-								reply:''
-							},
-							{
-								username:'test1',
-								date:'这是一个时间戳',
-								floor:'2-2',
-								content:'测试回复2-2',
-								reply:'test'
-							}
-						]
-					},{
-						username:'hwb',
-						date:'这是一个时间戳',
-						floor:'3-0',
-						content:'测试3-0',
-						comment:[
-							{
-								username:'test',
-								date:'这是一个时间戳',
-								floor:'3-1',
-								content:'测试回复3-1',
-								reply:''
-							},
-							{
-								username:'test1',
-								date:'这是一个时间戳',
-								floor:'3-2',
-								content:'测试回复3-2',
-								reply:'test'
-							}
-						]
-					},{
-						username:'hwb',
-						date:'这是一个时间戳',
-						floor:'4-0',
-						content:'测试4-0',
-						comment:[
-							{
-								username:'test',
-								date:'这是一个时间戳',
-								floor:'4-1',
-								content:'测试回复4-1',
-								reply:''
-							},
-							{
-								username:'test1',
-								date:'这是一个时间戳',
-								floor:'4-2',
-								content:'测试回复4-2',
-								reply:'test'
-							}
-						]
-					},{
-						username:'hwb',
-						date:'这是一个时间戳',
-						floor:'5-0',
-						content:'测试5-0',
-						comment:[
-							{
-								username:'test',
-								date:'这是一个时间戳',
-								floor:'5-1',
-								content:'测试回复5-1',
-								reply:''
-							},
-							{
-								username:'test1',
-								date:'这是一个时间戳',
-								floor:'5-2',
-								content:'测试回复5-2',
-								reply:'test'
-							}
-						]
-					},{
-						username:'hwb',
-						date:'这是一个时间戳',
-						floor:'6-0',
-						content:'测试6-0',
-						comment:[
-							{
-								username:'test',
-								date:'这是一个时间戳',
-								floor:'6-1',
-								content:'测试回复6-1',
-								reply:''
-							},
-							{
-								username:'test1',
-								date:'这是一个时间戳',
-								floor:'6-2',
-								content:'测试回复6-2',
-								reply:'test'
-							}
-						]
-					}
+					// {
+					// 	username:'hwb',
+					// 	date:'这是一个时间戳',
+					// 	floor:'1-0',
+					// 	content:'测试1-0',
+					// 	comment:[
+					// 		{
+					// 			username:'test',
+					// 			date:'这是一个时间戳',
+					// 			floor:'1-1',
+					// 			content:'测试回复1-1',
+					// 			reply:''
+					// 		},
+					// 		{
+					// 			username:'test1',
+					// 			date:'这是一个时间戳',
+					// 			floor:'1-2',
+					// 			content:'测试回复1-2',
+					// 			reply:'test'
+					// 		}
+					// 	]
+					// },{
+					// 	username:'hwb',
+					// 	date:'这是一个时间戳',
+					// 	floor:'2-0',
+					// 	content:'测试2-0',
+					// 	comment:[
+					// 		{
+					// 			username:'test',
+					// 			date:'这是一个时间戳',
+					// 			floor:'2-1',
+					// 			content:'测试回复2-1',
+					// 			reply:''
+					// 		},
+					// 		{
+					// 			username:'test1',
+					// 			date:'这是一个时间戳',
+					// 			floor:'2-2',
+					// 			content:'测试回复2-2',
+					// 			reply:'test'
+					// 		}
+					// 	]
+					// },{
+					// 	username:'hwb',
+					// 	date:'这是一个时间戳',
+					// 	floor:'3-0',
+					// 	content:'测试3-0',
+					// 	comment:[
+					// 		{
+					// 			username:'test',
+					// 			date:'这是一个时间戳',
+					// 			floor:'3-1',
+					// 			content:'测试回复3-1',
+					// 			reply:''
+					// 		},
+					// 		{
+					// 			username:'test1',
+					// 			date:'这是一个时间戳',
+					// 			floor:'3-2',
+					// 			content:'测试回复3-2',
+					// 			reply:'test'
+					// 		}
+					// 	]
+					// },{
+					// 	username:'hwb',
+					// 	date:'这是一个时间戳',
+					// 	floor:'4-0',
+					// 	content:'测试4-0',
+					// 	comment:[
+					// 		{
+					// 			username:'test',
+					// 			date:'这是一个时间戳',
+					// 			floor:'4-1',
+					// 			content:'测试回复4-1',
+					// 			reply:''
+					// 		},
+					// 		{
+					// 			username:'test1',
+					// 			date:'这是一个时间戳',
+					// 			floor:'4-2',
+					// 			content:'测试回复4-2',
+					// 			reply:'test'
+					// 		}
+					// 	]
+					// },{
+					// 	username:'hwb',
+					// 	date:'这是一个时间戳',
+					// 	floor:'5-0',
+					// 	content:'测试5-0',
+					// 	comment:[
+					// 		{
+					// 			username:'test',
+					// 			date:'这是一个时间戳',
+					// 			floor:'5-1',
+					// 			content:'测试回复5-1',
+					// 			reply:''
+					// 		},
+					// 		{
+					// 			username:'test1',
+					// 			date:'这是一个时间戳',
+					// 			floor:'5-2',
+					// 			content:'测试回复5-2',
+					// 			reply:'test'
+					// 		}
+					// 	]
+					// },{
+					// 	username:'hwb',
+					// 	date:'这是一个时间戳',
+					// 	floor:'6-0',
+					// 	content:'测试6-0',
+					// 	comment:[
+					// 		{
+					// 			username:'test',
+					// 			date:'这是一个时间戳',
+					// 			floor:'6-1',
+					// 			content:'测试回复6-1',
+					// 			reply:''
+					// 		},
+					// 		{
+					// 			username:'test1',
+					// 			date:'这是一个时间戳',
+					// 			floor:'6-2',
+					// 			content:'测试回复6-2',
+					// 			reply:'test'
+					// 		}
+					// 	]
+					// }
 				]
 			}
 		},
@@ -326,32 +326,35 @@
 			handleSendReply(data){
 				const that = this;
 				console.log(data);
-				// $.ajax({
-				// 	url: "/api/addComment",
-				// 	type: "get",
-				// 	'Content-Type':'application/x-www-form-urlencoded',
-				// 	data: {
-				// 		username:that.getCurUsername,
-				// 		floor:'',
-				// 		content:data,
-				// 		reply:'',
-				// 		articleId:that.getCurArticleId
-				// 	},
-				// 	success:res => {
-				// 		console.log(res);
-				// 		var {status,data,detail} = res;
-				// 		if(status === 0){
-				// 			console.log('serve error');
-				// 			that.$message({
-				// 				message: res.data,
-				// 				type: 'error'
-				// 			});
-				// 			return ;
-				// 		}else{
-				// 			that.messageList = data;
-				// 		}
-				// 	}
-				// });
+				const {floor,content,reply} = data;
+				$.ajax({
+					url: "/api/addComment",
+					type: "post",
+					'Content-Type':'application/x-www-form-urlencoded',
+					data: {
+						username:that.getCurUsername,
+						floor,
+						//这里注意上传的时候需要对内容进行编码，因为可能含有emoji表情
+						content:encodeURI(content),
+						reply,
+						articleId:that.getCurArticleId
+					},
+					success:res => {
+						console.log(res);
+						var {status,data,detail} = res;
+						return;
+						if(status === 0){
+							console.log('serve error');
+							that.$message({
+								message: res.data,
+								type: 'error'
+							});
+							return ;
+						}else{
+							that.messageList = data;
+						}
+					}
+				});
 			}
 		}
 
