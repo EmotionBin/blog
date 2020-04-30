@@ -327,13 +327,26 @@
 				const that = this;
 				console.log(data);
 				const {floor,content,reply} = data;
+				//如果数组中存在当前评论的楼层，则直接在该楼层尾楼添加
+				//如不存在说明为新开楼层
+				let curFloor;
+				const floorFirstNum = Number.parseInt(floor.split('-')[0]);
+				if(floorFirstNum > that.messageList.length){
+					//如果传过来的楼层数大于当前所有楼层数，则为新开楼层
+					curFloor = floor;
+				}else{
+					//否则为评论楼中楼
+					const commentList = that.messageList[floor.split('-')[0] - 1].comment;
+					curFloor = `${floor.split('-')[0]}-${commentList.length + 1}`;
+				}
+				console.log(curFloor);
 				$.ajax({
 					url: "/api/addComment",
 					type: "post",
 					'Content-Type':'application/x-www-form-urlencoded',
 					data: {
 						username:that.getCurUsername,
-						floor,
+						floor:curFloor,
 						//这里注意上传的时候需要对内容进行编码，因为可能含有emoji表情
 						content:encodeURI(content),
 						reply,
@@ -341,17 +354,17 @@
 					},
 					success:res => {
 						console.log(res);
-						var {status,data,detail} = res;
+						const {status,data,detail} = res;
 						return;
 						if(status === 0){
 							console.log('serve error');
 							that.$message({
-								message: res.data,
+								message: data,
 								type: 'error'
 							});
 							return ;
 						}else{
-							that.messageList = data;
+							// that.messageList = data;
 						}
 					}
 				});
