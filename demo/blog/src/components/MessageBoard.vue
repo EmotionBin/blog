@@ -411,7 +411,7 @@
 				display: flex;
 				flex-direction: column;
 				width: 100%;
-				padding: 4px 10px $padding_value 10px;
+				padding: 4px 0px $padding_value 0px;
 				.content_head{
 					display: flex;
 					width: 100%;
