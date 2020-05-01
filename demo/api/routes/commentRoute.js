@@ -16,7 +16,7 @@ const addComment = async ctx => {
     //把新增的评论信息一并写入数据库
     await databaseOp(sqlString);
     ctx.response.type = 'json';
-    ctx.response.body = customRes(1, '操作成功'); 
+    ctx.response.body = customRes(1, '操作成功', getDate(Number.parseInt(time))); 
   } catch (err) {
     console.log(err);
     ctx.response.type = 'json';

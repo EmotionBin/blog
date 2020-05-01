@@ -52,7 +52,7 @@
 		data() {
 			return {
 				//评论或留言的文本
-				replyData:'asdasd',
+				replyData:'',
 				//emoji表情库
 				emojiStore:['😃','😆','😊','😅','😒','😕','😢']
 			}
@@ -75,6 +75,17 @@
 			//点击发表发送评论或回复
 			handleSendReply(){
 				const that = this;
+				//发表的内容不能为空
+				if(that.replyData.trim() === ''){
+					console.log('发表的内容不能为空!');
+					that.$message({
+						message: '发表的内容不能为空!',
+						type: 'warning'
+					});
+					//清空数据
+					that.replyData = '';
+					return ;
+				}
 				const replyContent = {
 					floor:that.replyInfo.floor,
 					content:that.replyData,

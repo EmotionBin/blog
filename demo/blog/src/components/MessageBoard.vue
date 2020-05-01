@@ -294,9 +294,7 @@
 						}else{
 							that.messageList = data;
 							//把楼层定位到最新一层楼
-							that.editData.floor = `${data.length + 1}-0`;
-							that.editData.isNew = true;
-							that.editData.username = that.getCurUsername;
+							that.resetInfo(`${data.length + 1}-0`,'',true,'');
 						}
 					}
 				});
@@ -304,23 +302,19 @@
 			//点击 打开/收起 输入区域
 			handleEdit(){
 				const that = this;
-				that.isEdit = ! that.isEdit;
+				that.isEdit = !that.isEdit;
 			},
 			//点击评论
 			handleComment(floor,target = ''){
 				const that = this;
 				that.isEdit = true;
 				console.log(floor,target);
-				that.editData.floor = floor;
-				that.editData.username = target;
-				that.editData.isNew = false;
+				that.resetInfo(floor,target,false,'');
 			},
 			//新建一层楼进行评论或回复
 			handleNewFloor(){
 				const that = this;
-				that.editData.floor = `${that.messageList.length + 1}-0`;
-				that.editData.username = '';
-				that.editData.isNew = true;
+				that.resetInfo(`${that.messageList.length + 1}-0`,'',true,'');
 			},
 			//点击发表评论或回复
 			handleSendReply(data){
@@ -336,8 +330,8 @@
 					curFloor = floor;
 				}else{
 					//否则为评论楼中楼
-					const commentList = that.messageList[floor.split('-')[0] - 1].comment;
-					curFloor = `${floor.split('-')[0]}-${commentList.length + 1}`;
+					const commentList = that.messageList[floorFirstNum - 1].comment;
+					curFloor = `${floorFirstNum}-${commentList.length + 1}`;
 				}
 				console.log(curFloor);
 				$.ajax({
@@ -355,7 +349,6 @@
 					success:res => {
 						console.log(res);
 						const {status,data,detail} = res;
-						return;
 						if(status === 0){
 							console.log('serve error');
 							that.$message({
@@ -364,10 +357,43 @@
 							});
 							return ;
 						}else{
-							// that.messageList = data;
+							// 请求成功后，前台把评论内容加上
+							const floorSectNum = Number.parseInt(floor.split('-')[1]);
+							if(floorFirstNum > that.messageList.length){
+								//如果传过来的楼层数大于当前所有楼层数，则为新开楼层
+								const info = {
+									username:that.getCurUsername,
+									date:detail,
+									floor:curFloor,
+									content,
+									comment:[]
+								}
+								that.messageList.push(info);
+								console.log('添加评论成功');
+							}else{
+								//反之则为评论
+								const info = {
+									username:that.getCurUsername,
+									date:detail,
+									floor:curFloor,
+									content,
+									reply
+								}
+								that.messageList[floorFirstNum - 1].comment.push(info);
+								console.log('添加评论成功');
+							}
+							//把楼层定位到最新一层楼
+							that.resetInfo(`${that.messageList.length + 1}-0`,'',true,'');
 						}
 					}
 				});
+			},
+			//重新设置参数
+			resetInfo(floor,username,isNew,content){
+				this.editData.floor = floor;
+				this.editData.username = username;
+				this.editData.isNew = isNew;
+				this.editData.content = content;
 			}
 		}
 
