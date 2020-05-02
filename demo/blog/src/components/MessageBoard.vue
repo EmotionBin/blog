@@ -290,7 +290,6 @@
 								message: res.data,
 								type: 'error'
 							});
-							return ;
 						}else{
 							that.messageList = data;
 							//把楼层定位到最新一层楼
@@ -338,6 +337,8 @@
 					url: "/api/addComment",
 					type: "post",
 					'Content-Type':'application/x-www-form-urlencoded',
+					//这里需要加上权限验证，没登录不能评论
+					authority:true,
 					data: {
 						username:that.getCurUsername,
 						floor:curFloor,
@@ -355,7 +356,6 @@
 								message: data,
 								type: 'error'
 							});
-							return ;
 						}else{
 							// 请求成功后，前台把评论内容加上
 							const floorSectNum = Number.parseInt(floor.split('-')[1]);

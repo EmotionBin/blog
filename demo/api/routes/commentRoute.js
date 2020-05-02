@@ -2,16 +2,27 @@
 var customRes = require('../public/js/customRes.js');
 //关于数据库的操作
 var databaseOp = require('../public/js/dbQuery.js');
+const jwt = require('jsonwebtoken');
 
 //新增评论
 const addComment = async ctx => {
   const {username,floor,content,reply,articleId} = ctx.request.body;
-  console.log(username,floor,content,reply,articleId);
-  //生成时间戳
-  const time = Date.now();
-  //根据时间戳生成每一条字段的id
-  const id = `${time}_${username}`
+  const userToken = ctx.request.header['user-token'];
+  console.log(username,floor,content,reply,articleId,userToken);
   try {
+    //判断带过来的token是否合法
+    //1.首先验证token是否有效，防止伪造token
+    //2.第一步的验证通过后，解密token，判断token中的username是否等于请求参数中的username
+    if(!jwt.decode(userToken) || jwt.decode(userToken).username !== username){
+      //token无效
+      ctx.response.type = 'json';
+      ctx.response.body = customRes(0, 'token无效，请重新登录'); 
+      return;
+    }
+    //生成时间戳
+    const time = Date.now();
+    //根据时间戳生成每一条字段的id
+    const id = `${time}_${username}`;
     const sqlString = `insert into comment values ('${id}','${time}','${username}','${floor}','${content}','${reply}','${articleId}')`;
     //把新增的评论信息一并写入数据库
     await databaseOp(sqlString);

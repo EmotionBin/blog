@@ -1,5 +1,8 @@
 //这里重写ajax请求，配置全局的请求拦截，方便控制权限
 import jquery from 'jquery';
+import router from '../router';
+//按需引入element
+import { Message } from 'element-ui'
 
 (function ($) {
   //备份jquery的ajax方法  
@@ -24,7 +27,12 @@ import jquery from 'jquery';
             //强制终止，不发送请求
             XMLHttpRequest.abort();
             //跳转至登录界面
-            window.location.replace(`${window.location.origin}/login`);
+            // window.location.replace(`${window.location.origin}/login`);
+            Message({
+              message: '请先登录才能发表留言~',
+              type: 'warning',
+            });
+            router.push({path:'/login'});
           }
         }
       },
