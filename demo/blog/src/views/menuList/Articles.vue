@@ -4,29 +4,40 @@
 		<div class="articleCom_content">
 			<template v-if="!articleData">
 				<div class="article_module" v-for="(item,index) in articleList" :key="index">
-				<div class="module_title">{{item.issueYear}}</div>
-				<div class="article_list" v-for="(item1,index) in item.data" :key="index">
-					<div class="article_title">
-						<div class="title_radius"></div>
-						<span class="title_text" @click="checkArticle(item1.articleName)">{{item1.articleTitle}}</span>
+					<div class="module_title">{{item.issueYear}}</div>
+					<div class="article_list" v-for="(item1,index) in item.data" :key="index">
+						<div class="article_title">
+							<div class="title_radius"></div>
+							<span class="title_text" @click="checkArticle(item1.articleName,item1.articleId)">{{item1.articleTitle}}</span>
+						</div>
+						<div class="article_date">{{item1.issueDate}}</div>
 					</div>
-					<div class="article_date">{{item1.issueDate}}</div>
 				</div>
-			</div>
 			</template>
 			<div v-show="articleData">
 				<!-- 返回按钮 -->
 				<el-button class="returnBtn" size="small" type="warning" @click="returnListPanel">返 回</el-button>
 				<div ref="article_ref" v-highlight class="article_md"></div>
+				<!-- 评论区 -->
+				<div class="comment_wrap">
+					<h1>评论区</h1>
+					<!-- 评论组件 -->
+					<MessageBoard v-if="$store.getters.getCurMenu === 'Articles'"/>
+				</div>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
+
+	import MessageBoard from "@/components/MessageBoard.vue";
+
 	export default {
 		name: 'articleCom',
-		components: {},
+		components: {
+			MessageBoard
+		},
 		data() {
 			return {
 				//这里存放文章列表数据
@@ -71,7 +82,9 @@
 			}
 		},
 		computed: {
-
+			getCurArticleId(){
+				return this.$store.getters.getCurArticleId;
+			}
 		},
 		created() {
 
@@ -106,8 +119,10 @@
 				});
 			},
 			//点击文章列表获取文章详情内容
-			checkArticle:function (articleName) {
+			checkArticle:function (articleName,articleId) {
 				let that = this;
+				//更新当前的articleId
+				that.$store.commit('updateArticleId',articleId);
 				$.ajax({
 					url: `/api/articles/${articleName}`,
 					type: "get",
@@ -165,7 +180,8 @@
 	.articleCom{
 		width: 100%;
 		position: relative;
-		@include articlePadding;
+		padding-top: 20px;
+		// @include articlePadding;
 		.articleCom_content{
 			width: 100%;
 			.article_module{
@@ -204,6 +220,10 @@
 				position: absolute;
 				top: 10px;
 				right: 0;
+			}
+			.comment_wrap{
+				width: 100%;
+				border-top: 1px solid #d1d1d1;
 			}
 			//markdown渲染的文章的样式写在这里
 			.article_md{

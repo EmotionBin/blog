@@ -24,7 +24,8 @@ var databaseOp = require('../public/js/dbQuery.js');
 var customRes = require('../public/js/customRes.js');
 //引入加载文章的路由模块
 const { getArticlesList, getArticles, addArticle, queryAticle, updataArticle, deleteArticle } = require('./articlesRoute.js');
-
+//引入评论区域的路由模块
+const { addComment, getCommentList } = require('./commentRoute.js');
 
 var router = new Router();
 
@@ -109,6 +110,7 @@ const login = async ctx => {
 //路由菜单
 router.post('/register', register);
 router.post('/login', login);
+
 //加载文章
 router.get('/getArticlesList', getArticlesList);
 router.get('/articles/:year/:articleName', getArticles);
@@ -116,6 +118,10 @@ router.post('/addArticle', koaBody,addArticle);
 router.get('/queryAticle', queryAticle);
 router.post('/updataArticle', koaBody, updataArticle); 
 router.post('/deleteArticle', deleteArticle);
+
+//加载评论
+router.get('/getCommentList', getCommentList);
+router.post('/addComment', addComment);
 
 module.exports = (app) => {
     app.use(bodyParser())

@@ -108,7 +108,7 @@
 					},
 					{
 						title:'留言板',
-						alias:'MessageBoard',
+						alias:'MessageBox',
 						iconStyle:{
 							path:'',
 							class:'el-icon-chat-line-square'
@@ -200,6 +200,8 @@
 				// console.log(params);
 				//将当前选择的导航菜单提交到vuex存储
 				vm.$store.commit('updateCurMenu',params);
+				//更新articleId
+				vm.$store.commit('updateArticleId',params);
 			}
 		}
 

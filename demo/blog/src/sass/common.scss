@@ -181,12 +181,24 @@ table {
     font-size: 16px;
   }
 }
+//MessageBoard组件的pop弹窗
 .MessageBoard_elPopover {
   min-width: 50px !important;
   .comment_btn {
     cursor: pointer;
   }
 }
+//Reply组件的pop弹窗
+.Reply_elPopover{
+  .emoji_expression{
+    display: inline-block;
+    cursor: pointer;
+    &:hover{
+      transform: scale(1.5);
+    }
+  }
+}
+
 
 //全局的滚动条样式
 *::-webkit-scrollbar-button {

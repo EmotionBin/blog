@@ -22,7 +22,7 @@
   import Home from "../menuList/Home.vue";
 	import MenuBar from "@/components/MenuBar.vue";
 	import Articles from "../menuList/Articles.vue";
-	import MessageBoard from "../menuList/MessageBoard.vue";
+	import MessageBox from "../menuList/MessageBox.vue";
 	import Write from "../menuList/Write.vue";
 	import Edit from "../menuList/Edit.vue";
 	import ReturnTop from '@/components/ReturnTop.vue'
@@ -32,7 +32,7 @@
 		components: {
       Home,
 			Articles,
-			MessageBoard,
+			MessageBox,
 			MenuBar,
 			Write,
 			Edit,
@@ -46,7 +46,7 @@
 		computed: {
       //当前渲染的组件
       getCurMenu:function () {
-				return this.$store.getters.getcurMenu;
+				return this.$store.getters.getCurMenu;
 			}
 		},
 		created() {

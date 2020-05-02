@@ -101,7 +101,6 @@
 										message: res.data,
 										type: 'error'
 									});
-									return ;
 								}else if(detail){
 									//将拿到的token写入sessionStorage
 									sessionStorage.setItem('userToken', detail);

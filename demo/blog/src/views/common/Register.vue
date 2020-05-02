@@ -114,7 +114,6 @@
 										message: res.data,
 										type: 'error'
 									});
-									return ;
 								}else if(detail){
 									vm.isRegister = true;
 									vm.dialogInfo.isShow = true;
