@@ -18,8 +18,12 @@
 				<!-- 返回按钮 -->
 				<el-button class="returnBtn" size="small" type="warning" @click="returnListPanel">返 回</el-button>
 				<div ref="article_ref" v-highlight class="article_md"></div>
-				<!-- 评论组件 -->
-				<MessageBoard v-if="$store.getters.getCurMenu === 'Articles'"/>
+				<!-- 评论区 -->
+				<div class="comment_wrap">
+					<h1>评论区</h1>
+					<!-- 评论组件 -->
+					<MessageBoard v-if="$store.getters.getCurMenu === 'Articles'"/>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -216,6 +220,10 @@
 				position: absolute;
 				top: 10px;
 				right: 0;
+			}
+			.comment_wrap{
+				width: 100%;
+				border-top: 1px solid #d1d1d1;
 			}
 			//markdown渲染的文章的样式写在这里
 			.article_md{

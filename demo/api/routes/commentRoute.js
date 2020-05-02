@@ -39,7 +39,8 @@ const addComment = async ctx => {
 const getCommentList = async ctx => {
   const {articleId} = ctx.request.query;
   try {
-    let queryRes = await databaseOp(`select * from comment where articleId = '${articleId}' order by floor asc`);
+    //这里注意，查找完之后按照楼层floor排序，但是floor字段存的是varchar，需要对floor按照数值进行排序，所以必须携程floor*1
+    let queryRes = await databaseOp(`select * from comment where articleId = '${articleId}' order by floor*1 asc`);
     console.log(JSON.stringify(queryRes));
     let arrayList = [];
     queryRes.forEach(item => {
