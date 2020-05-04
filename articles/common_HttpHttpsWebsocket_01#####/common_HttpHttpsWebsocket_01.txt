@@ -1,4 +1,0 @@
-1.http协议 http握手过程
-2.https加密原理、规则、证书,数字签名，握手过程， 参考http://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html
-3.websocket实现原理与实践测试
-
