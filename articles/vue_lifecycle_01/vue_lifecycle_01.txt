@@ -219,19 +219,48 @@ beforeDestroy和destroyed这两个钩子是销毁的时候所执行的，这里�
 ----
 
 ## nextTick
-1. 关于vue的nextTick
-2. 为什么vue要异步渲染
 
-参考：  
-https://www.jianshu.com/p/a7550c0e164f  
-https://www.jianshu.com/p/da2c68fe8aed  
-https://cn.vuejs.org/v2/guide/reactivity.html#%E5%BC%82%E6%AD%A5%E6%9B%B4%E6%96%B0%E9%98%9F%E5%88%97  
+在开发的时候，有时候需要操作dom，但是有时候你会发现并没有正确的获取到dom，这是因为Vue中对dom的更新是异步更新的，如果我们想要正确的获取dom，可以用Vue的nextTick获取  
+
+Vue的nextTick到底是什么，先来看一下官网的例子了解一下关于Vue中dom的更新以及NextTick的作用：  
+
+```html
+<div id="example">{{message}}</div>
+```
+```javascript
+var vm = new Vue({
+  el: '#example',
+  data: {
+    message: '123'
+  }
+})
+vm.message = 'new message' // 更改数据
+vm.$el.textContent === 'new message' // false
+Vue.nextTick(function () {
+  vm.$el.textContent === 'new message' // true
+})
+```
+
+在这个例子中可以看到，先的对message进行了更改，之后再打印dom中的内容，发现这时候dom中的内容并没有马上更改，但是在Vue的nextTick钩子中打印了dom中的内容，却可以得到更改后的数据  
+
+下面引用了Vue官网的说明：  
+
+> **Vue 在更新 DOM 时是异步执行的。只要侦听到数据变化，Vue 将开启一个队列，并缓冲在同一事件循环中发生的所有数据变更。**如果同一个 watcher 被多次触发，只会被推入到队列中一次。这种在缓冲时去除重复数据对于避免不必要的计算和 DOM 操作是非常重要的。然后，在下一个的事件循环“tick”中，Vue 刷新队列并执行实际 (已去重的) 工作。Vue 在内部对异步队列尝试使用原生的 Promise.then、MutationObserver 和setImmediate，如果执行环境不支持，则会采用 setTimeout(fn, 0) 代替  
+
+> 例如，当你设置 vm.someData = 'new value'，该组件不会立即重新渲染。当刷新队列时，组件会在下一个事件循环“tick”中更新。多数情况我们不需要关心这个过程，但是如果你想基于更新后的 DOM 状态来做点什么，这就可能会有些棘手。虽然 Vue.js 通常鼓励开发人员使用“数据驱动”的方式思考，避免直接接触 DOM，但是有时我们必须要这么做。为了在数据变化之后等待 Vue 完成更新 DOM，可以在数据变化之后立即使用 Vue.nextTick(callback)。这样回调函数将在 DOM 更新完成后被调用  
+
+总结一下，如果你想要去改变一个Vue中响应式的数据，不管你改变了一次还是多次，Vue都会在所有的改变的完成后，渲染到虚拟dom上，虚拟dom完成更新后，最终只用一次渲染，渲染到真实的dom上  
+
+再回顾上面的例子，对message作出了更改，但是此时并没有渲染到真正的dom上，所以此时去获取真实dom上的信息，肯定不是最新的，但是可以通过Vue的nextTick中去获取dom，Vue的nextTick是dom渲染完成后的一个回调，是异步的，只有在dom完成渲染之后才会执行，所以，要操作dom最好在Vue.nextTick中进行  
+
+为什么Vue要异步渲染，试想一下，假设Vue同步渲染，如果在一个事件执行的过程中，一个数据改变了多次，那么每次数据的改变都会触发真实dom的更新，更新真实的dom可能会触发浏览器的重排和重绘，这对浏览器的开销是非常大的，对性能的消耗也是非常大的，而且重复渲染做了很多无用功，最终的结果也只是最后一次渲染的效果罢了，异步渲染就解决了这个问题，先把所有的数据改变都在虚拟dom上更新，最终把最新的虚拟dom渲染到真实的dom上，这就是为什么Vue要异步渲染的原因   
 
 ----
 
 ## 结束语
 
-以上就是我关于MVC和MVVM的一些理解，如果本文中有说的不正确的地方，欢迎大佬鞭策!
+关于Vue的生命周期，是Vue比较重要的一个概念，它解释了Vue渲染的大致流程，每个过程做了什么事情，以及每个渲染过程我们可以进行什么样的操作，理解Vue的生命周期可以对我们提供很大的帮助。如果本文中有说的不正确的地方，欢迎大佬鞭策!
 
 ### 参考资料：
 [b站-vue生命周期](https://www.bilibili.com/video/BV1sb411M7RT?p=1)  
+[vue官网](https://cn.vuejs.org)  
