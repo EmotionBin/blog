@@ -237,6 +237,14 @@
 					height: 1px;
 					background-color: #d2d2d2;
 				}
+				p code{
+					display: inline-block;
+					padding: 0 5px;
+					font-size: 110%;
+					background-color: pink;
+					border-radius: 5px;
+					margin: auto 3px;
+				}
 			}
 		}
 	}
