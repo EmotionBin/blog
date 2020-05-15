@@ -248,7 +248,9 @@
 					border-radius: 5px;
 					margin: auto 3px;
 				}
-				code{
+				h1,h2,h3,h4,h5,h6,
+				code,
+				strong{
 					letter-spacing: 0;
 				}
 			}
