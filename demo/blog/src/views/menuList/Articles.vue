@@ -229,6 +229,8 @@
 			.article_md{
 				//1.5倍的行高看起来更加舒服
 				line-height: 1.5;
+				//1px字间距
+				letter-spacing: 1px;
 				a{
 					color: $priBlue;
 				}
@@ -237,7 +239,8 @@
 					height: 1px;
 					background-color: #d2d2d2;
 				}
-				p code{
+				p code,
+				li code{
 					display: inline-block;
 					padding: 0 5px;
 					font-size: 110%;
