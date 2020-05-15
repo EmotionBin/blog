@@ -248,6 +248,9 @@
 					border-radius: 5px;
 					margin: auto 3px;
 				}
+				code{
+					letter-spacing: 0;
+				}
 			}
 		}
 	}
