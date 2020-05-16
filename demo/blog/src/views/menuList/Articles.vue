@@ -253,6 +253,14 @@
 				{
 					letter-spacing: 0;
 				}
+				//引用的样式
+				blockquote{
+					color: #666;
+					border-left: 4px solid #ddd;
+					padding-left: 20px;
+					margin-left: 0;
+					font-size: 14px;
+				}
 			}
 		}
 	}
