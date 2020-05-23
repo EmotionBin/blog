@@ -1,0 +1,121 @@
+# 关于数组的一些思考
+
+数组是一个特别常见的存储结构，本文来讨论一下数组去重和数组排序  
+
+----
+
+## 数组去重
+
+数组又分为简单数组和复杂数组，简单数组就是一维数组，复杂数组可能会嵌套对象等
+
+----
+
+### 简单数组去重
+
+为了方便对比，在数组最后两个元素加入了两个空对象`{}`，严格意义上说，这并不算是简单数组  
+
+#### 双重for循环 + splice
+
+```javascript
+  function unique(arr){
+    for(let i = 0;i < array.length; i ++){
+      for(let j = i + 1;j< array.length; j++){
+        if(array[i] === array[j]){
+          array.splice(j, 1);
+          j --;
+        }
+      }
+    }
+    return arr;
+  }
+  const array = [1,1,'true','true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
+  console.log(unique(array));
+  //[1, "true", true, 15, false, undefined, null, NaN, NaN, "NaN", 0, "a", {…}, {…}]
+```
+
+可以发现利用这种方法进行去重时，无法去除`NaN`和`{}`  
+
+#### 双重for循环
+
+```javascript
+  function unique(arr){
+    const res = [];
+    for(var i = 0;i < arr.length;i ++){
+        for(var j = 0;j < res.length;j ++){
+          if(res[j] === arr[i]) break; 
+        }
+        if(res.length === j) res.push(arr[i]);
+    }
+    return res;
+  }
+  const array = [1,1,'true','true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
+  console.log(unique(array));
+  //[1, "true", true, 15, false, undefined, null, NaN, NaN, "NaN", 0, "a", {…}, {…}]
+```
+
+这种方法也无法去除`NaN`和`{}`  
+
+#### for循环 + indexOf
+
+```javascript
+  function unique(arr){
+    const res = [];
+    for(let i = 0;i < arr.length;i ++){
+      if(res.indexOf(arr[i]) === -1) res.push(arr[i]);
+    }
+    return res;
+  }
+  const array = [1,1,'true','true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
+  console.log(unique(array));
+  // [1, "true", true, 15, false, undefined, null, NaN, NaN, "NaN", 0, "a", {…}, {…}]
+```
+
+这种方法也对`NaN`和`{}`无效  
+
+#### for循环 + includes
+
+```javascript
+  function unique(arr){
+    const res = [];
+    for(let i = 0;i < arr.length;i ++){
+      if(!res.includes(arr[i])) res.push(arr[i]);
+    }
+    return res;
+  }
+  const array = [1,1,'true','true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
+  console.log(unique(array));
+  //[1, "true", true, 15, false, undefined, null, NaN, "NaN", 0, "a", {…}, {…}]
+```
+
+这种方法可以有效的对`NaN`进行去重，但是仍然无法对`{}`去重  
+
+#### filter + indexOf
+
+```javascript
+  function unique(arr){
+    return arr.filter((item, index) => {
+      return arr.indexOf(item) === index;
+    })
+  }
+  const array = [1,1,'true','true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
+  console.log(unique(array));
+  //[1, "true", true, 15, false, undefined, null, "NaN", 0, "a", {…}, {…}]
+```
+
+根据得到的结果，发现原来的`NaN`直接被忽略掉了，无法对`{}`去重  
+
+#### es6的Set
+
+```javascript
+  function unique(arr){
+    return [...new Set(arr)];
+  }
+  const array = [1,1,'true','true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
+  console.log(unique(array));
+```
+
+这种方法代码最少，对`NaN`可以有效去重，无法对`{}`去重  
+
+### 复杂数组去重
+
+复杂数组即在数组中嵌套了对象，所以复杂数组去重可以分两类，根据指定的`key`去重和根据对象去重，下面会详细讨论  
