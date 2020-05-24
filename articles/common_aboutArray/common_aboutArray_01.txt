@@ -19,7 +19,7 @@
 ```javascript
   function unique(arr){
     for(let i = 0;i < array.length; i ++){
-      for(let j = i + 1;j< array.length; j++){
+      for(let j = i + 1;j< array.length; j ++){
         if(array[i] === array[j]){
           array.splice(j, 1);
           j --;
@@ -30,7 +30,7 @@
   }
   const array = [1,1,'true','true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
   console.log(unique(array));
-  //[1, "true", true, 15, false, undefined, null, NaN, NaN, "NaN", 0, "a", {…}, {…}]
+  //[1, "true", true, 15, false, undefined, null, NaN, NaN, "NaN", 0, "a", {}, {}]
 ```
 
 可以发现利用这种方法进行去重时，无法去除`NaN`和`{}`  
@@ -50,7 +50,7 @@
   }
   const array = [1,1,'true','true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
   console.log(unique(array));
-  //[1, "true", true, 15, false, undefined, null, NaN, NaN, "NaN", 0, "a", {…}, {…}]
+  //[1, "true", true, 15, false, undefined, null, NaN, NaN, "NaN", 0, "a", {}, {}]
 ```
 
 这种方法也无法去除`NaN`和`{}`  
@@ -67,7 +67,7 @@
   }
   const array = [1,1,'true','true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
   console.log(unique(array));
-  // [1, "true", true, 15, false, undefined, null, NaN, NaN, "NaN", 0, "a", {…}, {…}]
+  // [1, "true", true, 15, false, undefined, null, NaN, NaN, "NaN", 0, "a", {}, {}]
 ```
 
 这种方法也对`NaN`和`{}`无效  
@@ -84,7 +84,7 @@
   }
   const array = [1,1,'true','true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
   console.log(unique(array));
-  //[1, "true", true, 15, false, undefined, null, NaN, "NaN", 0, "a", {…}, {…}]
+  //[1, "true", true, 15, false, undefined, null, NaN, "NaN", 0, "a", {}, {}]
 ```
 
 这种方法可以有效的对`NaN`进行去重，但是仍然无法对`{}`去重  
@@ -99,7 +99,7 @@
   }
   const array = [1,1,'true','true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
   console.log(unique(array));
-  //[1, "true", true, 15, false, undefined, null, "NaN", 0, "a", {…}, {…}]
+  //[1, "true", true, 15, false, undefined, null, "NaN", 0, "a", {}, {}]
 ```
 
 根据得到的结果，发现原来的`NaN`直接被忽略掉了，无法对`{}`去重  
@@ -112,10 +112,100 @@
   }
   const array = [1,1,'true','true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
   console.log(unique(array));
+  //[1, "true", true, 15, false, undefined, null, NaN, "NaN", 0, "a", {}, {}]
 ```
 
 这种方法代码最少，对`NaN`可以有效去重，无法对`{}`去重  
 
 ### 复杂数组去重
 
-复杂数组即在数组中嵌套了对象，所以复杂数组去重可以分两类，根据指定的`key`去重和根据对象去重，下面会详细讨论  
+复杂数组即在数组中嵌套了对象，下面会详细讨论根据对象中指定的`key`去重  
+
+#### filter + findIndex
+
+```javascript
+  function unique(arr, key){
+    return arr.filter((item, index, self) => {
+      const targetIndex = self.findIndex(el => el[key] === item[key]);
+      return targetIndex === index;
+    })
+  }
+  const array = [{
+    name:'小明',
+    age:10,
+    tall:180
+  },{
+    name:'小明',
+    age:12,
+    tall:170
+  },{
+    name:'小红',
+    age:10,
+    tall:180
+  },{
+    name:'小明',
+    age:10,
+    tall:180
+  },{
+    name:'小明',
+    age:10,
+    tall:180
+  }];
+  console.log(unique(array, 'name'));
+  //[{name:'小明',age:10,tall:180},{name:'小红',age:10,tall:180}]
+```
+
+可以看到，在这个对象数组中，对象中的`name`属性值为`小明`的被去重了，只留一下了一个  
+
+#### for循环
+
+```javascript
+  function unique(arr, key){
+    const res = [];
+    const obj = {};
+    for(let i = 0;i < arr.length;i ++){
+      if(!obj[arr[i][key]]){
+        res.push(arr[i]);
+        obj[arr[i][key]] = true;
+      }
+    }
+    return res;
+  }
+  const array = [{
+    name:'小明',
+    age:10,
+    tall:180
+  },{
+    name:'小明',
+    age:12,
+    tall:170
+  },{
+    name:'小红',
+    age:10,
+    tall:180
+  },{
+    name:'小明',
+    age:10,
+    tall:180
+  },{
+    name:'小明',
+    age:10,
+    tall:180
+  }];
+  console.log(unique(array, 'name'));
+  //[{name:'小明',age:10,tall:180},{name:'小红',age:10,tall:180}]
+```
+
+这种方法需要开辟相对比较多的新空间，比较占用资源，不太推荐  
+
+## 数组排序
+
+待补充
+
+## 结束语
+
+在开发的过程中，经常会遇到数组，而且还要对数组进行一些对应的操作，比如增删改查等，能熟练运用这些方法，就可以大大提高我们的开发效率。如果本文中有说的不正确的地方，欢迎大佬鞭策!  
+
+### 参考资料：
+
+暂无  
