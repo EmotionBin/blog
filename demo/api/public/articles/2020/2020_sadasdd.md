@@ -1,310 +1,324 @@
-# 欢迎使用 Markdown在线编辑器 MdEditor
+# 关于数组的一些思考
 
-**Markdown是一种轻量级的「标记语言」**
+数组是一个特别常见的存储结构，本文来讨论一下数组去重、数组排序以及Vue中关于数组的响应式监听  
 
-
-![markdown](https://www.mdeditor.com/images/logos/markdown.png "markdown")
-
-
-Markdown是一种可以使用普通文本编辑器编写的标记语言，通过简单的标记语法，它可以使普通文本内容具有一定的格式。它允许人们使用易读易写的纯文本格式编写文档，然后转换成格式丰富的HTML页面，Markdown文件的后缀名便是“.md”
-
-
-## MdEditor是一个在线编辑Markdown文档的编辑器
-
-*MdEditor扩展了Markdown的功能（如表格、脚注、内嵌HTML等等），以使让Markdown转换成更多的格式，和更丰富的展示效果，这些功能原初的Markdown尚不具备。*
-
-> Markdown增强版中比较有名的有Markdown Extra、MultiMarkdown、 Maruku等。这些衍生版本要么基于工具，如~~Pandoc~~，Pandao；要么基于网站，如GitHub和Wikipedia，在语法上基本兼容，但在一些语法和渲染效果上有改动。
-
-MdEditor源于Pandao的JavaScript开源项目，开源地址[Editor.md](https://github.com/pandao/editor.md "Editor.md")，并在MIT开源协议的许可范围内进行了优化，以适应广大用户群体的需求。向优秀的markdown开源编辑器原作者Pandao致敬。
-
-
-![Pandao editor.md](https://pandao.github.io/editor.md/images/logos/editormd-logo-180x180.png "Pandao editor.md")
-
-
-
-## MdEditor的功能列表演示
-
-# 标题H1
-
-## 标题H2
-
-### 标题H3
-
-#### 标题H4
-
-##### 标题H5
-
-###### 标题H5
-
-### 字符效果和横线等
 ----
 
-~~删除线~~ <s>删除线（开启识别HTML标签时）</s>
+## 数组去重
 
-*斜体字*      _斜体字_
+数组又分为简单数组和复杂数组，简单数组就是一维数组，复杂数组可能会嵌套对象等
 
-**粗体**  __粗体__
+----
 
-***粗斜体*** ___粗斜体___
+### 简单数组去重
 
-上标：X<sub>2</sub>，下标：O<sup>2</sup>
+为了方便对比，在数组最后两个元素加入了两个空对象`{}`，严格意义上说，这并不算是简单数组  
 
-**缩写(同HTML的abbr标签)**
-> 即更长的单词或短语的缩写形式，前提是开启识别HTML标签时，已默认开启
+----
 
-The <abbr title="Hyper Text Markup Language">HTML</abbr> specification is maintained by the <abbr title="World Wide Web Consortium">W3C</abbr>.
-### 引用 Blockquotes
+#### 双重for循环 + splice
 
-> 引用文本 Blockquotes
-
-引用的行内混合 Blockquotes
-
-> 引用：如果想要插入空白换行`即<br />标签`，在插入处先键入两个以上的空格然后回车即可，[普通链接](https://www.mdeditor.com/)。
-
-### 锚点与链接 Links
-[普通链接](https://www.mdeditor.com/)
-[普通链接带标题](https://www.mdeditor.com/ "普通链接带标题")
-直接链接：<https://www.mdeditor.com>
-[锚点链接][anchor-id]
-[anchor-id]: https://www.mdeditor.com/
-[mailto:test.test@gmail.com](mailto:test.test@gmail.com)
-GFM a-tail link @pandao
-邮箱地址自动链接 test.test@gmail.com  www@vip.qq.com
-> @pandao
-
-### 多语言代码高亮 Codes
-
-#### 行内代码 Inline code
-
-
-执行命令：`npm install marked`
-
-#### 缩进风格
-
-即缩进四个空格，也做为实现类似 `<pre>` 预格式化文本 ( Preformatted Text ) 的功能。
-
-    <?php
-        echo "Hello world!";
-    ?>
-预格式化文本：
-
-    | First Header  | Second Header |
-    | ------------- | ------------- |
-    | Content Cell  | Content Cell  |
-    | Content Cell  | Content Cell  |
-
-#### JS代码
 ```javascript
-function test() {
-	console.log("Hello world!");
-}
-```
-
-#### HTML 代码 HTML codes
-```html
-<!DOCTYPE html>
-<html>
-    <head>
-        <mate charest="utf-8" />
-        <meta name="keywords" content="Editor.md, Markdown, Editor" />
-        <title>Hello world!</title>
-        <style type="text/css">
-            body{font-size:14px;color:#444;font-family: "Microsoft Yahei", Tahoma, "Hiragino Sans GB", Arial;background:#fff;}
-            ul{list-style: none;}
-            img{border:none;vertical-align: middle;}
-        </style>
-    </head>
-    <body>
-        <h1 class="text-xxl">Hello world!</h1>
-        <p class="text-green">Plain text</p>
-    </body>
-</html>
-```
-### 图片 Images
-
-图片加链接 (Image + Link)：
-
-
-[![](https://www.mdeditor.com/images/logos/markdown.png)](https://www.mdeditor.com/images/logos/markdown.png "markdown")
-
-> Follow your heart.
-
-----
-### 列表 Lists
-
-#### 无序列表（减号）Unordered Lists (-)
-
-- 列表一
-- 列表二
-- 列表三
-
-#### 无序列表（星号）Unordered Lists (*)
-
-* 列表一
-* 列表二
-* 列表三
-
-#### 无序列表（加号和嵌套）Unordered Lists (+)
-+ 列表一
-+ 列表二
-    + 列表二-1
-    + 列表二-2
-    + 列表二-3
-+ 列表三
-    * 列表一
-    * 列表二
-    * 列表三
-
-#### 有序列表 Ordered Lists (-)
-
-1. 第一行
-2. 第二行
-3. 第三行
-
-#### GFM task list
-
-- [x] GFM task list 1
-- [x] GFM task list 2
-- [ ] GFM task list 3
-    - [ ] GFM task list 3-1
-    - [ ] GFM task list 3-2
-    - [ ] GFM task list 3-3
-- [ ] GFM task list 4
-    - [ ] GFM task list 4-1
-    - [ ] GFM task list 4-2
-
-----
-
-### 绘制表格 Tables
-
-| 项目        | 价格   |  数量  |
-| --------   | -----:  | :----:  |
-| 计算机      | $1600   |   5     |
-| 手机        |   $12   |   12   |
-| 管线        |    $1    |  234  |
-
-First Header  | Second Header
-------------- | -------------
-Content Cell  | Content Cell
-Content Cell  | Content Cell
-
-| First Header  | Second Header |
-| ------------- | ------------- |
-| Content Cell  | Content Cell  |
-| Content Cell  | Content Cell  |
-
-| Function name | Description                    |
-| ------------- | ------------------------------ |
-| `help()`      | Display the help window.       |
-| `destroy()`   | **Destroy your computer!**     |
-
-| Left-Aligned  | Center Aligned  | Right Aligned |
-| :------------ |:---------------:| -----:|
-| col 3 is      | some wordy text | $1600 |
-| col 2 is      | centered        |   $12 |
-| zebra stripes | are neat        |    $1 |
-
-| Item      | Value |
-| --------- | -----:|
-| Computer  | $1600 |
-| Phone     |   $12 |
-| Pipe      |    $1 |
-
-----
-
-#### 特殊符号 HTML Entities Codes
-
-&copy; &  &uml; &trade; &iexcl; &pound;
-&amp; &lt; &gt; &yen; &euro; &reg; &plusmn; &para; &sect; &brvbar; &macr; &laquo; &middot;
-
-X&sup2; Y&sup3; &frac34; &frac14;  &times;  &divide;   &raquo;
-
-18&ordm;C  &quot;  &apos;
-
-[========]
-
-### Emoji表情 :smiley:
-
-> Blockquotes :star:
-
-#### GFM task lists & Emoji & fontAwesome icon emoji & editormd logo emoji :editormd-logo-5x:
-
-- [x] :smiley: @mentions, :smiley: #refs, [links](), **formatting**, and <del>tags</del> supported :editormd-logo:;
-- [x] list syntax required (any unordered or ordered list supported) :editormd-logo-3x:;
-- [x] [ ] :smiley: this is a complete item :smiley:;
-- [ ] []this is an incomplete item [test link](#) :fa-star: @pandao;
-- [ ] [ ]this is an incomplete item :fa-star: :fa-gear:;
-    - [ ] :smiley: this is an incomplete item [test link](#) :fa-star: :fa-gear:;
-    - [ ] :smiley: this is  :fa-star: :fa-gear: an incomplete item [test link](#);
-
-#### 反斜杠 Escape
-
-\*literal asterisks\*
-
-[========]
-### 科学公式 TeX(KaTeX)
-
-$$E=mc^2$$
-
-行内的公式$$E=mc^2$$行内的公式，行内的$$E=mc^2$$公式。
-
-$$x > y$$
-
-$$\(\sqrt{3x-1}+(1+x)^2\)$$
-
-$$\sin(\alpha)^{\theta}=\sum_{i=0}^{n}(x^i + \cos(f))$$
-
-多行公式：
-
-```math
-\displaystyle
-\left( \sum\_{k=1}^n a\_k b\_k \right)^2
-\leq
-\left( \sum\_{k=1}^n a\_k^2 \right)
-\left( \sum\_{k=1}^n b\_k^2 \right)
-```
-```katex
-\displaystyle
-    \frac{1}{
-        \Bigl(\sqrt{\phi \sqrt{5}}-\phi\Bigr) e^{
-        \frac25 \pi}} = 1+\frac{e^{-2\pi}} {1+\frac{e^{-4\pi}} {
-        1+\frac{e^{-6\pi}}
-        {1+\frac{e^{-8\pi}}
-         {1+\cdots} }
+  function unique(arr){
+    for(let i = 0;i < array.length; i ++){
+      for(let j = i + 1;j< array.length; j ++){
+        if(array[i] === array[j]){
+          array.splice(j, 1);
+          j --;
         }
+      }
     }
+    return arr;
+  }
+  const array = [1,1,'true','true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
+  console.log(unique(array));
+  //[1, "true", true, 15, false, undefined, null, NaN, NaN, "NaN", 0, "a", {}, {}]
 ```
-```latex
-f(x) = \int_{-\infty}^\infty
-    \hat f(\xi)\,e^{2 \pi i \xi x}
-    \,d\xi
+
+可以发现利用这种方法进行去重时，无法去除`NaN`和`{}`  
+
+----
+
+#### 双重for循环
+
+```javascript
+  function unique(arr){
+    const res = [];
+    for(var i = 0;i < arr.length;i ++){
+        for(var j = 0;j < res.length;j ++){
+          if(res[j] === arr[i]) break; 
+        }
+        if(res.length === j) res.push(arr[i]);
+    }
+    return res;
+  }
+  const array = [1,1,'true','true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
+  console.log(unique(array));
+  //[1, "true", true, 15, false, undefined, null, NaN, NaN, "NaN", 0, "a", {}, {}]
 ```
-### 分页符 Page break
 
-> Print Test: Ctrl + P
+这种方法也无法去除`NaN`和`{}`  
 
-[========]
+----
 
-### 绘制流程图 Flowchart
+#### for循环 + indexOf
 
-```flow
-st=>start: 用户登陆
-op=>operation: 登陆操作
-cond=>condition: 登陆成功 Yes or No?
-e=>end: 进入后台
-
-st->op->cond
-cond(yes)->e
-cond(no)->op
+```javascript
+  function unique(arr){
+    const res = [];
+    for(let i = 0;i < arr.length;i ++){
+      if(res.indexOf(arr[i]) === -1) res.push(arr[i]);
+    }
+    return res;
+  }
+  const array = [1,1,'true','true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
+  console.log(unique(array));
+  // [1, "true", true, 15, false, undefined, null, NaN, NaN, "NaN", 0, "a", {}, {}]
 ```
-[========]
 
-### 绘制序列图 Sequence Diagram
+这种方法也对`NaN`和`{}`无效  
 
-```seq
-Andrew->China: Says Hello
-Note right of China: China thinks\nabout it
-China-->Andrew: How are you?
-Andrew->>China: I am good thanks!
+----
+
+#### for循环 + includes
+
+```javascript
+  function unique(arr){
+    const res = [];
+    for(let i = 0;i < arr.length;i ++){
+      if(!res.includes(arr[i])) res.push(arr[i]);
+    }
+    return res;
+  }
+  const array = [1,1,'true','true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
+  console.log(unique(array));
+  //[1, "true", true, 15, false, undefined, null, NaN, "NaN", 0, "a", {}, {}]
 ```
-### End
+
+这种方法可以有效的对`NaN`进行去重，但是仍然无法对`{}`去重  
+
+----
+
+#### filter + indexOf
+
+```javascript
+  function unique(arr){
+    return arr.filter((item, index) => {
+      return arr.indexOf(item) === index;
+    })
+  }
+  const array = [1,1,'true','true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
+  console.log(unique(array));
+  //[1, "true", true, 15, false, undefined, null, "NaN", 0, "a", {}, {}]
+```
+
+根据得到的结果，发现原来的`NaN`直接被忽略掉了，无法对`{}`去重  
+
+----
+
+#### es6的Set
+
+```javascript
+  function unique(arr){
+    return [...new Set(arr)];
+  }
+  const array = [1,1,'true','true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
+  console.log(unique(array));
+  //[1, "true", true, 15, false, undefined, null, NaN, "NaN", 0, "a", {}, {}]
+```
+
+这种方法代码最少，对`NaN`可以有效去重，无法对`{}`去重  
+
+----
+
+### 复杂数组去重
+
+复杂数组即在数组中嵌套了对象，下面会详细讨论根据对象中指定的`key`去重  
+
+----
+
+#### filter + findIndex
+
+```javascript
+  function unique(arr, key){
+    return arr.filter((item, index, self) => {
+      const targetIndex = self.findIndex(el => el[key] === item[key]);
+      return targetIndex === index;
+    })
+  }
+  const array = [{
+    name:'小明',
+    age:10,
+    tall:180
+  },{
+    name:'小明',
+    age:12,
+    tall:170
+  },{
+    name:'小红',
+    age:10,
+    tall:180
+  },{
+    name:'小明',
+    age:10,
+    tall:180
+  },{
+    name:'小明',
+    age:10,
+    tall:180
+  }];
+  console.log(unique(array, 'name'));
+  //[{name:'小明',age:10,tall:180},{name:'小红',age:10,tall:180}]
+```
+
+可以看到，在这个对象数组中，对象中的`name`属性值为`小明`的被去重了，只留一下了一个  
+
+----
+
+#### for循环
+
+```javascript
+  function unique(arr, key){
+    const res = [];
+    const obj = {};
+    for(let i = 0;i < arr.length;i ++){
+      if(!obj[arr[i][key]]){
+        res.push(arr[i]);
+        obj[arr[i][key]] = true;
+      }
+    }
+    return res;
+  }
+  const array = [{
+    name:'小明',
+    age:10,
+    tall:180
+  },{
+    name:'小明',
+    age:12,
+    tall:170
+  },{
+    name:'小红',
+    age:10,
+    tall:180
+  },{
+    name:'小明',
+    age:10,
+    tall:180
+  },{
+    name:'小明',
+    age:10,
+    tall:180
+  }];
+  console.log(unique(array, 'name'));
+  //[{name:'小明',age:10,tall:180},{name:'小红',age:10,tall:180}]
+```
+
+这种方法需要开辟相对比较多的新空间，比较占用资源，不太推荐  
+
+----
+
+## 数组排序
+
+待补充
+
+----
+
+## Vue对于数组的响应式监听
+
+### Vue对数组监听的坑
+
+Vue对于数组的监听会有一定的弊端，这是官网的说明：  
+
+> Vue 不能检测以下数组的变动：  
+> 
+> 当你利用索引直接设置一个数组项时，例如：vm.items[indexOfItem] = newValue  
+> 当你修改数组的长度时，例如：vm.items.length = newLength  
+
+看一下这个官网的例子：  
+
+```javascript
+var vm = new Vue({
+  data: {
+    items: ['a', 'b', 'c']
+  }
+})
+vm.items[1] = 'x' // 不是响应性的
+vm.items.length = 2 // 不是响应性的
+```
+
+----
+
+### 对于Vue不能对数组响应式监听的解决办法
+
+1. `Vue.set(vm.items, indexOfItem, newValue)`或`vm.$set(vm.items, indexOfItem, newValue)`
+2. 使用部分数组操作方法，如`splice()`、`push()`、`pop()`等，使用这些方法操作数组可以触发更新
+3. 替换原数组，使用如`map()`、`filter()`等方法返回新数组，再把原数组用新数组替换掉
+
+----
+
+### Vue为什么要对数组做这样的设计
+
+Vue的双向绑定是通过`Object.defineProperty`给对象添加`getter`和`setter`方法实现的  
+
+是不是因为`Object.defineProperty`对数组失效呢?下面来看一段代码:  
+
+```javascript
+var array = ['a', 'b']
+
+// 枚举数组各项，试图设置各项的getter，setter，
+for (var i = 0, len = array.length; i < len ;i++) {
+    // 数组的index就相当于对象的属性
+    Object.defineProperty(array, i, {
+        get: function() {
+            console.log('trigger subscription')
+        },
+        set: function() { // 数组项变动触发通知
+            console.log('trigger notify')
+        }
+    })
+}
+
+array[0] = 'x' // 输出 trigger notify
+```
+
+事实证明，是可以通过`array[index] = newValue`这样的方式触发响应的。那Vue为什么不这样做呢？
+
+1. 试想一下，如果数组有100个元素，对数组内的每个元素都这样设置，会很笨拙，也会很损耗性能
+2. `Javascript`的数组是可变的，可以通过`array[index] = value`添加数组项，而`Object.defineProperty`是针对已有项的设置，新加的项是不会被 `Object.definePropert`设置的，也就不会触发响应更新了
+
+正因为以上原因，Vue没有对数组进行响应式的监听，对象可以响应式的监听是因为我们在创建Vue实例的时候，data中的属性是预先定义好了的，Vue会去遍历data中的属性添加数据劫持  
+
+既然数组不是响应式的，那么为什么`splice()`、`push()`这些方法改变数据可以被监听到呢？实际上，是因为Vue对部分数组方法（pop, push, shifut, unshift, splice, sort, reverse）进行了重写，可以在浏览器控制台打印一个Vue实例中data的属性，再打印一个普通数组进行对比，比如下面这段代码：  
+
+```javascript
+  const vm = new Vue({
+    el:'#app',
+    data: {
+      items: ['a', 'b', 'c']
+    }
+  });
+  const test = ['a', 'b', 'c'];
+  console.log(vm.items, test);
+```
+
+这段代码创建了一个Vue实例，并打印了Vue实例中的数组和一个普通数组，在控制台点开它们的`__proto__`属性就会发现，Vue实例中的部分数组方法果然被重写了  
+
+----
+
+### 小结
+
+Vue不能检测到以元素赋值方式的数组变动是因为：  
+
+1. 动态添加的数组项不能被劫持生成`getter`，`setter`，因此无法产生响应
+2. 给数组每一项做劫持，性能低且笨拙
+
+----
+
+## 结束语
+
+在开发的过程中，经常会遇到数组，而且还要对数组进行一些对应的操作，比如增删改查等，能熟练运用这些方法，就可以大大提高我们的开发效率。如果本文中有说的不正确的地方，欢迎大佬鞭策!  
+
+### 参考资料：
+
+[掘金-Vue为什么不能检测到以元素赋值方式的数组变动](https://juejin.im/post/5e002644e51d45581054216a)   

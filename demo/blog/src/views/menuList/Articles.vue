@@ -25,8 +25,8 @@
 					<MessageBoard v-if="$store.getters.getCurMenu === 'Articles'"/>
 				</div>
 			</div>
-			<div class="article-catalog">
-				<Catalog :catalog="articleCatalog"/>
+			<div class="article-catalog" ref="catalog_ref">
+				<Catalog v-if="articleData" :catalog="articleCatalog" :curActive="curActiveCatalog" @toCatalog="toCatalog" />
 			</div>
 		</div>
 	</div>
@@ -85,7 +85,13 @@
 				//这里存放文章内容
 				articleData:'',
 				//生成的文章目录
-				articleCatalog:[]
+				articleCatalog:[],
+				//滚动的高度
+				scrollTop:0,
+				//记录目录标题与距离
+				catalogTop:[],
+				//当前激活的目录
+				curActiveCatalog:''
 			}
 		},
 		computed: {
@@ -100,7 +106,22 @@
 			//初始化文章列表的渲染
 			this.initArticleList();
 		},
+		activated(){
+			//在初始化的时候监听鼠标滚轮滚动事件
+			window.addEventListener('scroll', this.scroll);
+		},
+		deactivated(){
+			//在组件销毁的时候取消对鼠标滚轮滚动事件的监听
+			window.removeEventListener('scroll', this.scroll);
+			this.$off('toCatalog');
+		},
 		methods: {
+			scroll(){
+				this.scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+				this.$refs.catalog_ref.style.top = this.scrollTop > 40 ? '20px' : '60px';
+				const item = this.catalogTop.find(item => this.scrollTop < item.top);
+				this.curActiveCatalog = item.title;
+			},
 			//初始化文章列表的渲染
 			initArticleList:function () {
 				let that = this;
@@ -176,24 +197,36 @@
 				try {
 					let articleDom = document.getElementsByClassName("article_md")[0].children;
 					let treeArray = [];
+					let catalogTop = [];
 					for(let i = 0; i < articleDom.length - 1; i ++){
 						let localName = articleDom[i].localName;
+						//目录树节点
 						const obj = {
 							id:articleDom[i].id,
 							tag:localName,
 							children:[]
 						};
+						//标题与距离顶部节点
+						const obj1 = {
+							title:articleDom[i].id,
+							top:articleDom[i].getBoundingClientRect().top
+						}
 						if(localName == 'h2'){
 							treeArray.push(obj);
+							catalogTop.push(obj1);
 						}else if(localName == 'h3'){
 							treeArray[treeArray.length - 1].children.push(obj);
+							catalogTop.push(obj1);
 						}else if(localName == 'h4'){
 							const target = treeArray[treeArray.length - 1].children[treeArray[treeArray.length - 1].children.length - 1].children;
 							target.push(obj);
+							catalogTop.push(obj1);
 						}
 					}
+					console.log(this.catalogTop);
 					console.log(treeArray);
 					this.articleCatalog = treeArray;
+					this.catalogTop = catalogTop;
 				} catch (error) {
 					console.log(error,'生成目录树出错');
 				}
@@ -203,6 +236,10 @@
 				let that = this;
 				//清空文章数据，返回列表页面
 				that.articleData = '';
+			},
+			//目录跳转
+			toCatalog(catalog){
+				this.curActiveCatalog = catalog;
 			}
 		}
 	}

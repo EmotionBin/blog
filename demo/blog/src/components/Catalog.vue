@@ -30,12 +30,12 @@
 		components: {
 		},
 		props:{
-			catalog:Array
+			catalog:Array,
+			curActive:String
 		},
 		data() {
 			return {
-				//当前激活的目录
-				curActive:''
+				
 			}
 		},
 		computed: {
@@ -51,7 +51,7 @@
 			//点击目录树跳转
 			to(catalogName){
 				console.log(catalogName);
-				this.curActive = catalogName;
+				this.$emit('toCatalog', catalogName);
 			}
 		}
 
