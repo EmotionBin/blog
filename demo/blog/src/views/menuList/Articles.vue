@@ -25,6 +25,9 @@
 					<MessageBoard v-if="$store.getters.getCurMenu === 'Articles'"/>
 				</div>
 			</div>
+			<div class="article-catalog">
+				<Catalog :catalog="articleCatalog"/>
+			</div>
 		</div>
 	</div>
 </template>
@@ -32,11 +35,13 @@
 <script>
 
 	import MessageBoard from "@/components/MessageBoard.vue";
+	import Catalog from "@/components/Catalog.vue";
 
 	export default {
 		name: 'articleCom',
 		components: {
-			MessageBoard
+			MessageBoard,
+			Catalog
 		},
 		data() {
 			return {
@@ -78,7 +83,9 @@
 					// }
 				],
 				//这里存放文章内容
-				articleData:''
+				articleData:'',
+				//生成的文章目录
+				articleCatalog:[]
 			}
 		},
 		computed: {
@@ -158,8 +165,38 @@
 							//给图片统一设置白色背景
 							imgSymbol[i].parentNode.style['background-color'] = '#fff';
 						}
+						//组装目录树，这里我放到微任务中异步生成目录树，为了防止文章过长时，阻塞文章渲染
+						//如果同步生成目录树，文章过长时遍历的dom过多，性能开销大，可能会阻塞主线程中文章的渲染
+						Promise.resolve().then(() => that.getCatalog());
 					}
 				});
+			},
+			//组装文章的目录
+			getCatalog(){
+				try {
+					let articleDom = document.getElementsByClassName("article_md")[0].children;
+					let treeArray = [];
+					for(let i = 0; i < articleDom.length - 1; i ++){
+						let localName = articleDom[i].localName;
+						const obj = {
+							id:articleDom[i].id,
+							tag:localName,
+							children:[]
+						};
+						if(localName == 'h2'){
+							treeArray.push(obj);
+						}else if(localName == 'h3'){
+							treeArray[treeArray.length - 1].children.push(obj);
+						}else if(localName == 'h4'){
+							const target = treeArray[treeArray.length - 1].children[treeArray[treeArray.length - 1].children.length - 1].children;
+							target.push(obj);
+						}
+					}
+					console.log(treeArray);
+					this.articleCatalog = treeArray;
+				} catch (error) {
+					console.log(error,'生成目录树出错');
+				}
 			},
 			//点击返回文章列表页面
 			returnListPanel:function () {
@@ -262,6 +299,13 @@
 					font-size: 14px;
 				}
 			}
+		}
+		.article-catalog{
+			position: fixed;
+			top: 60px;
+			right: calc(20% - 220px);
+			width: 200px;
+			// overflow: auto;
 		}
 	}
 </style>
