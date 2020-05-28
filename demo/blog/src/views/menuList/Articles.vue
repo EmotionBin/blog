@@ -26,7 +26,7 @@
 				</div>
 			</div>
 			<div class="article-catalog" ref="catalog_ref">
-				<Catalog v-if="articleData" :catalog="articleCatalog" :curActive="curActiveCatalog" @toCatalog="toCatalog" />
+				<Catalog v-if="articleData" :catalog="articleCatalog" :curActive="curActiveCatalog"/>
 			</div>
 		</div>
 	</div>
@@ -113,14 +113,14 @@
 		deactivated(){
 			//在组件销毁的时候取消对鼠标滚轮滚动事件的监听
 			window.removeEventListener('scroll', this.scroll);
-			this.$off('toCatalog');
 		},
 		methods: {
 			scroll(){
 				this.scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
 				this.$refs.catalog_ref.style.top = this.scrollTop > 40 ? '20px' : '60px';
 				const item = this.catalogTop.find(item => this.scrollTop < item.top);
-				this.curActiveCatalog = item.title;
+				// this.curActiveCatalog = item.title;
+				this.$store.commit('updateCurCatalog', item.title);
 			},
 			//初始化文章列表的渲染
 			initArticleList:function () {
@@ -236,10 +236,7 @@
 				let that = this;
 				//清空文章数据，返回列表页面
 				that.articleData = '';
-			},
-			//目录跳转
-			toCatalog(catalog){
-				this.curActiveCatalog = catalog;
+				that.commit('updateCurCatalog','');
 			}
 		}
 	}

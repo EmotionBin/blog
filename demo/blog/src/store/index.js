@@ -20,6 +20,8 @@ export default new Vuex.Store({
     curArticleId:'',
     //用户的token,保存在vuex中的目的的为了动态的获取用户token，方便操作
     userToken:'',
+    //当前所在目录
+    curCatalog:''
   },
   getters:{
     getLoginStatus:state => {
@@ -39,6 +41,9 @@ export default new Vuex.Store({
     },
     getUserToken:state => {
       return state.userToken;
+    },
+    getCurCatalog: state => {
+      return state.curCatalog;
     }
   },
   mutations: {
@@ -60,6 +65,9 @@ export default new Vuex.Store({
     },
     updateUserToken(state, payload){
       state.userToken = payload;
+    },
+    updateCurCatalog(state, payload) {
+      state.curCatalog = payload;
     },
   },
   actions: {
