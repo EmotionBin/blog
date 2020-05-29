@@ -80,16 +80,23 @@
 				&:hover{
 					text-decoration: none;
 				}	
-				&:before{
+				&::before{
 					position: absolute;
 					top: 50%;
 					left: 5px;
 					content: "";
 					margin-top: -3px;
-					width: 6px;
-					height: 6px;
 					background-color: currentColor;
 					border-radius: 50%;
+				}
+				&.a-h2::before{
+					width: 6px;
+					height: 6px;
+				}
+				&.a-h3::before,
+				&.a-h4::before{
+					width: 4px;
+					height: 4px;
 				}
 				&.active{
 					color: #007fff;

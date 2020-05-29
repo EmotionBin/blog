@@ -255,7 +255,7 @@ script start > async2 end > Promise > script end > async1 end > promise1 > promi
 
 本文中运行环境是chrome运行环境，如果是在nodejs环境下运行，会略有不同。只有不断学习才能提升自己，如果本文中有说的不正确的地方，欢迎大佬鞭策!  
 
-### 参考资料：
+**参考资料：**
 
 [阮一峰-JavaScript 运行机制详解](http://www.ruanyifeng.com/blog/2014/10/event-loop.html)  
 [思否-Js 的事件循环(Event Loop)机制以及实例讲解](https://segmentfault.com/a/1190000015317434)    

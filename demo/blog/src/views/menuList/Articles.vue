@@ -200,6 +200,8 @@
 					let articleDom = document.getElementsByClassName("article_md")[0].children;
 					let treeArray = [];
 					let catalogTop = [];
+					//这里用来记录当前目录树的索引 0-h2 1-h3 2-h4
+					let arrayIndex = [-1, -1, -1];
 					for(let i = 0; i < articleDom.length - 1; i ++){
 						let localName = articleDom[i].localName;
 						//目录树节点
@@ -217,13 +219,20 @@
 						if(localName == 'h2'){
 							treeArray.push(obj);
 							catalogTop.push(obj1);
+							arrayIndex[0]++;
 						}else if(localName == 'h3'){
-							treeArray[treeArray.length - 1].children.push(obj);
+							const [h2Index] = arrayIndex;
+							treeArray[h2Index].children.push(obj);
+							// treeArray[treeArray.length - 1].children.push(obj);
 							catalogTop.push(obj1);
+							arrayIndex[1]++;
 						}else if(localName == 'h4'){
-							const target = treeArray[treeArray.length - 1].children[treeArray[treeArray.length - 1].children.length - 1].children;
-							target.push(obj);
+							const [h2Index, h3Index] = arrayIndex;
+							treeArray[h2Index].children[h3Index].children.push(obj);
+							// const target = treeArray[treeArray.length - 1].children[treeArray[treeArray.length - 1].children.length - 1].children;
+							// target.push(obj);
 							catalogTop.push(obj1);
+							arrayIndex[2]++;
 						}
 					}
 					console.log(this.catalogTop);

@@ -111,11 +111,11 @@ Access-Control-Allow-Origin: http://test001.com
 
 ----
 
-# 结束语
+## 结束语
 
 以上就是关于跨域问题的一些理解，其实解决跨域问题的办法各有优劣，比如Jsonp方式虽然对浏览器的兼容性相对较好，但是只支持GET请求方式，反向代理的方式无需改动后端代码，但是对于整个系统而言可移植性较差，CORS方式需要后端来积极配合前端实现跨域。总之，需要根据情况来选择解决办法，具体情况具体分析。如果本文中有说的不正确的地方，欢迎大佬鞭策!
 
-## 参考资料：
+**参考资料：**
 
 [阮一峰-同源策略](https://javascript.ruanyifeng.com/bom/same-origin.html)  
 [阮一峰-CORS通信](https://javascript.ruanyifeng.com/bom/cors.html)       

@@ -211,6 +211,6 @@
 
 以上就是关于`JavaScript`中原型和原型链的相关知识，只有不断学习才能提升自己，如果本文中有说的不正确的地方，欢迎大佬鞭策!  
 
-### 参考资料  
+**参考资料：**  
 
 [JS中的原型和原型链](https://blog.csdn.net/qq_36996271/article/details/82527256?depth_1-utm_source=distribute.pc_relevant.none-task&utm_source=distribute.pc_relevant.none-task)
