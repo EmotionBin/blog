@@ -30,8 +30,7 @@
 		components: {
 		},
 		props:{
-			catalog:Array,
-			curActive:String
+			catalog:Array
 		},
 		data() {
 			return {

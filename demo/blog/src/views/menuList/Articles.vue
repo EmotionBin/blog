@@ -26,7 +26,7 @@
 				</div>
 			</div>
 			<div class="article-catalog" ref="catalog_ref">
-				<Catalog v-if="articleData" :catalog="articleCatalog" :curActive="curActiveCatalog"/>
+				<Catalog v-if="articleData" :catalog="articleCatalog"/>
 			</div>
 		</div>
 	</div>
@@ -120,8 +120,10 @@
 			scroll(){
 				this.scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
 				// this.$refs.catalog_ref.style.top = this.scrollTop > 40 ? '20px' : '60px';
-				const item = this.catalogTop.find(item => this.scrollTop < item.top);
-				// this.curActiveCatalog = item.title;
+				const item = this.catalogTop.find(item => this.scrollTop > item.top);
+				console.log(this.scrollTop, item.top, item.title);
+				if(!item || this.curActiveCatalog === item.title) return;
+				this.curActiveCatalog = item.title;
 				this.$store.commit('updateCurCatalog', item.title);
 			},
 			//初始化文章列表的渲染
@@ -190,7 +192,10 @@
 						}
 						//组装目录树，这里我放到微任务中异步生成目录树，为了防止文章过长时，阻塞文章渲染
 						//如果同步生成目录树，文章过长时遍历的dom过多，性能开销大，可能会阻塞主线程中文章的渲染
-						Promise.resolve().then(() => that.getCatalog());
+						// Promise.resolve().then(() => that.getCatalog());
+						setTimeout(() => {
+							that.getCatalog()
+						}, 0);
 					}
 				});
 			},
@@ -218,20 +223,20 @@
 						}
 						if(localName == 'h2'){
 							treeArray.push(obj);
-							catalogTop.push(obj1);
+							catalogTop.unshift(obj1);
 							arrayIndex[0]++;
 						}else if(localName == 'h3'){
 							const [h2Index] = arrayIndex;
 							treeArray[h2Index].children.push(obj);
 							// treeArray[treeArray.length - 1].children.push(obj);
-							catalogTop.push(obj1);
+							catalogTop.unshift(obj1);
 							arrayIndex[1]++;
 						}else if(localName == 'h4'){
 							const [h2Index, h3Index] = arrayIndex;
 							treeArray[h2Index].children[h3Index].children.push(obj);
 							// const target = treeArray[treeArray.length - 1].children[treeArray[treeArray.length - 1].children.length - 1].children;
 							// target.push(obj);
-							catalogTop.push(obj1);
+							catalogTop.unshift(obj1);
 							arrayIndex[2]++;
 						}
 					}
