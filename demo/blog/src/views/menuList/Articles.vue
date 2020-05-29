@@ -205,6 +205,7 @@
 						//目录树节点
 						const obj = {
 							id:articleDom[i].id,
+							innerHTML:articleDom[i].innerHTML,
 							tag:localName,
 							children:[]
 						};
@@ -343,8 +344,8 @@
 		.article-catalog{
 			position: fixed;
 			top: 60px;
-			right: calc(20% - 220px);
-			width: 200px;
+			right: calc(20% - 260px);
+			width: 240px;
 			// overflow: auto;
 		}
 	}
