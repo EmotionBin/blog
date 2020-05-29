@@ -113,11 +113,13 @@
 		deactivated(){
 			//在组件销毁的时候取消对鼠标滚轮滚动事件的监听
 			window.removeEventListener('scroll', this.scroll);
+			//初始化当前目录
+			this.initCatalog();
 		},
 		methods: {
 			scroll(){
 				this.scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
-				this.$refs.catalog_ref.style.top = this.scrollTop > 40 ? '20px' : '60px';
+				// this.$refs.catalog_ref.style.top = this.scrollTop > 40 ? '20px' : '60px';
 				const item = this.catalogTop.find(item => this.scrollTop < item.top);
 				// this.curActiveCatalog = item.title;
 				this.$store.commit('updateCurCatalog', item.title);
@@ -228,7 +230,7 @@
 					this.articleCatalog = treeArray;
 					this.catalogTop = catalogTop;
 				} catch (error) {
-					console.log(error,'生成目录树出错');
+					console.log('生成目录树出错', error);
 				}
 			},
 			//点击返回文章列表页面
@@ -236,7 +238,11 @@
 				let that = this;
 				//清空文章数据，返回列表页面
 				that.articleData = '';
-				that.commit('updateCurCatalog','');
+				that.$store.commit('updateCurCatalog','');
+			},
+			//初始化目录
+			initCatalog(){
+				this.$store.commit('updateCurCatalog','');
 			}
 		}
 	}
