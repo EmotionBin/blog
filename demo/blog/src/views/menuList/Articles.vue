@@ -220,15 +220,17 @@
 						treeArray.push(obj);
 						// catalogTop.unshift(obj1);
 						arrayIndex[0]++;
+						arrayIndex[1] = -1;
 					}else if(localName === 'h3'){
-						const [h2Index] = arrayIndex;
-						treeArray[h2Index].children.push(obj);
+						const [h1Index] = arrayIndex;
+						treeArray[h1Index].children.push(obj);
 						// treeArray[treeArray.length - 1].children.push(obj);
 						// catalogTop.unshift(obj1);
 						arrayIndex[1]++;
+						arrayIndex[2] = -1;
 					}else if(localName === 'h4'){
-						const [h2Index, h3Index] = arrayIndex;
-						treeArray[h2Index].children[h3Index].children.push(obj);
+						const [h1Index, h2Index] = arrayIndex;
+						treeArray[h1Index].children[h2Index].children.push(obj);
 						// const target = treeArray[treeArray.length - 1].children[treeArray[treeArray.length - 1].children.length - 1].children;
 						// target.push(obj);
 						// catalogTop.unshift(obj1);
