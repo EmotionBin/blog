@@ -261,6 +261,7 @@
 				const total = imgSymbol.length;
 				const load = function(){
 					if(count < total){
+						if(!imgSymbol[count]) return;
 						const imgObj = new Image();
 						imgObj.src = imgSymbol[count].src;
 						timer = setInterval(() => {
