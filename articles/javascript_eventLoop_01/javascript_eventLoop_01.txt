@@ -91,7 +91,7 @@ clickA事件执行结束后，再去任务队列中执行ajaxA的回调函数:
 
 ### 宏任务与微任务
 
-#### 宏任务(macro-task):
+#### 宏任务(macro-task)
 
 - script(整体代码)
 - setTimeout
@@ -101,7 +101,7 @@ clickA事件执行结束后，再去任务队列中执行ajaxA的回调函数:
 - I/O
 - UI render
 
-#### 微任务(micro-task): 
+#### 微任务(micro-task) 
 
 - Promise
 - Async/Await(实际就是promise)
