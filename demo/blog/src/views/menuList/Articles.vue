@@ -25,6 +25,9 @@
 					<MessageBoard v-if="$store.getters.getCurMenu === 'Articles'"/>
 				</div>
 			</div>
+			<div class="article-catalog" ref="catalog_ref">
+				<Catalog v-if="articleData" :catalog="articleCatalog"/>
+			</div>
 		</div>
 	</div>
 </template>
@@ -32,11 +35,13 @@
 <script>
 
 	import MessageBoard from "@/components/MessageBoard.vue";
+	import Catalog from "@/components/Catalog.vue";
 
 	export default {
 		name: 'articleCom',
 		components: {
-			MessageBoard
+			MessageBoard,
+			Catalog
 		},
 		data() {
 			return {
@@ -78,7 +83,15 @@
 					// }
 				],
 				//这里存放文章内容
-				articleData:''
+				articleData:'',
+				//生成的文章目录
+				articleCatalog:[],
+				//滚动的高度
+				scrollTop:0,
+				//记录目录标题与距离
+				catalogTop:[],
+				//当前激活的目录
+				curActiveCatalog:''
 			}
 		},
 		computed: {
@@ -93,7 +106,25 @@
 			//初始化文章列表的渲染
 			this.initArticleList();
 		},
+		activated(){
+			//在初始化的时候监听鼠标滚轮滚动事件
+			window.addEventListener('scroll', this.scroll);
+		},
+		deactivated(){
+			//在组件销毁的时候取消对鼠标滚轮滚动事件的监听
+			window.removeEventListener('scroll', this.scroll);
+			//初始化当前目录
+			this.initCatalog();
+		},
 		methods: {
+			scroll(){
+				this.scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+				// this.$refs.catalog_ref.style.top = this.scrollTop > 40 ? '20px' : '60px';
+				const item = this.catalogTop.find(item => this.scrollTop > item.top);
+				if(!item || this.curActiveCatalog === item.title) return;
+				this.curActiveCatalog = item.title;
+				this.$store.commit('updateCurCatalog', item.title);
+			},
 			//初始化文章列表的渲染
 			initArticleList:function () {
 				let that = this;
@@ -158,14 +189,103 @@
 							//给图片统一设置白色背景
 							imgSymbol[i].parentNode.style['background-color'] = '#fff';
 						}
+						//组装目录树，这里我放到宏任务中异步生成目录树，为了防止文章过长时，阻塞文章渲染
+						//如果同步生成目录树，文章过长时遍历的dom过多，性能开销大，可能会阻塞主线程中文章的渲染
+						const articleDom1 = document.getElementsByClassName("article_md")[0].children;
+						setTimeout(() => {
+							that.getCatalog(articleDom1);
+							that.getCatalogTop(articleDom1);
+							//因为第一次加载目录时，当前页面的所有图片可能并未完全加载完，所以获取的元素到页面顶部的距离会有误差
+							//所以要等当前页面的所有图片都加载完毕后，再重新计算页面元素到顶部距离，这才是准确的距离
+							that.isImgAllLoad(imgSymbol, this.getCatalogTop, articleDom1);
+						}, 0);
 					}
 				});
+			},
+			//组装文章的目录
+			getCatalog(articleDom){
+				let treeArray = [];
+				//这里用来记录当前目录树的索引 0-h2 1-h3 2-h4
+				let arrayIndex = [-1, -1, -1];
+				for(let i = 0; i < articleDom.length - 1; i ++){
+					const localName = articleDom[i].localName;
+					//目录树节点
+					const obj = {
+						id:articleDom[i].id,
+						innerHTML:articleDom[i].innerHTML,
+						tag:localName,
+						children:[]
+					};
+					if(localName === 'h2'){
+						treeArray.push(obj);
+						// catalogTop.unshift(obj1);
+						arrayIndex[0]++;
+					}else if(localName === 'h3'){
+						const [h2Index] = arrayIndex;
+						treeArray[h2Index].children.push(obj);
+						// treeArray[treeArray.length - 1].children.push(obj);
+						// catalogTop.unshift(obj1);
+						arrayIndex[1]++;
+					}else if(localName === 'h4'){
+						const [h2Index, h3Index] = arrayIndex;
+						treeArray[h2Index].children[h3Index].children.push(obj);
+						// const target = treeArray[treeArray.length - 1].children[treeArray[treeArray.length - 1].children.length - 1].children;
+						// target.push(obj);
+						// catalogTop.unshift(obj1);
+						arrayIndex[2]++;
+					}
+				}
+				console.log(treeArray);
+				this.articleCatalog = treeArray;
+			},
+			//获取各个目录与顶部距离
+			getCatalogTop(articleDom){
+				let catalogTop = [];
+				for(let i = 0; i < articleDom.length - 1; i ++){
+					//标题与距离顶部节点
+					const obj = {
+						title:articleDom[i].id,
+						top:articleDom[i].offsetTop - 10
+					}
+					const localName = articleDom[i].localName;
+					if(localName == 'h2' || localName == 'h3' || localName == 'h4') catalogTop.unshift(obj);
+				}
+				this.catalogTop = catalogTop;
+			},
+			//判断当前页面所有图片是否全部加载完毕
+			isImgAllLoad(imgSymbol, cb, articleDom1){
+				let count = 0;
+				let timer = null;
+				const total = imgSymbol.length;
+				const load = function(){
+					if(count < total){
+						const imgObj = new Image();
+						imgObj.src = imgSymbol[count].src;
+						timer = setInterval(() => {
+							if(imgObj.complete){
+								//图片加载完成
+								clearInterval(timer);
+								count ++;
+								load();
+							}
+						}, 100);
+					}else{
+						console.log('所有图片加载完成');
+						cb(articleDom1);
+					}
+				}
+				load();
 			},
 			//点击返回文章列表页面
 			returnListPanel:function () {
 				let that = this;
 				//清空文章数据，返回列表页面
 				that.articleData = '';
+				that.$store.commit('updateCurCatalog','');
+			},
+			//初始化目录
+			initCatalog(){
+				this.$store.commit('updateCurCatalog','');
 			}
 		}
 	}
@@ -262,6 +382,13 @@
 					font-size: 14px;
 				}
 			}
+		}
+		.article-catalog{
+			position: fixed;
+			top: 60px;
+			right: calc(20% - 260px);
+			width: 240px;
+			// overflow: auto;
 		}
 	}
 </style>

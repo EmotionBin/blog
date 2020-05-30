@@ -62,22 +62,22 @@
 			return {
 				//所有文章的标题
 				articlesList: [
-					{
-						articleId: '选项1',
-						articleTitle: '黄金糕'
-					}, {
-						articleId: '选项2',
-						articleTitle: '双皮奶'
-					}, {
-						articleId: '选项3',
-						articleTitle: '蚵仔煎'
-					}, {
-						articleId: '选项4',
-						articleTitle: '龙须面'
-					}, {
-						articleId: '选项5',
-						articleTitle: '北京烤鸭'
-					}
+					// {
+					// 	articleId: '选项1',
+					// 	articleTitle: '黄金糕'
+					// }, {
+					// 	articleId: '选项2',
+					// 	articleTitle: '双皮奶'
+					// }, {
+					// 	articleId: '选项3',
+					// 	articleTitle: '蚵仔煎'
+					// }, {
+					// 	articleId: '选项4',
+					// 	articleTitle: '龙须面'
+					// }, {
+					// 	articleId: '选项5',
+					// 	articleTitle: '北京烤鸭'
+					// }
 				],
 				//搜索栏关键字
 				searchKey:'',

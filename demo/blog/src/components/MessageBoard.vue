@@ -357,6 +357,11 @@
 								type: 'error'
 							});
 						}else{
+							//评论成功提示
+							that.$message({
+								message: '评论成功!',
+								type: 'success'
+							});
 							// 请求成功后，前台把评论内容加上
 							const floorSectNum = Number.parseInt(floor.split('-')[1]);
 							if(floorFirstNum > that.messageList.length){

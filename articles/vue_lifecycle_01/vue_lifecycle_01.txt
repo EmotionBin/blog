@@ -261,7 +261,7 @@ Vue.nextTick(function () {
 
 关于Vue的生命周期，是Vue比较重要的一个概念，它解释了Vue渲染的大致流程，每个过程做了什么事情，以及每个渲染过程我们可以进行什么样的操作，理解Vue的生命周期可以对我们提供很大的帮助。如果本文中有说的不正确的地方，欢迎大佬鞭策!
 
-### 参考资料：
+**参考资料：**
 
 [b站-vue生命周期](https://www.bilibili.com/video/BV1sb411M7RT?p=1)  
 [vue官网](https://cn.vuejs.org)  
