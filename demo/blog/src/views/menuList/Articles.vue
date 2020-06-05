@@ -391,7 +391,8 @@
 			top: 60px;
 			right: calc(20% - 260px);
 			width: 240px;
-			// overflow: auto;
+			max-height: calc(100% - 120px);
+    	overflow: auto;
 		}
 	}
 </style>

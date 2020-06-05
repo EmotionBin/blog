@@ -108,6 +108,128 @@ Access-Control-Allow-Origin: *
 ```javascript
 Access-Control-Allow-Origin: http://test001.com
 ```
+----
+
+## 实践
+
+我用node的express简单搭建了一个本地服务，用来模拟CORS和JSONP，9527端口作为`HTTP`服务，9528端口返回数据，代码如下：  
+
+```html
+<!-- 这个是9527端口加载的文件index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>test</title>
+</head>
+<body>
+  <h1>Hello World</h1>
+</body>
+<script>
+  fetch('http://localhost:9528')
+  .then(res => res.text())
+  .then(data => alert(data));
+</script>
+</html>
+```
+
+```javascript
+const express = require('express');
+
+//9527端口 将当前目录作为http服务
+const app = express();
+app.use(express.static(__dirname));
+app.listen(9527);
+
+//9528端口 返回数据
+const app1 = express();
+app1.get('/', (req, res) => {
+  res.send('你好');
+});
+app1.listen(9528);
+```
+
+### CORS
+
+开启node服务后，在url地址栏中输入http://localhost:9527/ ，会自动加载index.html文件，并发送了一个`fetch`请求，打开控制台观察结果：  
+
+![tlrGM6.png](https://s1.ax1x.com/2020/05/31/tlrGM6.png)
+
+很显然，跨域了，因为`HTTP`服务和后台服务分别运行在9527和9528两个不同的端口  
+
+修改后台服务代码，设置CORS，增加`Access-Control-Allow-Origin`字段：  
+
+```javascript
+//...
+
+//9528端口 返回数据
+const app1 = express();
+app1.get('/', (req, res) => {
+  //这里设置了响应头参数
+  res.header('Access-Control-Allow-Origin','*');
+  res.send('你好');
+});
+app1.listen(9528);
+
+//...
+```
+
+重新在url地址栏中输入http://localhost:9527/ ，观察结果：  
+
+![tlsw0U.png](https://s1.ax1x.com/2020/05/31/tlsw0U.png)
+
+`fetch`请求成功，得到了响应  
+
+----
+
+### JSONP
+
+JSONP跨域的原理是，`HTML`中的`script`标签不受到浏览器同源策略的限制，所以可以在`script`标签中先定义好一个函数(设为f())，然后发送一个`GET`请求，这个`GET`请求需要带上参数`callback=f`，参数callback的值是之前定义好的函数f()，下面上代码：  
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>test</title>
+</head>
+<body>
+  <h1>Hello World</h1>
+</body>
+<script>
+  function f(data){
+    alert(data);
+  }
+</script>
+<script src="http://localhost:9528?callback=f"></script>
+</html>
+```
+
+后台接收到参数后，需要作拼接处理，需要把返回的参数拼接成f('`这里是后台想返回的参数`')，数据处理好返回到前端，下面上代码：  
+
+```javascript
+//...
+
+//9528端口 返回数据
+const app1 = express();
+app1.get('/', (req, res) => {
+  //这里获取带过来的参数callback，值是f
+  const funcName = req.query.callback;
+  //这里需要拼接后再返回 返回的数据是f('你好')
+  res.send(funcName + "('你好')");
+});
+app1.listen(9528);
+
+//...
+```
+
+重新在url地址栏中输入http://localhost:9527/ ，观察结果：
+
+![tlsw0U.png](https://s1.ax1x.com/2020/05/31/tlsw0U.png)
+
+这个结果其实和上面的CORS跨域的结果是一样的，都成功实现了跨域
 
 ----
 
@@ -119,4 +241,5 @@ Access-Control-Allow-Origin: http://test001.com
 
 [阮一峰-同源策略](https://javascript.ruanyifeng.com/bom/same-origin.html)  
 [阮一峰-CORS通信](https://javascript.ruanyifeng.com/bom/cors.html)       
-[掘金-你所需要的跨域问题的全套解决方案都在这里啦！（前后端都有）](https://juejin.im/post/5e8158e1e51d45470d5269af)
+[掘金-你所需要的跨域问题的全套解决方案都在这里啦！（前后端都有）](https://juejin.im/post/5e8158e1e51d45470d5269af)  
+[b站-什么是CORS，教你解决跨域问题](https://www.bilibili.com/video/BV1Kt411E76z)
