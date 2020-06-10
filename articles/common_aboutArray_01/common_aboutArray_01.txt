@@ -256,21 +256,109 @@ sort()方法排序的时候是按照**字符串**顺序进行排序的，所以�
 
 ### 快速排序
 
-----
+```javascript
+  const arr = [5, 23, 89, 42, 1, 20, 6, 2, 46, 51, 88, 12, 64, 3, 100];
+  function quickSort(arr) {
+    //如果数组中元素只有一个，直接返回
+    if(arr.length <= 1) {
+      return arr;
+    }
+    //记录中间数的索引值，向下取整
+    const midIndex = Math.floor(arr.length / 2);
+    //记录中间数的值
+    const midValue = arr.splice(midIndex, 1);
+    const left = [],right = [];
+    for(let i = 0; i < arr.length; i ++ ){
+      if(arr[i] < midValue){
+        //小于中间值的放到左边
+        left.push(arr[i]);
+      }else{
+        //大于中间值的放到右边
+        right.push(arr[i]);
+      }
+    }
+    return quickSort(left).concat(midValue, quickSort(right));
+  }
+  console.log(quickSort(arr));
+  // [1, 2, 3, 5, 6, 12, 20, 23, 42, 46, 51, 64, 88, 89, 100]
+```
 
-### 二分法
+快速排序的思路就是：先记录数组中间数的索引和值，遍历数组，小于这个值的放到左边，大于这个值的放到右边，再对左边数组和右边数组进行递归，数组元素只剩下一个的时候设置递归出口  
 
 ----
 
 ### 插入排序
 
+```javascript
+  const arr = [5, 23, 89, 42, 1, 20, 6, 2, 46, 51, 88, 12, 64, 3, 100];
+  function Insertion(arr) {
+    const { length } = arr;
+    let preIndex, current;
+    for (let i = 1; i < length; i ++) {
+      preIndex = i - 1;
+      current = arr[i];
+      while (preIndex >= 0 && current < arr[preIndex]) {
+        arr[preIndex + 1] = arr[preIndex];
+        preIndex --;
+      }
+      arr[preIndex + 1] = current;
+    }
+    return arr;
+  }
+  console.log(Insertion(arr));
+```
+
+思路:  
+
+1. 从第一个元素开始，该元素可以认为已经被排序  
+2. 取出下一个元素，在已经排序的元素序列中从后向前扫描  
+3. 如果该元素（已排序）大于新元素，将该元素移到下一位置  
+4. 重复步骤3，直到找到已排序的元素小于或者等于新元素的位置  
+5. 将新元素插入到该位置后  
+6. 重复步骤2~5  
+
+我在网上看到了一个挺不错的例子，里面还有动图演示，可以看看 [转送门](https://www.cnblogs.com/cc-freiheit/p/10983395.html)  
+
 ----
 
 ### 选择排序
 
+```javascript
+  const arr = [5, 23, 89, 42, 1, 20, 6, 2, 46, 51, 88, 12, 64, 3, 100];
+  function selsetSort(arr){
+    const { length } = arr;
+    let index;
+    for(var i = 0; i < length - 1; i ++){ 
+      index = i; 
+      for(var j = i + 1; j < length; j ++){ 
+        //寻找最小值
+        if(arr[index] > arr[j]){
+          //保存最小值的索引
+          index = j;
+        }
+      }
+      if(index != i){
+        var temp = arr[i];
+        arr[i] = arr[index];
+        arr[index] = temp;
+      }
+    }
+    return arr;
+  }
+  console.log(selsetSort(arr));
+```
+
+
+
 ----
 
 ### 希尔排序
+
+----
+
+## 数组查找
+
+### 二分法
 
 ----
 
