@@ -390,7 +390,75 @@
 
 ## 数组查找
 
+### 顺序查找
+
+```javascript
+  const arr = [5, 23, 89, 42, 1, 20, 6, 2, 46, 51, 88, 12, 64, 3, 100];
+  function sequenceSearch(arr, target){
+    const { length } = arr;
+    for(let i = 0; i < length; i ++){
+      if(arr[i] === target) return i;
+    }
+    return -1;
+  }
+  console.log(sequenceSearch(arr, 20));
+  // 5
+```
+
+通过一个`for`循环遍历数组，如果找到了对应的元素就返回该元素的索引，否则返回-1  
+
+优点：
+
+- 顺序查找也称为线形查找，属于无序查找算法，对于数组元素的排序没有特别要求
+
+缺点：
+
+- 需要依次对数组中的元素作比较，效率较低
+
+----
+
 ### 二分法
+
+```javascript
+  const arr = [1, 2, 3, 5, 6, 12, 20, 23, 42, 46, 51, 64, 88, 89, 100];
+  function binarySearch(arr, target){
+    let start = 0, end = arr.length, midIndex, midValue;
+    while(start <= end){
+      midIndex = Math.floor((start + end) / 2);
+      midValue = arr[midIndex];
+      if(midValue === target ){
+        return midIndex;
+      }else if(midValue < target){
+        start = midIndex;
+      }else if(midValue > target){
+        end = midIndex;
+      }
+    }
+    return -1;
+  }
+  console.log(binarySearch(arr, 20));
+  // 6
+```
+
+算法思想：
+
+1. 取数组的中间元素，用中间元素和目标值比较
+2. 如果中间元素和目标值相等，返回中间元素索引
+3. 如果中间元素比目标值小，则在中间元素至数组最后一个元素中继续查找
+4. 如果中间元素比目标值大，则在数组开始元素至中间元素中继续查找
+5. 不断重复前面的过程
+
+优点：
+
+- 效率较高
+
+缺点：
+
+- 要求数组必须为有序数组
+
+----
+
+## 数组扁平化
 
 ----
 
