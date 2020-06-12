@@ -306,6 +306,7 @@
     return arr;
   }
   console.log(Insertion(arr));
+  // [1, 2, 3, 5, 6, 12, 20, 23, 42, 46, 51, 64, 88, 89, 100]
 ```
 
 思路:  
@@ -346,13 +347,44 @@
     return arr;
   }
   console.log(selsetSort(arr));
+  // [1, 2, 3, 5, 6, 12, 20, 23, 42, 46, 51, 64, 88, 89, 100]
 ```
 
+思路:  
 
+1. 假设未排序序列的第一个是最大值，记下该元素的位置，从前往后比较
+2. 若某个元素比该元素大，覆盖之前的位置
+3. 重复第二个步骤，直到找到未排序的末尾
+4. 将未排序元素的第一个元素和最大元素交换位置
+5. 重复前面几个步骤，直到所有元素都已经排序
 
 ----
 
 ### 希尔排序
+
+```javascript
+  const arr = [5, 23, 89, 42, 1, 20, 6, 2, 46, 51, 88, 12, 64, 3, 100];
+  function shellSort(arr){
+    var { length } = arr;
+    gap = Math.floor(length / 2);
+    while(gap !== 0){
+      for(var i = gap; i < length; i ++){
+        var temp = arr[i];
+        var j;
+        for(j = i - gap; j >= 0 && temp < arr[j]; j -= gap){
+          arr[j + gap] = arr[j];
+        }
+        arr[j + gap] = temp;
+      }
+      gap=Math.floor(gap / 2);
+    }
+    return arr;
+  }
+  console.log(shellSort(arr));
+  // [1, 2, 3, 5, 6, 12, 20, 23, 42, 46, 51, 64, 88, 89, 100]
+```
+
+希尔排序的算法思想就是把数据分组，比如十个数据可以分为五组，每组两个元素，对这五个组分别进行排序，再继续把排序后的数据分成两个组，每组五个元素，再进行排序，不断重复....直到最后只有一个组的时候，直接进行排序，这里有比较详细的图解 [转送门](https://blog.csdn.net/Macuroon/article/details/80560504)  
 
 ----
 
