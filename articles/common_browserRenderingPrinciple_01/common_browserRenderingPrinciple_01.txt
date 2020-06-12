@@ -1,0 +1,22 @@
+浏览器渲染原理
+
+1. 浏览器架构
+  (1)浏览器组件
+  (2)浏览器进程和线程
+
+2.浏览器渲染过程与原理
+  (1)浏览器怎样解析html文件
+
+3.阻塞渲染
+
+4.优化渲染性能
+  (1)html中css文件和js文件的引入顺序
+
+
+
+参考:
+1.https://segmentfault.com/a/1190000012960187#item-3
+2.https://www.zhihu.com/question/23250329
+3.https://segmentfault.com/a/1190000022633988
+4.https://juejin.im/post/5e143104e51d45414a4715f7
+5.https://segmentfault.com/a/1190000012925872
