@@ -188,6 +188,8 @@
 							imgSymbol[i].style['max-width'] = '100%';
 							//给图片统一设置白色背景
 							imgSymbol[i].parentNode.style['background-color'] = '#fff';
+							//这里消除图片边缘的边距，否则图片边缘会有间隙
+							imgSymbol[i].parentNode.style['font-size'] = 0;
 						}
 						//组装目录树，这里我放到宏任务中异步生成目录树，为了防止文章过长时，阻塞文章渲染
 						//如果同步生成目录树，文章过长时遍历的dom过多，性能开销大，可能会阻塞主线程中文章的渲染

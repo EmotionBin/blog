@@ -460,6 +460,59 @@
 
 ## 数组扁平化
 
+### while + some + concat
+
+```javascript
+  const arr = [1, 2, ['a', 'b', ['中', '文', [1, 2, 3, [11, 21, 31]]]], 3];
+  function myFlat(arr) {
+    while (arr.some(item => Array.isArray(item))) {
+      arr = [].concat(...arr);
+    }
+    return arr;
+  }
+  console.log(myFlat(arr));
+  // [1 ,2, 'a', 'b', '中', '文', 1, 2, 3, 11, 21, 31, 3]
+```
+
+思路就是如果当前数组中嵌套了数组，就把这个嵌套的数组用es6的拓展运算符(...)展开，再用`concat`拼接  
+
+----
+
+### 递归
+
+```javascript
+  const arr = [1, 2, ['a', 'b', ['中', '文', [1, 2, 3, [11, 21, 31]]]], 3];
+  function myFlat(arr) {
+    const res = [];
+    const { length } = arr;
+    for(let i = 0; i < length; i ++){
+      const item = arr[i];
+      if(Array.isArray(item)){
+        res.push(...myFlat(item));
+      }else{
+        res.push(item);
+      }
+    }
+    return res;
+  }
+  console.log(myFlat(arr));
+  // [1 ,2, 'a', 'b', '中', '文', 1, 2, 3, 11, 21, 31, 3]
+```
+
+思路就是遍历数组，如果当前数组元素还是一个数组，则递归处理，否则直接`push`  
+
+----
+
+### es6的flat
+
+```javascript
+  const arr = [1, 2, ['a', 'b', ['中', '文', [1, 2, 3, [11, 21, 31]]]], 3];
+  console.log(arr.flat(Infinity));
+  // [1 ,2, 'a', 'b', '中', '文', 1, 2, 3, 11, 21, 31, 3]
+```
+
+es6的`flat`和`flatMap`虽然好用，但是要注意它的兼容性，`chrome`浏览器版本至少要在**69**及以上  
+
 ----
 
 ## Vue对于数组的响应式监听
