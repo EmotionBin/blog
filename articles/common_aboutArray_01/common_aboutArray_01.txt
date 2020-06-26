@@ -515,6 +515,52 @@ es6的`flat`和`flatMap`虽然好用，但是要注意它的兼容性，`chrome`
 
 ----
 
+## 数组集合
+
+### 数组的交集
+
+```javascript
+  const arr1 = [1,2,3,4,5,6];
+  const arr2 = [5,6,7,8,9,10];
+  function intersection(arr1, arr2) {
+    return arr1.filter(item => arr2.includes(item));
+  }
+  console.log(intersection(arr1, arr2));
+  // [5, 6]
+```
+
+----
+
+### 数组的并集
+
+```javascript
+  const arr1 = [1,2,3,4,5,6];
+  const arr2 = [5,6,7,8,9,10];
+  function union(arr1, arr2) {
+    return [...new Set([...arr1, ...arr2])];
+  }
+  console.log(union(arr1, arr2));
+  // [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+```
+
+----
+
+### 数组的差集
+
+这里只是举个例子，计算arr1相对于arr2的差集  
+
+```javascript
+  const arr1 = [1,2,3,4,5,6];
+  const arr2 = [5,6,7,8,9,10];
+  function diff(arr1, arr2) {
+    return arr1.filter(item => !arr2.includes(item));
+  }
+  console.log(diff(arr1, arr2));
+  // [1, 2, 3, 4]
+```
+
+----
+
 ## Vue对于数组的响应式监听
 
 ### Vue对数组监听的坑
