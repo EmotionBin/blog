@@ -24,11 +24,11 @@
 					</div>
 				</div>
 				<div class="article_upload">
-					<span class="upload_title">选择要上传的文件(.txt):</span>
+					<span class="upload_title">选择要上传的文件(.md):</span>
 					<div class="upload_file">
 						<el-upload
 							action="#"
-							accept=".txt"
+							accept=".md"
 							ref="upload"
 							:auto-upload="false"
 							:limit="1"
@@ -38,7 +38,7 @@
 							:file-list="articleData.fileList"
 						>
 							<el-button size="small" type="primary">点击上传</el-button>
-							<div slot="tip" class="el-upload__tip">只能上传.txt文件,上传后自动保存为.md文件</div>
+							<div slot="tip" class="el-upload__tip">只能上传.md文件</div>
 						</el-upload>
 					</div>
 				</div>
@@ -76,10 +76,10 @@
 			beforeUpload:function (file) {
 				let that = this;
 				console.log(file);
-				var isTxt = file.raw.name.substring(file.raw.name.length - 4) === '.txt';
-				console.log(isTxt);
-				if (!isTxt) {
-					this.$message.error('上传的文件只能是.txt格式!');
+				var isMd = file.raw.name.substring(file.raw.name.length - 3) === '.md';
+				console.log(isMd);
+				if (!isMd) {
+					this.$message.error('上传的文件只能是.md格式!');
 					//清空文件
 					that.articleData.fileList = [];
 					return;

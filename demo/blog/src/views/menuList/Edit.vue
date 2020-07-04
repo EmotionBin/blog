@@ -29,7 +29,7 @@
 						<el-upload
 							class="upload_op"
 							action="#"
-							accept=".txt"
+							accept=".md"
 							ref="upload"
 							:auto-upload="false"
 							:limit="1"
@@ -39,7 +39,7 @@
 							:file-list="curModifyData.articleFile"
 						>
 							<el-button size="mini" type="primary">重新上传</el-button>
-							<!-- <div slot="tip" class="el-upload__tip">只能上传.txt文件,上传后自动保存为.md文件</div> -->
+							<!-- <div slot="tip" class="el-upload__tip">只能上传.md文件</div> -->
 						</el-upload>
 						<el-button size="mini" type="success" @click="doSave(item.articleId,index)">保存</el-button>
 						<el-button size="mini" type="warning" @click="doModify(item.articleId,index)">修改</el-button>
@@ -267,10 +267,10 @@
 			beforeUpload:function (file) {
 				let that = this;
 				console.log(file);
-				var isTxt = file.raw.name.substring(file.raw.name.length - 4) === '.txt';
-				console.log(isTxt);
-				if (!isTxt) {
-					this.$message.error('上传的文件只能是.txt格式!');
+				var isMd = file.raw.name.substring(file.raw.name.length - 3) === '.md';
+				console.log(isMd);
+				if (!isMd) {
+					this.$message.error('上传的文件只能是.md格式!');
 					//清空文件
 					that.curModifyData.articleFile = [];
 					return;
