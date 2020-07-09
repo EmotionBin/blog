@@ -437,9 +437,167 @@ p
 
 ## 实践
 
-### 手写Promise
+### 一些面试题
 
+**题目1:**  
 
+```javascript
+Promise.resolve()
+  .then(() => {
+    return new Error('error!!!')
+  })
+  .then((res) => {
+    console.log('then: ', res)
+  })
+  .catch((err) => {
+    console.log('catch: ', err)
+  })
+```
+
+运行结果：  
+
+```javascript
+then: Error: error!!!
+    at Promise.resolve.then (...)
+    at ...
+```
+
+`.then` 或者 `.catch` 中 `return` 一个 `Error` 对象并不会抛出错误，所以不会被后续的 `.catch` 捕获，需要改成其中一种：  
+
+```javascript
+return Promise.reject(new Error('error!!!'))
+throw new Error('error!!!')
+```
+
+因为返回任意一个非 `promise` 的值都会被包裹成 `promise` 对象，即 `return new Error('error!!!')` 等价于 `return Promise.resolve(new Error('error!!!'))`  
+
+**题目2:**  
+
+```javascript
+var promise = new Promise(function(resolve, reject){
+  setTimeout(function() {
+    resolve(1);
+  }, 3000)
+})
+
+// 下面三种有何不同
+// 1
+promise.then(() => {
+  return Promise.resolve(2);
+}).then((n) => {
+  console.log(n)
+});
+
+// 2
+promise.then(() => {
+  return 2
+}).then((n) => {
+  console.log(n)
+});
+
+// 3
+promise.then(2).then((n) => {
+  console.log(n)
+});
+```
+
+1.输出2。`Promise.resolve(2)` 返回了一个新的 `Promise`对象并把参数传入 `then`  
+2.输出2。这里的 `return` 会自动被包裹成 `Promise`对象，和1不一样的地方是，这里是同步的，因为是直接返回，1中返回的是`Promise.resolve(2)`，是一个微任务，是异步的，要在下一个事件循环中进行  
+3.输出1。`then` 和 `catch` 期望接收函数做参数，如果非函数就会发生 `Promise` 穿透现象，打印的是上一个 `Promise` 的返回  
+
+**题目3:**  
+
+```javascript
+let a;
+const b = new Promise((resolve, reject) => {
+  console.log('promise1');
+  resolve();
+}).then(() => {
+  console.log('promise2');
+}).then(() => {
+  console.log('promise3');
+}).then(() => {
+  console.log('promise4');
+});
+
+a = new Promise(async (resolve, reject) => {
+  console.log(a);
+  await b;
+  console.log(a);
+  console.log('after1');
+  await a
+  resolve(true);
+  console.log('after2');
+});
+
+console.log('end');
+```
+
+输出结果：  
+
+```javascripte
+promise1
+undefined
+end
+promise2
+promise3
+promise4
+Promise {<pending>}
+after1
+```
+
+1.`Promise`会立即执行，输出 `promise1`，调用 `resolve()` 后把后面的 `then` 方法都注册成微任务，会在下一个事件循环进行  
+2.`b` 中的同步任务已经执行完毕，现在来到了 `a`，立即执行 `Promise`内的方法 `console.log(a)`,此时 `a` 还没有被赋值，因为 `new Promise`这个过程还没有执行完，所以 `a` 是 `undefined`  
+3.`await b` 会把它后面的代码注册成微任务，此时输出同步任务中的 `end`，同步任务执行完毕后，开始执行微任务，依次输出 `promise2`,`promise3`,`promise4`  
+4.这里有点坑，要转一下弯，此时执行到 `await b` 后面的 `console.log(a)` ，`Promise` 中的函数是同步的，因为当前事件循环中的同步任务已经执行完毕了，所以 `new Promise` 这个过程已经执行完了，`a` 已经被赋值为一个 `Promise` 对象，但是它的状态是 `pending`，坑就坑在这里  
+5.这里也很坑。接着输出 `after1`，后面的 `await a` 真的是个奇怪的操作，其实这里的 `await a` 后面的代码并不会执行，因为 `a` 是一个 `Promise`， 必须要等到 `a` 的状态从 `pending` 到 `fullfilled` 才会继续往下执行，`a` 的状态一直得不到更改，所以无法执行下面的代码，坑在这里，特别恶心，只要在 `await a` 上面加一行 `resolve()` 就能让后面的代码执行  
+
+----
+
+### 可取消的Promise
+
+`Promise` 有一个缺陷就是无法得知执行到了哪个地步，也无法取消，只能被动的等 `resolve` 或者 `reject` 执行或者抛错。要想实现可手动取消的 `Promise` ，思路就是外部再包裹一层 `Promise`，并提供 `abort` 方法， 用来 `reject` 内部 `Promise`  
+
+```javascript
+let promise = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve(123);
+  }, 10000);
+});
+
+function wrap(p) {
+  let resol = null;
+  let abort = null;
+
+  let p1 = new Promise((resolve, reject) => {
+    resol = resolve;
+    abort = reject;
+  });
+
+  p1.abort = abort;
+  p.then(resol, abort);
+
+  return p1;
+}
+
+let newPromise = wrap(promise);
+
+newPromise.then(res => console.log(res))
+newPromise.catch(err => console.log(err))
+
+setTimeout(() => {
+    newPromise.abort('手动取消Promise')
+},2000)
+
+//两秒后输出
+//手动取消Promise
+```
+
+原理就是现在有两个 `Promise`对象，一个是在外面声明的 `promise`，一个是在函数里面声明的 `p1`。假设我们不手动取消，10秒后，外面的 `promise` 状态变为 `resolved`，由函数内部的 `p.then(resol, abort)` 可知，调用`p1` 中的 `resolve`，此时 `p1`状态也变为 `resolved`；若我们手动取消，调用 `newPromise.abort()` 其实也就是调用了 `p1.abort()`，也就是把 `p1` 的状态变为 `rejected`，本例中 `promise` 的状态在10秒后依然会变为 `resolved`，但是它并没有定义 `then`，就算被 `resolved` 也不知道接下来要执行什么，这就是取消的原理  
+
+----
+
+### 顺序输出Promise
 
 
 
