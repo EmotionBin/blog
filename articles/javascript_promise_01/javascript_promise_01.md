@@ -1,33 +1,6 @@
 # 浅谈Promise
 
-草稿
-1.promise是什么
-2.promise有什么作用
-	(1)promise解决了什么问题
-	(2)promise的使用方法
-3.promise的各种API
-4.使用promise的一些注意事项
-	(1)不可取消
-	(2)Promise在初始化时，传入的函数是同步执行的，异步提现在 then 回调
-5.promise优缺点总结
-	优点:
-	(1)对象的状态不受外界影响
-	(2)一旦状态改变，就不会再变
-	缺点:
-	(1)无法取消
-	(2)错误需要通过回调函数捕获，如果不设置回调函数，Promise内部抛出的错误
-	(3)当处于pending状态时，无法得知目前进展到哪一个阶段（刚刚开始还是即将完成）
-6.实践
-	(1)手写promise
-		a.https://www.jianshu.com/p/c633a22f9e8c
-		b.https://www.jianshu.com/p/1eea8ce8c7a5
-	(2)一些关于promise的面试题
-
-
-
-# 浅谈Promise
-
-`Promise` 是异步编程的一种解决方案，ES6 将其写进了语言标准，统一了用法，原生提供了 `Promise` 对象。`Promise` 的出现对于异步变成有了很大的遍历，掌握好 `Promise` 将会有极大的便利  
+`Promise` 是异步编程的一种解决方案，ES6 将其写进了语言标准，统一了用法，原生提供了 `Promise` 对象。`Promise` 的出现对于异步编程有了很大的遍历，掌握好 `Promise` 将会有极大的帮助  
 
 ----
 
@@ -502,7 +475,7 @@ promise.then(2).then((n) => {
 ```
 
 1.输出2。`Promise.resolve(2)` 返回了一个新的 `Promise`对象并把参数传入 `then`  
-2.输出2。这里的 `return` 会自动被包裹成 `Promise`对象，和1不一样的地方是，这里是同步的，因为是直接返回，1中返回的是`Promise.resolve(2)`，是一个微任务，是异步的，要在下一个事件循环中进行  
+2.输出2。这里的 `return 2` 会自动被包裹成 `Promise`对象，`return 2` 等价于 `return Promise.resolve(2)`  
 3.输出1。`then` 和 `catch` 期望接收函数做参数，如果非函数就会发生 `Promise` 穿透现象，打印的是上一个 `Promise` 的返回  
 
 **题目3:**  
@@ -535,7 +508,7 @@ console.log('end');
 
 输出结果：  
 
-```javascripte
+```javascript
 promise1
 undefined
 end
@@ -599,8 +572,129 @@ setTimeout(() => {
 
 ### 顺序输出Promise
 
+```javascript
+//实现mergePromise函数，把传进去的数组顺序先后执行，
+//并且把返回的数据先后放到数组data中
+const timeout = ms => new Promise((resolve, reject) => {
+    setTimeout(() => {
+        resolve();
+    }, ms);
+});
 
+const ajax1 = () => timeout(2000).then(() => {
+    console.log('1');
+    return 1;
+});
 
+const ajax2 = () => timeout(1000).then(() => {
+    console.log('2');
+    return 2;
+});
 
+const ajax3 = () => timeout(2000).then(() => {
+    console.log('3');
+    return 3;
+});
 
+function mergePromise(ajaxArray) {
+    //todo 补全函数
+}
 
+mergePromise([ajax1, ajax2, ajax3]).then(data => {
+    console.log('done');
+    console.log(data); // data 为 [1, 2, 3]
+});
+
+// 分别输出
+// 1
+// 2
+// 3
+// done
+// [1, 2, 3]
+```
+
+补全后的函数如下：  
+
+```javascript
+function mergePromise(ajaxArray) {
+  let p = Promise.resolve();
+  let arr = [];
+  ajaxArray.forEach(promise => {
+    p = p.then(promise).then((data) => {
+        arr.push(data);
+        return arr;
+    });
+  });
+  return p;
+}
+```
+
+实现思路就是用 `Promise.resolve` 将所有 `promise` 串成一个任务队列。开始就声明了一个状态为 `resolved` 的 `Promise`对象`p`，遍历传入的函数数组，`p.then(promise)` 利用状态为 `resolved` 的 `p` 调用 `then` 方法执行数组中每一个函数，数组中的函数返回的是 `Promise` 对象，待它的状态变为 `resolved` 之后，在调用 `then` 方法，将数据拿到并 `push` 进 `arr` 数组保存，再将 `arr` 数组返回，因为这里是在 `then` 方法中返回的数组，会自动被包裹成 `Promise` 对象，一直重复这个过程直到遍历完数组所有成员.....这时候 `p` 是一个状态为 `resolved` 的 `Promise` 对象，数据是一个依次保存着传入的各个函数的 `resolve` 值的数组，在将 `p` 返回即可  
+
+----
+
+### 关于Promise嵌套执行顺序问题
+
+```javascript
+Promise.resolve().then(function F1() {
+    console.log('promise1')
+    Promise.resolve().then(function F4() {
+        console.log('promise2');
+        Promise.resolve().then(function F5() {
+            console.log('promise4');
+        }).then(function F6() {
+            console.log('promise?');
+        })
+    }).then(function F7() {
+        console.log('promise5');
+    })
+}).then(function F2() {
+    console.log('promise3');
+}).then(function F3() {
+    console.log('promise6');
+});
+```
+
+输出结果：  
+
+```javascript
+promise1
+promise2
+promise3
+promise4
+promise5
+promise6
+promise?
+```
+
+执行的过程图解：  
+
+![UKr5rV.png](https://s1.ax1x.com/2020/07/10/UKr5rV.png)
+
+分析：  
+
+1. 最开始代码执行，遇到 `Promise`，直接执行，将回调函数 `F1` 扔进了 `Micro Task` 中。执行栈为空，开始执行 `Micro Task` 中的代码，为第一个快照  
+
+2. 执行函数 `F1`，打印出 `Promise1`，执行 `Promise.resolve()`，将函数 `F4` 扔进了 `Micro Task` 中；此时状态已更改为 `resolve`，将 `then` 中的函数 `F2` 扔进 `Micro Task`，为第二个快照  
+
+3. (1)执行函数 `F4` ，打印出 `promise2`，执行 `Promise.resolve()`，将函数 `F5` 扔进了 `Micro Task` 中；`F4` 执行完毕，状态更改，将函数 `F7` 扔进 `Micro Task` 中  
+(2)执行函数 `F2`，打印出 `promise3`，状态更改，将函数 `F3` 扔进了扔进了 `Micro Task` 中，为第三个快照  
+
+4. (1)执行函数 `F5`，打印出 `promise4`， 状态更改，将函数 `F6` 扔进了 `Micro Task` 中  
+(2)执行函数 `F7`，打印出 `promise5`  
+(3)执行函数 `F3`，打印出 `promise6`，为第四个快照  
+
+5. 执行函数 `F3`，打印出 `promise?`，结束  
+
+小结:执行完当前 `promise`，会把紧挨着的 `then` 放入 `Micro Task` 队尾，链后面的 `then` 暂不处理（每一个 `then` 返回一个新的 `promise`，第二个 `then` 是第一个 `then` 返回的 `promise` 的 `then`）  
+
+----
+
+## 结束语
+
+`Promise` 在开发过程中出现的频率是非常高的，也是面试题中的一个热点，它对于我们的异步编程提供了非常大的帮助，不再继续使用看了让人头大的无数层回调嵌套，解决了回调地狱的问题。如果本文中有说的不正确的地方，欢迎大佬鞭策!  
+
+**参考资料：**
+
+[阮一峰es6Promise](https://es6.ruanyifeng.com/#docs/promise)  
+[关于Promise嵌套then和多级then的解析](https://www.jianshu.com/p/b1abaf792491)
