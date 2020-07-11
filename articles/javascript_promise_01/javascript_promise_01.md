@@ -1,6 +1,6 @@
 # 浅谈Promise
 
-`Promise` 是异步编程的一种解决方案，ES6 将其写进了语言标准，统一了用法，原生提供了 `Promise` 对象。`Promise` 的出现对于异步编程有了很大的遍历，掌握好 `Promise` 将会有极大的帮助  
+`Promise` 是异步编程的一种解决方案，ES6 将其写进了语言标准，统一了用法，原生提供了 `Promise` 对象。`Promise` 的出现对于异步编程有了很大的便利，掌握好 `Promise` 将会有极大的帮助  
 
 ----
 
@@ -686,7 +686,7 @@ promise?
 
 5. 执行函数 `F3`，打印出 `promise?`，结束  
 
-小结:执行完当前 `promise`，会把紧挨着的 `then` 放入 `Micro Task` 队尾，链后面的 `then` 暂不处理（每一个 `then` 返回一个新的 `promise`，第二个 `then` 是第一个 `then` 返回的 `promise` 的 `then`）  
+**小结:执行完当前 promise，会把紧挨着的 then 放入 Micro Task 队尾，链后面的 then 暂不处理（每一个 then 返回一个新的 promise，第二个 then 是第一个 then 返回的 promise 的 then）**  
 
 ----
 
