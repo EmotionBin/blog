@@ -690,6 +690,40 @@ promise?
 
 ----
 
+### 手写简易Promise
+
+这里不考虑异常情况，实现一个可异步链式调用的简易 `Promise`  
+
+```javascript
+function MyPromise(fn) {
+  this.cbs = [];
+
+  const resolve = (value) => {
+    setTimeout(() => {
+      this.data = value;
+      this.cbs.forEach((cb) => cb(value));
+    });
+  }
+
+  fn(resolve.bind(this));
+}
+
+MyPromise.prototype.then = function (onResolved) {
+  return new MyPromise((resolve) => {
+    this.cbs.push(() => {
+      const res = onResolved(this.data);
+      if (res instanceof MyPromise) {
+        res.then(resolve);
+      } else {
+        resolve(res);
+      }
+    });
+  });
+};
+```
+
+----
+
 ## 结束语
 
 `Promise` 在开发过程中出现的频率是非常高的，也是面试题中的一个热点，它对于我们的异步编程提供了非常大的帮助，不再继续使用看了让人头大的无数层回调嵌套，解决了回调地狱的问题。如果本文中有说的不正确的地方，欢迎大佬鞭策!  
@@ -697,4 +731,5 @@ promise?
 **参考资料：**
 
 [阮一峰es6Promise](https://es6.ruanyifeng.com/#docs/promise)  
-[关于Promise嵌套then和多级then的解析](https://www.jianshu.com/p/b1abaf792491)
+[关于Promise嵌套then和多级then的解析](https://www.jianshu.com/p/b1abaf792491)  
+[最简实现Promise，支持异步链式调用（20行）](https://juejin.im/post/5e6f4579f265da576429a907)
