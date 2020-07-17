@@ -116,6 +116,102 @@ Vue2.0中响应式原理主要是ES5的`Object.defineProperty`，其实就是给
 
 ----
 
+#### v-for为什么要加key
+
+在使用 `v-for` 指令时，Vue建议我们都给每个项目加上一个独立的 `key`，这其中的秘密就是 `diff` 算法  
+
+来看一段代码，是没有加上 `key` 的情况：  
+
+```html
+  <div id="app">
+    <div>
+      <input type="text" v-model="name">
+      <button @click="add">添加</button>
+    </div>
+    <ul>
+      <li v-for="(item, i) in list">
+        <input type="checkbox"> {{item.name}}
+      </li>
+    </ul>
+  </div>
+```
+
+```javascript
+  var vm = new Vue({
+    el: '#app',
+    data: {
+      name: '',
+      newId: 3,
+      list: [
+        { id: 1, name: '李斯' },
+        { id: 2, name: '吕不韦' },
+        { id: 3, name: '嬴政' }
+      ]
+    },
+    methods: {
+      add() {
+        //注意这里是unshift
+        this.list.unshift({ id: ++this.newId, name: this.name })
+        this.name = ''
+      }
+    }
+  });
+```
+
+当选中吕不为时，添加楠楠后选中的确是李斯，并不是我们想要的结果，我们想要的是当添加楠楠后，选中的仍然是吕不韦  
+
+![Usr5kt.png](https://s1.ax1x.com/2020/07/17/Usr5kt.png)
+
+![UsrH1S.png](https://s1.ax1x.com/2020/07/17/UsrH1S.png)
+
+再来看一段代码，这是加上 `key` 的情况，js代码同上：  
+
+```html
+  <div id="app">
+    <div>
+      <input type="text" v-model="name">
+      <button @click="add">添加</button>
+    </div>
+    <ul>
+      <li v-for="(item, i) in list" :key="item.id">
+        <input type="checkbox"> {{item.name}}
+      </li>
+    </ul>
+  </div>
+```
+
+![Usr5kt.png](https://s1.ax1x.com/2020/07/17/Usr5kt.png)
+
+![Ussc40.png](https://s1.ax1x.com/2020/07/17/Ussc40.png)
+
+同样当选中吕不为时，添加楠楠后依旧选中的是吕不为  
+
+可以这样理解，**加了key(一定要具有唯一性) id的checkbox跟内容进行了一个关联**  
+
+----
+
+#### 关于diff算法
+
+diff算法的处理方法，就是对操作前后的 `dom` 树同一层的节点进行对比，一层一层对比:  
+
+![Usx9Cq.png](https://s1.ax1x.com/2020/07/17/Usx9Cq.png)
+
+当某一层有很多相同的节点时，也就是列表节点，diff 算法的更新过程默认情况下也是遵循以上原则，比如有节点 A-E，我们希望在B、C之间加入一个新节点 F，我们期望应该是直接在B、C之间插入节点 F:  
+
+![UsxQxK.jpg](https://s1.ax1x.com/2020/07/17/UsxQxK.jpg)
+
+但是 diff 算法执行起来却是这样的:  
+
+![Usx6aj.jpg](https://s1.ax1x.com/2020/07/17/Usx6aj.jpg)
+
+即把 C 更新成 F，D 更新成 C，E 更新成 D，最后再加入一个新节点 E，这样的效率是非常低的，因为插入位置后面的节点全部都被重新渲染了，而且这种渲染是不必要的，如果我们把各个节点能够对应起来，应该就能够复用节点，这样会好很多。所以用一个唯一的 key 来标识节点，diff 算法就可以正确的识别此节点，找到正确的位置插入新的节点  
+
+![UszFJI.jpg](https://s1.ax1x.com/2020/07/17/UszFJI.jpg)
+
+根据以上例子，总结一下，Vue 中 `v-for` 加 `:key="唯一标识"`(唯一标识可以是 item 里面 id、index 等）就是为了标识唯一性，Vue 组件是高度复用的，有了 `key` 之后，就可以更好的区分各个组件，高效的更新虚拟 `dom`  
+
+----
+
 ## 结束语
 
 以上就是我关于MVC和MVVM的一些理解，如果本文中有说的不正确的地方，欢迎大佬鞭策!  
@@ -126,4 +222,5 @@ Vue2.0中响应式原理主要是ES5的`Object.defineProperty`，其实就是给
 [思否-MVVM框架理解及其原理实现](https://segmentfault.com/a/1190000015895017)    
 [MVVM模式理解](https://www.cnblogs.com/goloving/p/8520030.html)  
 [简书-MVVM响应式系统的基本实现原理](https://www.jianshu.com/p/9fc69a38da50)  
-[知乎-Vue 模板编译原理](https://zhuanlan.zhihu.com/p/85105001)
+[知乎-Vue 模板编译原理](https://zhuanlan.zhihu.com/p/85105001)  
+[简书-VUE中演示v-for为什么要加key](https://www.jianshu.com/p/4bd5e745ce95)  
