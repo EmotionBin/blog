@@ -313,5 +313,67 @@ a.func3(); // Cherry
 
 ### 把this保存下来
 
+先将调用这个函数的对象保存在变量 `_this` 中，然后在函数中都使用这个 `_this`，这样 `_this` 就不会改变了  
+
+```javascript
+    var name = "windowsName";
+
+    var a = {
+
+        name : "Cherry",
+
+        func1: function () {
+            console.log(this.name)
+        },
+
+        func2: function () {
+            var _this = this;
+            setTimeout( function() {
+                _this.func1()
+            },100);
+        }
+
+    };
+
+    a.func2()       // Cherry
+```
+
+----
+
+### 使用 apply、call、bind
+
+可以查看上文对 `apply`、`call`、`bind` 的讲解，这里不再赘述  
+
+----
+
+## this绑定的优先级
+
+new 绑定 > 显示绑定 > 隐式绑定 > 默认绑定
+
+----
+
+## 总结
+
+1. 如果是通过 `new` 构造调用生成的实例对象，那么 `this` 绑定到新创建的对象上
+
+2. 如果函数是使用 `call`,`apply`,`bind` 来调用的，那么进行显示绑定，`this` 绑定到 `call`,`apply`,`bind` 第一个参数的对象上，箭头函数除外，因为箭头函数不绑定 `this`
+
+3. 如果函数是在某个上下文对象下被调用，进行隐式绑定，`this` 永远指向最后调用它的那个对象
+
+4. 如果都不是，即使用默认绑定，非严格模式下 `this` 绑定到 `window`，严格模式下是 `undefined`
+
+5. **匿名函数的 this 永远指向 window**
+
+解释一下第5点，因为**this 永远指向最后调用它的那个对象**，那么我们就来找最后调用匿名函数的对象，这就很尴尬了，因为匿名函数没有函数名，所以是没有办法被其他对象调用匿名函数的。所以说**匿名函数的 this 永远指向 window**  
+
+----
+
+## 实践
+
+下面来看一些面试题目进行实践，加强理解  
+
+题目1:  
+
+
 
 
