@@ -374,6 +374,67 @@ new 绑定 > 显示绑定 > 隐式绑定 > 默认绑定
 
 题目1:  
 
+```javascript
+function test(arg) {
+  this.x = arg;
+  return this;
+} 
 
+var x = test(5);
+var y = test(6);
+console.log(x.x);     
+console.log(y.x);
+```
 
+输出: `undefined` 6，`var x = test(5)` 调用了 `test` 函数，这里的 `this` 是默认绑定的 `window`，所以此时 `x = window`，`var y = test(6)` 再次调用 `test` 函数，这里的 `this` 还是 `window`，此时 `x = 6, y = window`，`console.log(x.x)` 即 `console.log(6.x)`，输出 `undefined`，`console.log(y.x)` 即 `console.log(window.x)`，输出6  
+
+题目2:  
+
+```javascript
+var name = 'The Window';
+var obj = {
+    name: 'My obj',
+    getName: function() {
+        return function() {
+            console.log(this.name);
+        };
+    }
+};
+
+obj.getName()();
+```
+
+输出 `The Window`，调用函数的时候又返回了一个函数，这个函数是匿名函数，`this` 绑定的是 `window`对象  
+
+题目3:  
+
+```javascript
+var point = { 
+    x : 0, 
+    y : 0, 
+    moveTo : function(x, y) { 
+        this.y = y;
+        var moveX = function(x) { 
+            this.x = x;
+        }; 
+        moveX(x);
+    }
+}; 
+point.moveTo(1, 1); 
+console.log(point.x);
+console.log(point.y);
+```
+
+输出:0 1，调用 `point.moveTo(1, 1)` 时，在 `moveTo` 函数中 `this` 指向 `point` 对象，`this.y = y` 即 `point.y = 1`，之后定义一个函数并调用，调用函数的时候 `this` 是默认绑定，所以此时 `this` 指向 `window`，`this.x = x` 即 `window.x = 1`  
+
+----
+
+## 结束语
+
+以上就是对 `this` 的理解，如果本文中有说的不正确的地方，欢迎大佬鞭策!  
+
+**参考资料：**
+
+[可能是最好的this解析了](https://juejin.im/post/5edd6d816fb9a047d3711550)  
+[this、apply、call、bind](https://juejin.im/post/59bfe84351882531b730bac2)  
 
