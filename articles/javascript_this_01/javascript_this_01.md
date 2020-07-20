@@ -421,6 +421,50 @@ console.log(point.y);
 
 输出:0 1，调用 `point.moveTo(1, 1)` 时，在 `moveTo` 函数中 `this` 指向 `point` 对象，`this.y = y` 即 `point.y = 1`，之后定义一个函数并调用，调用函数的时候 `this` 是默认绑定，所以此时 `this` 指向 `window`，`this.x = x` 即 `window.x = 1`  
 
+题目4:
+
+```javascript
+function foo() {
+    getName = function () { console.log (1); };
+    return this;
+}
+foo.getName = function () { console.log(2);};
+foo.prototype.getName = function () { console.log(3);};
+var getName = function () { console.log(4);};
+function getName () { console.log(5);}
+ 
+foo.getName ();                
+getName ();                    
+foo().getName ();              
+getName ();                    
+new foo.getName ();            
+new foo().getName ();          
+new new foo().getName ();
+```
+
+输出:2 4 1 1 2 3 3  
+
+解析:  
+
+首先声明了一个函数 `foo`，然后给函数 `foo` 上挂载了 `getName` 属性，它也是一个函数，再给 `foo` 函数的原型链上挂载 `getName` 属性，它也是一个函数，定义一个全局变量 `getName`，它的值是一个函数，定义了全局函数 `getName`，下面来看详细解释  
+
+1. `foo.getName ()`，直接调用 `foo` 函数上的 `getName` 方法，输出 2  
+2. `getName ()` 调用全局方法，这里要注意这个 `getName` 定义了两次，这里还需要结合**函数提升和变量提升**，在声明过程中的最后两行代码等价于下面的代码:
+
+```javascript
+function getName () { console.log(5);}
+var getName;
+getName = function () { console.log(4);};
+```
+
+**函数提升优先级比变量提升要高，且不会被变量声明覆盖，但是会被变量赋值覆盖**，所以这里输出 4   
+
+3. `foo().getName ()`，这里先调用 `foo` 函数，给 `getName` 赋值成一个函数，注意，**函数中的赋值如果没有加上 var，则赋值会被提升到全局**，这里没有 `var`，所以等价于 `window.getName = function () { console.log (1); };`，执行完之后返回 `this`，这里的 `this` 是默认绑定，就是 `window`，接下来就是调用 `window.getName ()`，输出 1  
+4. `getName ()`，同上也输出 1   
+5. `new foo.getName ()`，这里是 `new` 构造调用，调用了 `foo` 的 `getName` 构造方法，输出 2   
+6. `new foo().getName ()`，这里等价于 `var obj = new foo();obj.getName ()`，`obj` 中没有 `getName` 这个方法，因为`obj` 是 `foo` 函数的一个实例，所以会去原型链上一层一层往上找，即 `obj.getName ()` 等价于 `foo.prototype.getName()`，输出 3   
+7. `new new foo().getName ()`，等价于 `var obj = new foo();new obj.getName ()`，结合上面的例子来看，这里也输出 3   
+
 ----
 
 ## 结束语
