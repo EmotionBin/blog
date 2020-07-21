@@ -177,7 +177,7 @@ function _new() {
 ```
 
 1. 创建一个新对象
-2. 把这个新对象的 `__proto__` 属性指向 原函数的 `prototype` 属性(即继承原函数的原型)
+2. 把这个新对象的 `__proto__` 属性指向原函数的 `prototype` 属性(即继承原函数的原型)
 3. 将这个新对象绑定到此函数的 `this` 上
 4. 如果无返回值或者返回一个非对象值，则将新对象返回；如果返回值是一个对象的话那么直接返回该对象
 
@@ -366,7 +366,7 @@ new 绑定 > 显示绑定 > 隐式绑定 > 默认绑定
 
 下面来看一些面试题目进行实践，加强理解  
 
-题目1:  
+**题目1:**  
 
 ```javascript
 function test(arg) {
@@ -382,7 +382,7 @@ console.log(y.x);
 
 输出: `undefined` 6，`var x = test(5)` 调用了 `test` 函数，这里的 `this` 是默认绑定的 `window`，所以此时 `x = window`，`var y = test(6)` 再次调用 `test` 函数，这里的 `this` 还是 `window`，此时 `x = 6, y = window`，`console.log(x.x)` 即 `console.log(6.x)`，输出 `undefined`，`console.log(y.x)` 即 `console.log(window.x)`，输出6  
 
-题目2:  
+**题目2:**  
 
 ```javascript
 var name = 'The Window';
@@ -400,7 +400,7 @@ obj.getName()();
 
 输出 `The Window`，调用函数的时候又返回了一个函数，这个函数是匿名函数，`this` 绑定的是 `window`对象  
 
-题目3:  
+**题目3:**  
 
 ```javascript
 var point = { 
@@ -421,7 +421,7 @@ console.log(point.y);
 
 输出:0 1，调用 `point.moveTo(1, 1)` 时，在 `moveTo` 函数中 `this` 指向 `point` 对象，`this.y = y` 即 `point.y = 1`，之后定义一个函数并调用，调用函数的时候 `this` 是默认绑定，所以此时 `this` 指向 `window`，`this.x = x` 即 `window.x = 1`  
 
-题目4:
+**题目4:**
 
 ```javascript
 function foo() {
@@ -475,4 +475,5 @@ getName = function () { console.log(4);};
 
 [可能是最好的this解析了](https://juejin.im/post/5edd6d816fb9a047d3711550)  
 [this、apply、call、bind](https://juejin.im/post/59bfe84351882531b730bac2)  
+[深入理解 js this 绑定](https://segmentfault.com/a/1190000011194676)  
 
