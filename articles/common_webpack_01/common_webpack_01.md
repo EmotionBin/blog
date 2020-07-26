@@ -157,6 +157,9 @@ Webpack 的运行流程是一个串行的过程，从启动到结束会依次执
 
 **在以上过程中，webpack 会在特定的时间点广播出特定的事件，插件在监听到感兴趣的事件后会执行特定的逻辑，并且插件可以调用 Webpack 提供的 API 改变 Webpack 的运行结果**
 
+我自己写了一个简易的 webpack，模拟了 webpack 打包的主要流程，对于理解 webpack 的构建流程和原理有很大的帮助，可以看这里 [传送门](https://github.com/EmotionBin/variousDemo/tree/master/webpack/25-handle-webpack)  
 
+----
 
+## 实现原理
 
