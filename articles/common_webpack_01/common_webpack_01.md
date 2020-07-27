@@ -29,6 +29,9 @@ webpack构建流程与原理:
 3. https://www.jianshu.com/p/b0a644e336a2
 4. https://zhuanlan.zhihu.com/p/58151131
 
+HMR原理:
+https://zhuanlan.zhihu.com/p/30669007?group_id=911546876953591808
+
 手写loader:https://www.jianshu.com/p/c89f1f3fd4af
 
 # 关于webpack的那些事
@@ -161,5 +164,98 @@ Webpack 的运行流程是一个串行的过程，从启动到结束会依次执
 
 ----
 
-## 实现原理
+## 部分功能实现原理
 
+### dev-server
+
+webpack 的 dev-server 给开发者带来了极大的遍历，其实它的实现原理也很简单，在本地利用 **express** 启动一个 `Http` 服务器，这个服务器与客户端采用 **websocket** 通信协议，当原始文件发生改变， dev-server 会实时编译并更新到客户端  
+
+有以下几点是需要注意的:  
+
+1. dev-server 不会对 `index.html` 的修改作出反应，只会对资源文件进行监听  
+2. dev-server 只在内存中生成文件，不会出现在目录文件中，生成的目录由 `contentBase` 指定  
+
+dev-server 精髓的地方是它的 **HMR(热模块替换)**，下面会探究 HMR 实现原理  
+
+----
+
+### HMR
+
+Hot Module Replacement（以下简称 HMR）是 webpack 发展至今引入的最令人兴奋的特性之一，当你对代码进行修改并保存后，webpack 将对代码重新打包，并将新的模块发送到浏览器端，浏览器通过新的模块替换老的模块，这样在不刷新浏览器的前提下就能够对应用进行更新，下面会对 HMR 功能一探究竟，请看下面一张图:  
+
+![aiF69U.jpg](https://s1.ax1x.com/2020/07/27/aiF69U.jpg)
+
+**第一步：webpack 对文件系统进行 watch 打包到内存中**
+
+webpack 会对文件进行监听，判断文件是否修改，webpack 对文件监听的原理就是**轮询判断文件的最后编辑时间是否发生变化**，如果发现文件修改时间不一致则，则说明文件发生了改变，此时 webpack 会重新对该文件进行编译打包，然后保存到内存中  
+
+**第二步：devServer 通知浏览器端文件发生改变**
+
+在启动 devServer 的时候，服务端和浏览器端建立了一个 webSocket 长连接，以便将 webpack 编译和打包的各个阶段状态告知浏览器，当编译完成后，将编译打包后的新模块 hash 值发送到浏览器端  
+
+**第三步：webpack-dev-server/client 接收到服务端消息做出响应**
+
+浏览器接收到 type 为 hash 消息后会将 hash 值暂存起来，当接收到 type 为 ok 的消息后对应用执行 reload 操作，在 reload 操作中，会调用 `reloadApp` 函数，根据 hot 配置决定是刷新浏览器还是对代码进行热更新（HMR），请看下面一段代码:  
+
+```javascript
+function reloadApp() {
+  // ...
+  if (hot) {
+    log.info('[WDS] App hot update...');
+    const hotEmitter = require('webpack/hot/emitter');
+    hotEmitter.emit('webpackHotUpdate', currentHash);
+    // ...
+  } else {
+    log.info('[WDS] App updated. Reloading...');
+    self.location.reload();
+  }
+}
+```
+
+如果配置了模块热更新，将最新 hash 值发送给 webpack，然后将控制权交给 webpack 客户端代码。如果没有配置模块热更新，就直接调用 `location.reload` 方法刷新页面  
+
+**第四步：webpack 接收到最新 hash 值验证并请求模块代码**
+
+webpack 拿到 hash 值后先验证是否有更新，如果有更新则使用 ajax 请求服务端，服务端将有更新的文件列表返回；再使用 jsonp 方式请求最新的模块代码，根据返回的新模块代码做进一步处理，可能是刷新页面，也可能是对模块进行热更新  
+
+**第五步：HotModuleReplacement.runtime 对模块进行热更新**
+
+调用 `hotApply` 方法，先找出所以需要更新的模块和依赖，再删除缓存中过期的模块和依赖，最后将新的模块添加到 modules 中，当下次调用 `__webpack_require__` 方法的时候，就是获取到了新的模块代码了。如果在热更新过程中出现错误，热更新将回退到刷新浏览器，这部分代码在 dev-server 代码中，简要代码如下:  
+
+```javascript
+module.hot.check(true).then(function(updatedModules) {
+  if(!updatedModules) {
+    return window.location.reload();
+  }
+  // ...
+}).catch(function(err) {
+  var status = module.hot.status();
+  if(["abort", "fail"].indexOf(status) >= 0) {
+    window.location.reload();
+  }
+});
+```
+
+dev-server 先验证是否有更新，没有代码更新的话，重载浏览器。如果在 `hotApply` 的过程中出现 abort 或者 fail 错误，也进行重载浏览器  
+
+**第六步：业务代码需要做些什么？**
+
+这里假设更改了 `print.js` ，进行 HMR ，如果要在 HMR 后进行一些操作，那么可以像下面这样操作:  
+
+```javascript
+if(module.hot){
+  // 一旦module.hot为true说明开启了HMR功能 
+  module.hot.accept('./print.js', function(){
+    // 方法会监听 print.js 文件的变化，一旦发生变化，其他默认不会重新打包构建
+    // do something
+  })
+}
+```
+
+----
+
+## 实践
+
+### 手写loader
+
+### 手写plugins
