@@ -561,6 +561,58 @@ es6的`flat`和`flatMap`虽然好用，但是要注意它的兼容性，`chrome`
 
 ----
 
+## 如何判断是不是数组
+
+在 js 中，数组和对象都是引用类型，如果用 `typeof` 来判断一个变量是不是数组，这是不可行的，因为用它判断数组和对象输出都是 `object`  
+
+```javascript
+var a = [];
+typeof(a); // "object"
+
+var b = {};
+typeof(b); // "object"
+```
+
+那么应该如何去准确的判断一个变量是不是数组呢，下面给出一些方法  
+
+**instanceof**
+
+`instanceof` 用于判断该实例是否由某一个构造函数创建出来的，返回一个布尔值  
+
+```javascript
+var a = [];
+a instanceof Array; // true
+```
+
+**constructor**
+
+实例的构造函数属性 `constructor` 指向构造函数，所以通过 `constructor` 可以判断该实例的构造函数是什么  
+
+```javascript
+var a = [];
+a.constructor === Array; // true
+```
+
+**Object.prototype.toString.call()**
+
+调用 `Object` 原型链属性 `toString()` 方法用于输出该对象，再使用 `call` 强绑定改变 `this` 指向  
+
+```javascript
+var a = [];
+Object.prototype.toString.call(a) === "[object Array]"; // true
+```
+
+**Array.isArray()**
+
+`Array.isArray` 是原生自带的方法，也可以用于判断是否是数组，返回一个布尔值  
+
+```javascript
+var a = [];
+Array.isArray(a); // true
+```
+
+----
+
 ## Vue对于数组的响应式监听
 
 ### Vue对数组监听的坑
