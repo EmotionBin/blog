@@ -19,6 +19,7 @@
 - [JS中令人头疼的this指向问题](https://github.com/EmotionBin/myBlog/blob/master/articles/javascript_this_01/javascript_this_01.md)
 - [Vue生命周期](https://github.com/EmotionBin/myBlog/blob/master/articles/vue_lifecycle_01/vue_lifecycle_01.md)
 - [关于webpack的那些事](https://github.com/EmotionBin/myBlog/blob/master/articles/common_webpack_01/common_webpack_01.md)
+- [深拷贝与浅拷贝](https://github.com/EmotionBin/myBlog/blob/master/articles/javascript_shallowCloneandDeepClone_01/javascript_shallowCloneandDeepClone_01.md)
 
 ## 小尾巴
 
