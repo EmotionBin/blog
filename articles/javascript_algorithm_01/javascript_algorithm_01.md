@@ -2,9 +2,9 @@
 
 ## 实现es6模板字符串变量解析
 
-已知: `info = {status:'good',emotion:'happy'}`  
-输入: `'today is a ${info.status} day,I am so ${info.emotion}'`  
-输出: `'today is a good day,I am so happy'`
+已知: 'info = {status:'good',emotion:'happy'}'  
+输入: 'today is a ${info.status} day,I am so ${info.emotion}'  
+输出: 'today is a good day,I am so happy'
 
 思路:观察可知，在遇到形如 `${xxx}` 的字符串时，会把中间的内容替换成对应变量，所以可以利用**正则表达式**匹配 `${xxx}` 把匹配到的中间的值当成一个变量解析，并替换 `${xxx}`  
 
