@@ -24,7 +24,7 @@ const getArticlesList = async ctx => {
     for (let i in queryRes){
       let { issueYear, articleId, articleTitle, issueDate, articleName } = queryRes[i];
       //对数据库的时间格式进行格式化
-      issueDate = getDate(issueDate).date_UTC;
+      issueDate = getDate(new Date(issueDate)).date_UTC;
       let dateFormat = issueDate.split('-');
       let Month = dateFormat[1] > 9 ? dateFormat[1] : '0' + dateFormat[1];
       let day = dateFormat[2] > 9 ? dateFormat[2] : '0' + dateFormat[2];
@@ -202,7 +202,7 @@ const getDate = (timer) => {
   const fullDate = `${year}-${month}-${day}`;
   const stamp = Date.now();
   //对数据库的时间格式进行格式化
-  const date_UTC = timer ? `${timer.getUTCFullYear()}-${timer.getUTCMonth() + 1}-${timer.getUTCDate() + 1}` : 0;
+  const date_UTC = timer ? `${timer.getFullYear()}-${timer.getMonth() + 1}-${timer.getDate()}` : 0;
   const customDate = {
     year,
     month,
