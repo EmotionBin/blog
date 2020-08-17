@@ -17,6 +17,8 @@
 https://www.jianshu.com/p/9edd0f6908bc
 https://blog.csdn.net/qqchenyufei/article/details/82795713
 https://segmentfault.com/a/1190000014899566
+http://www.ruanyifeng.com/blog/2009/08/learning_javascript_closures.html
+https://segmentfault.com/a/1190000018605776?utm_source=tag-newest
 
 例子1:
 var scope="global";
@@ -356,9 +358,132 @@ c(); // 3
 
 ----
 
-## 闭包
+## 垃圾回收与闭包
 
-闭包是什么，一句话总结，**闭包是指有权访问另一个函数作用域中的变量的函数**  
+在说闭包之前要先了解 js 的垃圾回收机制，这和闭包有着重要的联系  
+
+----
+
+### 垃圾回收
+
+js 中的内存管理是自动执行的，而且是不可见的，我们创建基本类型、对象、函数等，所有这些都需要内存，当不再需要使用它们的时候，js 会自动清理它们并释放内存空间，这就是垃圾回收  
+
+```javascript
+// user 具有对象的引用
+let user = {
+  name: "John"
+};
+```
+
+上述代码中，声明了一个变量 `user` 并赋值为一个对象 `{ name: "John" }`，对象是引用类型，变量 `user` 存储的值是这个对象的地址，变量 `user` 是这个对象的一个引用  
+
+```javascript
+user = null;
+```
+
+这里将变量 `user` 置为 `null`，现在它已经不再是对象 `{ name: "John" }` 的引用，此时将进行垃圾回收，释放对象 `{ name: "John" }`，释放内存  
+
+js 垃圾回收的策略有两个，**标记清除**和**引用计数**，最常用的是标记清除策略  
+
+标记清除：当变量进入环境(例如，在函数中声明一个变量)时，将这个变量标记为 “进入环境”，当变量离开环境时，则将其标记为 “离开环境”，根据变量的标记进行垃圾回收  
+
+引用计数：当声明了一个变量并将一个引用类型值赋给该变量时，这个值的引用次数就是 1，如果同一个值又被赋值给另一个变量，则引用次数加 1，相反，如果包含对这个值的引用的变量有取了另一个值，则引用次数减 1，当这个值的引用次数变为 0 时，说明已经没法再访问这个值了，因此可以将其占用的内存回收了  
+
+**使用引用计数时，有一个很严重的问题，就是循环引用**，如果对象 A 中包含一个指针指向对象 B，而对象 B 中也包含一个指针指向对象 A，那么这两个对象引用次数都不为 0，但实际上已经可以回收了
+
+----
+
+### 闭包
+
+闭包是什么，一句话总结，**闭包是指有权访问另一个函数作用域中的变量的函数**或**闭包就是能够读取其他函数内部变量的函数**  
+
+闭包主要有以下三个特性：  
+
+1. 在函数中嵌套函数
+2. 函数内部可以引用函数外部的参数和变量
+3. 参数和变量不会被垃圾回收机制回收
+
+```javascript
+function a(){
+  var b = 1;
+  return function(){
+    return b;
+  }
+}
+var f = a();
+console.log(f()); // 1
+```
+
+在上述例子中，函数 a 定义了一个变量 b 并返回了一个新函数，这个新函数又返回了变量 b，`var f = a();` 拿到这个函数，`f()` 可以获取到函数 a 中变量 b 的值，这就是一个闭包，函数 a 中的变量 b 被外部函数引用了，所以在函数 a 执行完毕后不会被垃圾回收机制回收它里面的变量，所以在外部仍然可以访问到函数 a 内部的变量 b  
+
+```javascript
+function a(){
+  var num = 5;
+  return function(){
+    var n = 0;
+    console.log(++ n);
+    console.log(++ num);
+  }
+}
+
+var f = a();
+f(); // 1 6
+f(); // 1 7
+f(); // 1 8
+```
+
+这也是一个闭包的例子，变量 num 被外部引用了，所以不会被垃圾回收机制销毁，使用的一直是同一个值，而变量 n 是每次调用都会初始化为 0 的一个值  
+
+闭包的优点：  
+
+- 可以读取函数内部的变量
+- 避免变量污染全局环境
+- 变量私有化，保护了变量的安全
+
+闭包的缺点：  
+
+- 对内存开销较大，使用不当容易造成内存泄漏(解决方法是可以在使用完闭包后手动为它赋值为 null)
+
+----
+
+## 一些面试题
+1.
+```javascript
+for(var i = 0;i < 5;i ++){
+  setTimeout(function(){
+    console.log(i);
+  },100)
+}
+```
+
+2.
+```javascript
+var name = "The Window";
+var object = {
+  name : "My Object",
+  getNameFunc : function(){
+    return function(){
+      return this.name;
+    };
+  }
+};
+alert(object.getNameFunc()());
+```
+
+2.修改
+```javascript
+var name = "The Window";
+var object = {
+  name : "My Object",
+  getNameFunc : function(){
+    var that = this;
+    return function(){
+      return that.name;
+    };
+  }
+};
+alert(object.getNameFunc()());
+```
 
 
 
