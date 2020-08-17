@@ -110,6 +110,56 @@ Access-Control-Allow-Origin: http://test001.com
 ```
 ----
 
+## 对于非简单请求
+
+对于简单请求和非简单请求是这样定义的：  
+
+**简单请求：**
+
+请求头是以下三种之一的  
+
+- head
+- get
+- post
+
+HTTP 的头信息不超出以下几种字段  
+
+- Accept
+- Accept-Language
+- Content-Language
+- Last-Event-ID
+- Content-Type：只限于三个值 `application/x-www-form-urlencoded`、`multipart/form-data`、`text/plain`
+
+**非简单请求**
+
+除了简单请求以外的请求，就是非简单请求，也叫复杂请求，比如请求方法是 put、delete，或者 `Content-Type` 字段的类型是 `application/json`  
+
+非简单请求的跨域情况比简单请求复杂，不仅仅是在请求头中带上 `Origin` 字段那么简单，非简单请求的 CORS 请求，会在正式通信之前，增加一次 HTTP 查询请求，称为“预检”请求(preflight)，预检请求的请求方法是 options，表示这个请求是用来询问的  
+
+浏览器发现是一个非简单请求时就自动发送一个 options 预检请求，要求服务器确认可以这样请求，确认信息除了 `Origin` 字段外还包括：  
+
+- `Access-Control-Request-Method`，该字段是必须的，用来列出浏览器的 CORS 请求会用到哪些 HTTP 方法
+- `Access-Control-Request-Headers`，该字段是一个逗号分隔的字符串，指定浏览器 CORS 请求会额外发送的头信息字段
+
+服务器收到预检 options 请求以后，检查了 `Origin`、`Access-Control-Request-Method` 和 `Access-Control-Request-Headers` 字段以后，确认允许跨域请求，就可以做出回应  
+
+- `Access-Control-Allow-Methods`：PUT, POST, GET, DELETE, OPTIONS
+- `Access-Control-Allow-Headers`：Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild, sessionToken
+- `Access-Control-Allow-Credentials`：true
+
+这里说一下 `Access-Control-Allow-Credentials` 字段，它表示是否允许携带 cookie 信息，CORS 请求默认不包含 Cookie 信息，如果需要包含 Cookie 信息，一方面要服务器同意，指定`Access-Control-Allow-Credentials` 字段，并且还需要对 xhr 进行设置，设置 `withCredentials` 为 `true` 如下：  
+
+```javascript
+var xhr = new XMLHttpRequest();
+xhr.withCredentials = true;
+```
+
+言归正传，上面说了如果服务器通过了 options 预检请求，就会多出几个头信息字段，那么如果服务器不通过，则正常响应，不包含对应的头字段，这时，浏览器就会认定，服务器不同意预检请求，因此触发一个错误，被 `XMLHttpRequest` 对象的 `onerror()` 回调函数捕获  
+
+在通过了 options 预检请求之后，浏览器就会重新发送一个正常的 CORS 请求，与服务器进行 CORS 通信  
+
+----
+
 ## 实践
 
 我用node的express简单搭建了一个本地服务，用来模拟CORS和JSONP，9527端口作为`HTTP`服务，9528端口返回数据，代码如下：  
