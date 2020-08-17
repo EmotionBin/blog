@@ -2,75 +2,7 @@
 
 ## 作用域
 
-变量作用域的概念：变量作用域就是一个变量可以使用的范围
-
-1. 全局作用域
-2. 函数作用域
-
-## 作用域链
-
-1. 执行上下文
-
-
-
-参考:
-https://www.jianshu.com/p/9edd0f6908bc
-https://blog.csdn.net/qqchenyufei/article/details/82795713
-https://segmentfault.com/a/1190000014899566
-http://www.ruanyifeng.com/blog/2009/08/learning_javascript_closures.html
-https://segmentfault.com/a/1190000018605776?utm_source=tag-newest
-
-例子1:
-var scope="global";
-function t(){
-    console.log(scope);
-    var scope="local"
-    console.log(scope);
-}
-t();
-
-例子2:
-var a = 1;
-function b (){
-  var a = 2;
-  console.log('这里是函数b的作用域,a的值是:',a);
-}
-function c (){
-  var a = 3;
-  console.log('这里是函数c的作用域,a的值是:',a);
-  b();
-}
-c()
-
-例子2修改:
-var a = 1;
-function b (){
-  console.log('这里是函数b的作用域,a的值是:',a);
-}
-function c (){
-  var a = 3;
-  console.log('这里是函数c的作用域,a的值是:',a);
-  b();
-}
-c()
-
-例子2修改:
-var a = 1;
-function c (){
-  var a = 3;
-  console.log('这里是函数c的作用域,a的值是:',a);
-  function b (){
-    console.log('这里是函数b的作用域,a的值是:',a);
-  }
-  b();
-}
-c()
-
-# JS作用域链与闭包
-
-## 作用域
-
-这里有一个概念叫做**变量作用域**：变量作用域就是一个变量可以使用的范围。js 代码在运行的时候也有着它自己的作用域，分别是**全局作用域**和**函数作用域**(eval作用域暂不考虑)  
+首先来了解一下**变量作用域**的概念，所谓变量作用域，就是一个变量可以使用的范围。js 代码在运行的时候也有着它自己的作用域，分别是**全局作用域**和**函数作用域**(eval作用域暂不考虑)  
 
 **全局作用域**：顾名思义，在任何地方都能访问到，比如 window 对象的内置属性都拥有全局作用域  
 
@@ -93,7 +25,7 @@ b(); // 20
 c(); // 30
 ```
 
-上述代码中，变量 a 被定义了三次并赋予不同的值，在函数 b 中打印 a 的值，则使用变量 a 在函数 b 作用域中的值，输出 20，在函数 c 中打印 a 的值，则使用变量 a 在函数 c 作用域中的值，输出 30，在全局作用域下打印变量 a 的值，输出全局变量 a 的值 10，这个例子应该很好理解  
+上述代码中，变量 a 被定义了三次并赋予不同的值，在函数 b 中打印 a 的值，则使用函数 b 作用域中变量 a 的值，输出 20，在函数 c 中打印 a 的值，则使用函数 c 作用域中变量 a 的值，输出 30，在全局作用域下打印变量 a 的值，输出全局变量 a 的值 10，这个例子应该很好理解  
 
 再来看一个例子:  
 
@@ -109,7 +41,7 @@ t();
 console.log(b); // Uncaught ReferenceError: b is not defined
 ```
 
-按照 `console.log()` 的顺序来一个个分析，第一个是 `console.log(c)`,这里输出 `undefined`，因为 js 的**变量提升**机制，在函数中用 `var` 声明的变量会被提升到当前函数作用域的顶部，并且只是先声明而为初始化值，第二个是 `console.log(c)`，输出 local，这里没什么问题，下来是 `console.log(b)`，这里会报错，因为这条语句的执行环境是全局作用域，全局作用域下根本没有定义 b 这个变量，函数 t 中定义的变量 b 只在函数 t 作用域下能够被访问到  
+按照 `console.log()` 的顺序来一个个分析，第一个是 `console.log(c)`,这里输出 `undefined`，因为 js 的**变量提升**机制，在函数中用 `var` 声明的变量会被提升到当前函数作用域的顶部，并且只是先声明而未初始化值，第二个是 `console.log(c)`，输出 local，这里没什么问题，下来是 `console.log(b)`，这里会报错，因为这条语句的执行环境是全局作用域，全局作用域下根本没有定义 b 这个变量，函数 t 中定义的变量 b 只在函数 t 作用域下能够被访问到  
 
 ----
 
@@ -449,16 +381,45 @@ f(); // 1 8
 ----
 
 ## 一些面试题
-1.
+
+**第一题：**  
+
 ```javascript
 for(var i = 0;i < 5;i ++){
   setTimeout(function(){
     console.log(i);
-  },100)
+  },1000)
 }
 ```
 
-2.
+这是一道经典的面试题，输出结果是一秒后输出 5 个 5，原因很简单，一秒后 i 的值变为 5，所以打印 5 个 5  
+
+这道题不会就这么简单，现在要求一秒后输出，0 1 2 3 4  
+
+```javascript
+// 可以利用es6 let 的块级作用域
+for(let i = 0;i < 5;i ++){
+  setTimeout(function(){
+    console.log(i);
+  },1000)
+}
+```
+
+```javascript
+// IIFE
+for(var i = 0;i < 5;i ++){
+  (j => {
+    setTimeout(function(){
+      console.log(j);
+    },1000)  
+  })(i)
+}
+```
+
+解决方案目前给出两个，利用es6 的 `let` 产生块级作用域或利用 IIFE 自执行函数把参数 i 传入以保存 i 的值  
+
+**第二题：**  
+
 ```javascript
 var name = "The Window";
 var object = {
@@ -469,10 +430,13 @@ var object = {
     };
   }
 };
-alert(object.getNameFunc()());
+console.log(object.getNameFunc()());
 ```
 
-2.修改
+输出：`The Window`，`object.getNameFunc()` 先返回一个函数，`object.getNameFunc()()` 执行返回的函数，返回 `this.name`，这里是 this 发生了默认绑定，指向 window，所以输出是 `The Window`  
+
+这题再改一下，输出结果又会是什么呢  
+
 ```javascript
 var name = "The Window";
 var object = {
@@ -484,8 +448,22 @@ var object = {
     };
   }
 };
-alert(object.getNameFunc()());
+console.log(object.getNameFunc()());
 ```
 
+输出：`My Object`，`object.getNameFunc()()` 返回 `that.name`，这个变量 that 保存了上个函数的 this，上个函数的 this 指向对象 object，所以 `that.name` 等价于 `object.name`，这里是个闭包  
+
+----
+
+
+## 结束语
+
+以上就是关于本文的所有内容。如果本文中有说的不正确的地方，欢迎大佬鞭策!  
+
+**参考资料：**
+
+[JS作用域&作用域链](https://www.jianshu.com/p/9edd0f6908bc)  
+[学习Javascript闭包（Closure）](http://www.ruanyifeng.com/blog/2009/08/learning_javascript_closures.html)  
+[前端面试：谈谈 JS 垃圾回收机制](https://segmentfault.com/a/1190000018605776?utm_source=tag-newest)
 
 
