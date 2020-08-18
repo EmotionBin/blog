@@ -1,4 +1,4 @@
-# js算法练习
+# JS算法练习
 
 ## 实现es6模板字符串变量解析
 
@@ -19,6 +19,9 @@ const str = 'today is a ${info.status} day,I am so ${info.emotion}';
 const s = str.replace(/\$\{(.*?)\}/g,(matched,key) => eval(key));
 console.log(s); // "today is a good day,I am so happy"
 ```
+
+----
+
 ## 实现forEach、map、filter、reduce
 
 **实现forEach**
@@ -85,6 +88,46 @@ Array.prototype.reduce = function (cb, initValue) {
 
 关于以上函数的实现，只考虑了一些主要的核心代码，还有一些边界条件是缺少检测的  
 
+----
+
+## 实现indexOf
+
+这是leetCode的一道题，[传送门](https://leetcode-cn.com/problems/implement-strstr/)  
+
+> 28 实现 strStr()  
+> 给定一个 haystack 字符串和一个 needle 字符串，在 haystack 字符串中找出 needle 字符串出现的第一个位置 (从0开始)。如果不存在，则返回  -1
+
+其实这道题用 `indexOf` 就可以解决了，但是这样太无趣，于是我自己手写了一个函数模拟 `indexOf` 的实现，边界条件判断确实有点恶心   
+
+```javascript
+function myIndexOf(haystack, needle) {
+  if (!needle) {
+    return 0;
+  }
+  if (!haystack || needle.length > haystack.length) {
+    return -1;
+  }
+  for(let i = 0;i < haystack.length;i ++){
+    if (i > haystack.length - needle.length ){
+      return -1;
+    }
+    if(haystack[i] === needle[0]){
+      if (needle.length === 1){
+        return i; 
+      }
+      for(let j = 1;j < needle.length;j ++){
+        if (haystack[i + j] !== needle[j]) {
+          break;
+        } else if (j === needle.length - 1) {
+          return i;
+        }
+      }
+    } else if (i === haystack.length - 1) {
+      return -1;
+    }
+  }
+}
+```
 
 
 
