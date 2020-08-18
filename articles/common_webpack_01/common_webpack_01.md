@@ -310,6 +310,12 @@ module.exports = RemoveCommentsPlugin;
 
 ----
 
+###  手写一个简易Webpack打包工具
+
+这里不详细展开，可以直接看 demo，[传送门](https://github.com/EmotionBin/variousDemo/tree/master/webpack/25-handle-webpack)  
+
+----
+
 ## 结束语
 
 Webpack 是一个庞大的基于 Node.js 的应用，它可以帮助我们编译并打包代码，是一个强大的工具，它也是当前前端开发必不可少的工具之一，对于前端的生态圈有着非常重要的作用。如果本文中有说的不正确的地方，欢迎大佬鞭策!  
