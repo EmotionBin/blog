@@ -129,6 +129,89 @@ function myIndexOf(haystack, needle) {
 }
 ```
 
+看到这复杂的边界条件判断，于是我决定进行优化，下面给出了一个优化后的版本  
 
+```javascript
+function myIndexOf(haystack, needle) {
+  const haystackLength = haystack.length;
+  const needleLength = needle.length;
+  if (!needle) {
+    return 0;
+  }
+  for (let i = 0; i < haystackLength; i++) {
+    if (i > haystackLength - needleLength) {
+      return -1;
+    }
+    if (haystack[i] === needle[0]) {
+      if (needleLength === 1) {
+        return i;
+      }
+      for (let j = 1; j < needleLength; j++) {
+        if (haystack[i + j] !== needle[j]) {
+          break;
+        } else if (j === needleLength - 1) {
+          return i;
+        }
+      }
+    }
+  }
+  return -1;
+};
+```
 
+----
 
+## 实现防抖节流
+
+**防抖**
+
+```javascript
+function debounce(cb, wait, immediate){
+  let timer;
+  return function (){
+    const args = arguments; 
+    const context = this;
+    if(timer) clearTimeout(timer);
+    if(immediate){
+      let callNow = !timer;
+      timer = setTimeout(() => {
+        timer = null;
+      }, wait)
+      if(callNow) return cb.apply(context, args);
+    }else{
+      timer = setTimeout(function() {
+        return cb.apply(context, args);
+      }, wait);
+    }
+  }
+}
+```
+
+**节流**
+
+```javascript
+function throttle3(cb, wait){
+  let context, args, timer;
+  let old = 0; // 时间戳
+  let later = function(){
+    old = + new Date();
+    timer = null;
+    cb.apply(context, args);
+  }
+  return function(){
+    context = this;
+    args = arguments;
+    let now = + new Date();
+    if(now - old > wait){
+      if(timer){
+        clearTimeout(timer);
+        timer = null;
+      }
+      cb.apply(context, args);
+      old = now;
+    }else if(!timer){
+      timer = setTimeout(later, wait)
+    }
+  }
+}
+```
