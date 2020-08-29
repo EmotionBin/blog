@@ -22,7 +22,8 @@
 - [深拷贝与浅拷贝](https://github.com/EmotionBin/myBlog/blob/master/articles/javascript_shallowCloneandDeepClone_01/javascript_shallowCloneandDeepClone_01.md)
 - [算法训练(长期更新~)](https://github.com/EmotionBin/blog/blob/master/articles/javascript_algorithm_01/javascript_algorithm_01.md)
 - [作用域链与闭包](https://github.com/EmotionBin/blog/blob/master/articles/javascript_scopeChainAndClosure_01/javascript_scopeChainAndClosure_01.md)
-- [防抖节流](https://github.com/EmotionBin/blog/tree/master/articles/javascript_debounceAndthrottle_01)
+- [防抖节流](https://github.com/EmotionBin/blog/blob/master/articles/javascript_debounceAndthrottle_01/javascript_debounceAndthrottle_01.md)
+- [关于编码](https://github.com/EmotionBin/blog/blob/master/articles/common_encoded_01/common_encoded_01.md)
 
 ## 小尾巴
 
