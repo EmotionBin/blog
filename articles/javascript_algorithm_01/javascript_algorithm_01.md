@@ -100,6 +100,11 @@ Array.prototype.reduce = function (cb, initValue) {
 其实这道题用 `indexOf` 就可以解决了，但是这样太无趣，于是我自己手写了一个函数模拟 `indexOf` 的实现，边界条件判断确实有点恶心   
 
 ```javascript
+/**
+ * @param {string} haystack
+ * @param {string} needle
+ * @return {number}
+ */
 function myIndexOf(haystack, needle) {
   if (!needle) {
     return 0;
@@ -132,6 +137,11 @@ function myIndexOf(haystack, needle) {
 看到这复杂的边界条件判断，于是我决定进行优化，下面给出了一个优化后的版本  
 
 ```javascript
+/**
+ * @param {string} haystack
+ * @param {string} needle
+ * @return {number}
+ */
 function myIndexOf(haystack, needle) {
   const haystackLength = haystack.length;
   const needleLength = needle.length;
@@ -215,3 +225,52 @@ function throttle3(cb, wait){
   }
 }
 ```
+
+----
+
+## 两数之和
+
+这是leetCode的一道题，[传送门](https://leetcode-cn.com/problems/two-sum/)  
+
+> 1 两数之和  
+> 给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那 两个 整数，并返回他们的数组下标。你可以假设每种输入只会对应一个答案。但是，数组中同一个元素不能使用两遍
+
+思路:使用一个对象作为映射，遍历数组，对象的键记录数组中元素的值，对象的值记录数组中元素的索引，先获取差值 `diff`，如果映射对象中存在 `diff` 属性，且它的值大于等于 0，则说明条件成立，反之，条件不成立，则往映射对象中记录当前元素的值和索引  
+
+```javascript
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+var twoSum = function(nums, target) {
+  var NUM_MAP = {};
+  for(let i = 0;i < nums.length;i ++){
+    const item = nums[i];
+    const diff = target - item;
+    if(NUM_MAP[diff] >= 0) return [NUM_MAP[diff], i];
+    NUM_MAP[item] = i;
+  }
+};
+```
+
+其实这里还可以优化，就是把映射对象利用 `new Map()` 代替  
+
+```javascript
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+var twoSum = function(nums, target) {
+  var NUM_MAP = new Map();
+  for(let i = 0;i < nums.length;i ++){
+    const item = nums[i];
+    const diff = target - item;
+    if(NUM_MAP[diff] >= 0) return [NUM_MAP[diff], i];
+    NUM_MAP[item] = i;
+  }
+};
+```
+
+
