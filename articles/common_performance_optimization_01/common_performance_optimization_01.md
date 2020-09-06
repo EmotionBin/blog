@@ -53,6 +53,45 @@ HTTP 请求是获取页面资源的手段，同时也是影响页面性能的重
 
 ----
 
+### 资源按需引入
+
+有时候只使用了一些第三方库的一小部分资源，也需要把完整的库资源引入，这是大可不必的，比如 Element UI 它是非常庞大的，如果只使用了其中的几个组件则没必要把它全部引入，这对性能的影响是非常大的，所以可以使用按需加载，再利用 webpack 等打包工具进行 tree shaking，这也能提高性能  
+
+```javascript
+// 只引入 Button 组件
+import { Button } from 'element-ui'
+```
+
+需要注意的是，**必须要使用 ES6 的模块化**，这样在打包的时候才可以进行 tree shaking  
+
+----
+
+### 资源预加载
+
+提前加载资源，当用户需要查看时可直接从本地缓存中渲染。对当前页面需要的资源，使用 `preload` 进行预加载，对其它页面需要的资源进行 `prefetch` 预加载  
+
+**preload**  
+
+`preload` 页面加载的过程中，在浏览器开始主体渲染之前加载  
+
+```html
+<!-- 对 index.js 进行 preload 预加载 -->
+<link rel="preload" href="index.js" as="script">
+```
+
+**prefetch**  
+
+`prefetch` 页面加载完成后，利用空闲时间提前加载  
+
+```html
+<!--对 next.js 进行 prefetch 预加载-->
+<link rel="prefetch" href="next.js">
+```
+
+`vue-cli` 默认已经开启了 `prefetch` 功能，这给我们开发带来了很大的便利  
+
+----
+
 ### DNS 预解析
 
 DNS 预解析也是前端优化中的一部分，即利用空闲时间提前解析，域名解析是耗时间的，使用 DNS 预解析可以有效的降低 DNS 解析的延迟，下面给出开启预解析的方法：  
@@ -118,13 +157,16 @@ DOM 操作是很耗性能的，某些 DOM 属性(如 `offsetTop`、`scrollTop`)�
 
 ## 结束语
 
-以上就是关于前端性能优化的一些内容。如果本文中有说的不正确的地方，欢迎大佬鞭策!  
+以上就是关于前端性能优化的一些内容，这些内容是经过我精简的，如果想看详细的可以看下面的参考资料。如果本文中有说的不正确的地方，欢迎大佬鞭策!  
 
 **参考资料：**
 
 [前端性能优化总结](https://segmentfault.com/a/1190000017556203)  
 [网页性能管理详解](http://www.ruanyifeng.com/blog/2015/09/web-page-performance-in-depth.html)  
-[页面性能优化办法有哪些？](https://segmentfault.com/a/1190000016745587)
+[页面性能优化办法有哪些？](https://segmentfault.com/a/1190000016745587)  
+[关于前端性能优化一些总结](https://mp.weixin.qq.com/s/FxZppdqfQMVpsy3EaQeHSg)  
+[Vue 项目性能优化指南（网上最完整）](https://mp.weixin.qq.com/s/Q7YPgruUsJX_IQATAysQDA)  
+[前端性能优化指南](https://mp.weixin.qq.com/s/i8GKUpnShSm1_6-4wj8o5Q)   
 
 
 
