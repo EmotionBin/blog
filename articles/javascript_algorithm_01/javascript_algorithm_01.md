@@ -273,4 +273,112 @@ var twoSum = function(nums, target) {
 };
 ```
 
+----
+
+## 实现 new、call、apply、bind
+
+**实现 new**  
+
+```javascript
+function _new() {
+  let obj = {}; // 1. 创建一个空对象
+  let Constructor = [].shift.call(arguments); // 2. 获得构造函数
+  obj.__proto__ = Constructor.prototype; // 3. 链接到原型
+  let result = Constructor.apply(obj, arguments); // 4. 绑定 this，执行构造函数
+  return typeof result === 'object' ? result : obj; // 5. 返回 new 出来的对象
+}
+```
+
+简化版：  
+
+```javascript
+function _new(fn, ...args) {
+  let obj = Object.create(fn.prototype);
+  let result = fn.apply(obj, args);
+  return typeof result === 'object' ? result : obj;
+}
+```
+
+演示：  
+
+```javascript
+function Person(name, age){
+  this.name = name;
+  this.age  = age;
+}
+var person = _new(Person, '小明', 18);
+console.log(person);
+// Person {name: "小明", age: 18}
+```
+
+**实现 call**
+
+```javascript
+Function.prototype._call = function (target, ...args) {
+  target.fn = this;
+  let res = target.fn(...args);
+  delete target.fn;
+  return res;
+}
+```
+
+演示:  
+
+```javascript
+var a = 1;
+var b = 2;
+
+var obj = {
+  a:10,
+  b:20
+}
+
+function test(params1, params2){
+  console.log(this.a);
+  console.log(this.b);
+  console.log(params1);
+  console.log(params2);
+}
+test(100, 200); // 1 2 100 200
+test._call(obj, 100, 200); // 10 20 100 200
+```
+
+**实现 apply**
+
+```javascript
+Function.prototype._apply = function (target, args) {
+  target.fn = this;
+  let res;
+  if (args && args.length) {
+    res = target.fn(...args);
+  } else {
+    res = target.fn();
+  }
+  delete target.fn;
+  return res;
+}
+```
+
+演示:  
+
+```javascript
+var a = 1;
+var b = 2;
+
+var obj = {
+  a:10,
+  b:20
+}
+
+function test(params1, params2){
+  console.log(this.a);
+  console.log(this.b);
+  console.log(params1);
+  console.log(params2);
+}
+test(100, 200); // 1 2 100 200
+test._apply(obj, [100, 200]); // 10 20 100 200
+```
+
+**实现 bind**
 
