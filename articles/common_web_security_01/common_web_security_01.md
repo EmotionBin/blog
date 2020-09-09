@@ -17,3 +17,4 @@
 
 ## XSS攻击
 
+XSS 攻击全称跨站脚本攻击(Cross Site Script)，是为了不和层叠样式表 CSS(Cascading Style Sheets) 的混淆，故将跨站脚本攻击缩写为 XSS，XSS 是一种在 web 应用中的计算机安全漏洞，它允许恶意 web 用户将代码植入到提供给其它用户使用的页面中  
