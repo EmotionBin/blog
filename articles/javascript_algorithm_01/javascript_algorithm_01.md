@@ -382,3 +382,37 @@ test._apply(obj, [100, 200]); // 10 20 100 200
 
 **实现 bind**
 
+```javascript
+Function.prototype._bind = function (target, ...args) {
+  target.fn = this;
+  return function () {
+    const newArgs = args.concat(...arguments);
+    let res = target.fn(...newArgs);
+    delete target.fn;
+    return res;
+  }
+}
+```
+
+演示:  
+
+```javascript
+var a = 1;
+var b = 2;
+
+var obj = {
+  a:10,
+  b:20
+}
+
+function test(params1, params2){
+  console.log(this.a);
+  console.log(this.b);
+  console.log(params1);
+  console.log(params2);
+}
+test(100, 200); // 1 2 100 200
+test._bind(obj, 100, 200)(); // 10 20 100 200
+test._bind(obj, 100)(200); // 10 20 100 200
+```
+
