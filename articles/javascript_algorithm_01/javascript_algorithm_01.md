@@ -416,3 +416,55 @@ test._bind(obj, 100, 200)(); // 10 20 100 200
 test._bind(obj, 100)(200); // 10 20 100 200
 ```
 
+----
+
+## Promise 实现 setTimeout
+
+```javascript
+function _setTimeout(cb, delay, ...args) {
+  const currentTimestamp = + new Date();
+  return Promise.resolve().then(() => {
+    let flag = true;
+    while (flag) {
+      if (+ new Date() - currentTimestamp > delay){
+        cb(...args);
+        flag = false;
+      }
+    }
+  })
+}
+```
+
+测试：  
+
+```javascript
+console.log('script start');
+_setTimeout(doSomething, 2000, 1, 2, 3, 4, 5);
+console.log('script end');
+
+function _setTimeout(cb, delay, ...args) {
+  const currentTimestamp = + new Date();
+  return Promise.resolve().then(() => {
+    let flag = true;
+    while (flag) {
+      if (+ new Date() - currentTimestamp > delay){
+        cb(...args);
+        flag = false;
+      }
+    }
+  })
+}
+
+function doSomething(){
+  console.log(arguments);
+  console.log('时间到');
+}
+
+// script start
+// script end
+// Arguments(5) [1, 2, 3, 4, 5, callee: ƒ, Symbol(Symbol.iterator): ƒ]
+// 时间到
+```
+
+这里用 Promise 模拟的 setTimeout 和真实的 setTimeout 还是有区别的，区别就在于 **Promise 是微任务，setTimeout 是宏任务**，我只实现了核心功能，对于微任务和宏任务的问题暂时没有想到解决办法  
+
