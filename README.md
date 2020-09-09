@@ -24,6 +24,7 @@
 - [作用域链与闭包](https://github.com/EmotionBin/blog/blob/master/articles/javascript_scopeChainAndClosure_01/javascript_scopeChainAndClosure_01.md)
 - [防抖节流](https://github.com/EmotionBin/blog/blob/master/articles/javascript_debounceAndthrottle_01/javascript_debounceAndthrottle_01.md)
 - [关于编码](https://github.com/EmotionBin/blog/blob/master/articles/common_encoded_01/common_encoded_01.md)
+- [前端性能优化](https://github.com/EmotionBin/blog/blob/master/articles/common_performance_optimization_01/common_performance_optimization_01.md)
 
 ## 小尾巴
 
