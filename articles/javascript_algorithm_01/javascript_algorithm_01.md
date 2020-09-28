@@ -468,3 +468,45 @@ function doSomething(){
 
 这里用 Promise 模拟的 setTimeout 和真实的 setTimeout 还是有区别的，区别就在于 **Promise 是微任务，setTimeout 是宏任务**，我只实现了核心功能，对于微任务和宏任务的问题暂时没有想到解决办法  
 
+----
+
+## 最大子序和
+
+这是leetCode的一道题，[传送门](https://leetcode-cn.com/problems/maximum-subarray/)  
+
+> 给定一个整数数组 nums ，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和
+
+这道题我第一次做的时候没有做出来，然后看了别人的解答，收到了很大的启发，别人的解答如下：  
+
+- 这道题用动态规划的思路并不难解决，比较难的是后文提出的用分治法求解，但由于其不是最优解法，所以先不列出来
+- 动态规划的是首先对数组进行遍历，当前最大连续子序列和为 sum，结果为 ans
+- 如果 sum > 0，则说明 sum 对结果有增益效果，则 sum 保留并加上当前遍历数字
+- 如果 sum <= 0，则说明 sum 对结果无增益效果，需要舍弃，则 sum 直接更新为当前遍历数字
+- 每次比较 sum 和 ans 的大小，将最大值置为 ans，遍历结束返回结果
+- 时间复杂度：O(n)
+
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var maxSubArray = function(nums) {
+  let ans = nums[0];
+  let sum = 0;
+  for(const num of nums) {
+    if(sum > 0) {
+      sum += num;
+    } else {
+      sum = num;
+    }
+    ans = Math.max(ans, sum);
+  }
+  return ans;
+}
+```
+
+我在参考了他的思路后，自己也总结一下，我觉得这样更容易理解：
+
+1. 如果全部都是负数，负数越加越小，所以直接找最大值
+2. 如果有正数，从正数开始计算，因为如果算上前面的负数，和肯定变小了
+3. 当和小于 0 时，这个区间就告一段落了，从下一个正数开始计算
