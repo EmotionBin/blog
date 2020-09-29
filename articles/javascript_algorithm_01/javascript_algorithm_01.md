@@ -510,3 +510,32 @@ var maxSubArray = function(nums) {
 1. 如果全部都是负数，负数越加越小，所以直接找最大值
 2. 如果有正数，从正数开始计算，因为如果算上前面的负数，和肯定变小了
 3. 当和小于 0 时，这个区间就告一段落了，从下一个正数开始计算
+
+----
+
+## 最后一个单词的长度
+
+这是leetCode的一道题，[传送门](https://leetcode-cn.com/problems/length-of-last-word/)  
+
+> 给定一个仅包含大小写字母和空格 ' ' 的字符串 s，返回其最后一个单词的长度。如果字符串从左向右滚动显示，那么最后一个单词就是最后出现的单词。  
+> 如果不存在最后一个单词，请返回 0。  
+
+思路：空格不一定穿插在单词之间，也可能在字符串的开肉和结尾，而且空格数量不明确，所以先用 `trim()` 进行处理，再用 `split()` 对空格进行分割，返回分割后的数组最后一个元素的长度   
+
+```javascript
+/**
+ * @param {string} s
+ * @return {number}
+ */
+var lengthOfLastWord = function(s) {
+  s = s.trim();
+  const arr = s.split(' ');
+  return arr[arr.length - 1].length;
+};
+```
+
+----
+
+## 手写 trim()
+
+手写 `trim()`  
