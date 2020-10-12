@@ -191,6 +191,17 @@
 							//这里消除图片边缘的边距，否则图片边缘会有间隙
 							imgSymbol[i].parentNode.style['font-size'] = 0;
 						}
+						// 设置表格文字居中
+						var tableTh = articleDom.getElementsByTagName("th");
+						for(let i = 0; i < tableTh.length;i ++){
+							//图片居中
+							tableTh[i].style['text-align'] = 'center';
+						}
+						var tableTd = articleDom.getElementsByTagName("td");
+						for(let i = 0; i < tableTd.length;i ++){
+							//图片居中
+							tableTd[i].style['text-align'] = 'center';
+						}
 						//组装目录树，这里我放到宏任务中异步生成目录树，为了防止文章过长时，阻塞文章渲染
 						//如果同步生成目录树，文章过长时遍历的dom过多，性能开销大，可能会阻塞主线程中文章的渲染
 						const articleDom1 = document.getElementsByClassName("article_md")[0].children;
@@ -385,6 +396,35 @@
 					padding-left: 20px;
 					margin-left: 0;
 					font-size: 14px;
+				}
+				// 表格样式
+				table{
+					thead, tr, th, td{
+						margin: 0;
+						padding: 0;
+						list-style-type: none;
+						text-align: left;
+						text-decoration: none;
+						border-bottom: none;
+						font-weight: normal;
+						font-style: normal;
+						border: none;
+						color: #111;
+					}
+					th{
+						border-width: 1px;
+						border-style: solid;
+						border-color: #666;
+						background-color: #dedede;
+						padding: 10px;
+					}
+					td{
+						border: 1px solid #2b2b2b;
+						padding: 10px;
+						border-width: 1px;
+						border-style: solid;
+						border-color: #666;
+					}
 				}
 			}
 		}

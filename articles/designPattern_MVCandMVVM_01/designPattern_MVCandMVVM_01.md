@@ -208,7 +208,20 @@ diff算法的处理方法，就是对操作前后的 `dom` 树同一层的节点
 
 ![UszFJI.jpg](https://s1.ax1x.com/2020/07/17/UszFJI.jpg)
 
-根据以上例子，总结一下，Vue 中 `v-for` 加 `:key="唯一标识"`(唯一标识可以是 item 里面 id、index 等）就是为了标识唯一性，Vue 组件是高度复用的，有了 `key` 之后，就可以更好的区分各个组件，高效的更新虚拟 `dom`  
+根据以上例子，总结一下，Vue 中 `v-for` 加 `:key="唯一标识"`(唯一标识可以是 item 里面的 id 等，尽量不要用 index 作为唯一标识，因为增加、删除节点都会改变 index 值）就是为了标识唯一性，Vue 组件是高度复用的，有了 `key` 之后，就可以更好的区分各个组件，高效的更新虚拟 `dom`  
+
+----
+
+### vue 实现原理
+
+关于 vue 具体的实现原理，我有写过一些 demo，主要是关于以下几个方面  
+
+- vue 的虚拟 dom 的具体实现
+- vue 的 emit 与 on 具体实现原理
+- vue 观察者模式具体实现
+- 手写一个简易的 vue 框架
+
+感兴趣的话可以看这里 [传送门](https://github.com/EmotionBin/various-demo/tree/master/vue-principle)  
 
 ----
 
