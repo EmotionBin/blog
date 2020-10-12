@@ -212,6 +212,19 @@ diff算法的处理方法，就是对操作前后的 `dom` 树同一层的节点
 
 ----
 
+### vue 实现原理
+
+关于 vue 具体的实现原理，我有写过一些 demo，主要是关于以下几个方面  
+
+- vue 的虚拟 dom 的具体实现
+- vue 的 emit 与 on 具体实现原理
+- vue 观察者模式具体实现
+- 手写一个简易的 vue 框架
+
+感兴趣的话可以看这里 [传送门](https://github.com/EmotionBin/various-demo/tree/master/vue-principle)  
+
+----
+
 ## 结束语
 
 以上就是我关于MVC和MVVM的一些理解，如果本文中有说的不正确的地方，欢迎大佬鞭策!  

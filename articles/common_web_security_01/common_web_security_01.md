@@ -142,6 +142,8 @@ CSRF(Cross Site Request Forgery)，即跨站请求伪造，是一种常见的Web
 
 ![wa0dts.png](https://s1.ax1x.com/2020/09/12/wa0dts.png)  
 
+CSRF 攻击是利用钓鱼网站携带用户 cookie 向源站服务器发送 HTTP 请求，这种情况下是跨域的，cookie 不会自动携带，那么可以利用不受浏览器同源策略限制的手段进行 CSRF 攻击，比如用 script，img 或者 iframe 之类的请求源站服务器，浏览器就会自动带上 cookie，从而进行 CSRF 攻击，**script、image、iframe 的 src 都不受同源策略的影响，所以可以借助这一特点，实现跨域，进行 CSRF 攻击**  
+
 **如何防止 CSRF**
 
 1. 加入验证码，在用户提交关键请求(如转账)前，强制用户输入验证码
