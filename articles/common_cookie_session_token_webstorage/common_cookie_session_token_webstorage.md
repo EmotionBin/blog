@@ -132,7 +132,7 @@ session 是另一种记录服务器和客户端会话状态的机制，只不过
 
 token 是一串字符串，通常作为鉴权凭据，最常用的使用场景是 API 鉴权  
 
-在用户登录成功后，服务端根据用户认证凭证使用特定算法生成一个字符串，这就是 token，然后把这个 token 返回给客户端，客户端每次向服务端请求资源的时候需要带着服务端签发的 token，服务端会对 token 进行验证过，验证成功则返回数据，验证失败则返回具体内容，前端再进行对应操作(比如跳转到登录)  
+在用户登录成功后，服务端根据用户认证凭证使用特定算法生成一个字符串，这就是 token，然后把这个 token 返回给客户端，客户端每次向服务端请求资源的时候需要带着服务端签发的 token，服务端会对 token 进行验证，验证成功则返回数据，验证失败则返回具体内容，前端再进行对应操作(比如跳转到登录页面)  
 
 目前比较常用的就是 JWT(jsonwebtoken)，这里不再赘述，可以看看阮一峰老师的文章 [JSON Web Token 入门教程](http://www.ruanyifeng.com/blog/2018/07/json_web_token-tutorial.html)  
 
@@ -140,7 +140,7 @@ token 是一串字符串，通常作为鉴权凭据，最常用的使用场景�
 
 - 适当减少服务端压力，服务端不需要像 session 那样为每个用户都存储一份认证信息
 - 支持跨域访问，cookie 是不支持跨域访问的，也就是说 HTTP 请求在跨域的情况下不会自动携带 cookie，但是 token 支持跨域访问
-- 防止 CSRF 攻击，CSRF 利用的就是 cookie，使用 token 跨域很好的预防
+- 防止 CSRF 攻击，CSRF 利用的就是 cookie，使用 token 可以很好的预防
 - 无状态，可以在多个服务间共享
 
 关于 cookie 不支持跨域与 CSRF 攻击的联系，cookie 在跨域 HTTP 请求确实是不会自动带上的，根本原因就是浏览器同源策略，CSRF 攻击是利用钓鱼网站携带用户认证的 cookie 向源站服务器发送请求，这种情况下是跨域的，cookie 不会自动携带，那么可以利用不受浏览器同源策略限制的手段进行 CSRF 攻击，比如用 script，img 或者 iframe 之类的请求源站服务器，浏览器就会自动带上 cookie，从而进行 CSRF 攻击，**script、image、iframe 的 src 都不受同源策略的影响，所以可以借助这一特点，实现跨域，进行 CSRF 攻击**   
@@ -204,9 +204,7 @@ window.localStorage.getItem('key');
 
 ```javascript
 window.sessionStorage.removeItem('key');
-window.
-
-localStorage.removeItem('key');
+window.localStorage.removeItem('key');
 ```
 
 **清除所有数据**  
