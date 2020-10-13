@@ -8,7 +8,7 @@
 
 ### cookie 是什么
 
-cookie 指某些网站为了辨别用户身份而储存在用户浏览器上的数据(通常经过加密)，以便于用户再次访问时候对用户进行身份校验。cookie 是服务器保存在浏览器的一小段文本信息，每个 cookie 的大小一般不能超过 4KB。浏览器每次向服务器发出请求，就会自动附上这段信息  
+cookie 指某些网站为了辨别用户身份而储存在用户浏览器上的数据(通常经过加密)，以便于用户再次访问的时候对用户进行身份校验。cookie 是服务器保存在浏览器的一小段文本信息，每个 cookie 的大小一般不能超过 4KB。浏览器每次向服务器发出请求，就会自动附上这段信息  
 
 HTTP 是一种无状态传输协议，它不能以状态来区分和管理请求和响应。也就是说，服务器接收到了一个 HTTP 请求时，服务器并不知道这个请求是谁发来的，假如现在有三个人，A、B、C，他们的编号分别为1、2、3，这三个人向服务器发送请求时，把自己的编号带过去，服务器就可以知道请求是谁发来的了。cookie 也是一样的道理，cookie 中存储用户的信息，在发送请求时把 cookie 存储的用户信息带到服务器，服务器就可以根据带过来的用户信息来区分请求来自哪个用户了  
 
@@ -40,7 +40,7 @@ cookie 的 SameSite 属性用来限制第三方 cookie，从而减少安全风�
 Set-Cookie: CookieName=CookieValue; SameSite=Strict;
 ```  
 
-- Lax，规则稍稍放宽，大多数情况也是不发送第三方 cookie，但是导航到目标网址的 get 请求除外
+- Lax，规则稍稍放宽，大多数情况也是不发送第三方 cookie，但是导航到目标网址的 get 请求(链接、预加载、get 表单)除外
 
 | 请求类型        | 示例                                     |  正常情况       |  Lax              |
 |:--------:       |  :----:                                | :----:          |  :----:           |
@@ -55,7 +55,7 @@ Set-Cookie: CookieName=CookieValue; SameSite=Strict;
 Set-Cookie: widget_session=abc123; SameSite=None; Secure
 ```  
 
-cookie 还有一个属性 `HttpOnly`，指定该 cookie 无法通过 js 脚本拿到，主要是 `document.cookie` 属性、`XMLHttpRequest` 对象和 `Request API` 都拿不到该属性。这样就防止了该 cookie 被脚本读到，只有浏览器发出 HTTP 请求时，才会带上该 cookie  
+cookie 其中一个属性 `HttpOnly`，指定该 cookie 无法通过 js 脚本拿到，主要是 `document.cookie` 属性、`XMLHttpRequest` 对象和 `Request API` 都拿不到该属性。这样就防止了该 cookie 被脚本读到，只有浏览器发出 HTTP 请求时，才会带上该 cookie  
 
 ----
 
