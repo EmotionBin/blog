@@ -538,4 +538,41 @@ var lengthOfLastWord = function(s) {
 
 ## 手写 trim()
 
-手写 `trim()`  
+手写 js 的 `trim()`  
+
+这是我自己写的，代码有点长......  
+
+```javascript
+String.prototype.trim = function () {
+  let s = this;
+  while (deleteStart(s)) {
+    s = deleteStart(s);
+  }
+  while (deleteEnd(s)) {
+    s = deleteEnd(s);
+  }
+  return s;
+
+  function deleteStart(str){
+    if (str.startsWith(' ')){
+      return str.substr(1);
+    }
+    return false;
+  }
+
+  function deleteEnd(str){
+    if (str.endsWith(' ')) {
+      return str.substr(0, str.length - 1);
+    }
+    return false;
+  }
+}
+```
+
+然后在网上看了一下别人写的，自愧不如  
+
+```javascript
+String.prototype.trim = function() { 
+  return this.replace(/(^\s*)|(\s*$)/g, ''); 
+};
+```
