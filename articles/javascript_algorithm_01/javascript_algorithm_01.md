@@ -576,3 +576,80 @@ String.prototype.trim = function() {
   return this.replace(/(^\s*)|(\s*$)/g, ''); 
 };
 ```
+
+----
+
+## 加一
+
+这是leetCode的一道题，[传送门](https://leetcode-cn.com/problems/plus-one/)  
+
+> 给定一个由整数组成的非空数组所表示的非负整数，在该数的基础上加一。  
+> 最高位数字存放在数组的首位， 数组中每个元素只存储单个数字。  
+> 你可以假设除了整数 0 之外，这个整数不会以零开头。  
+
+思路：有一个 res 记录结果的数组，有一个变量 flag 表示是否需要加一，从后往前遍历数组，如果需要加一，判断加一后是否大于 9，大于 9，则往 res 头部加入 0，保持控制加一的变量 flag;小于 9，则直接把当前元素加入 res 头部，更改控制加一的变量 flag，如果不需要加一，直接把当前元素加入 res 头部  
+
+```javascript
+/**
+ * @param {number[]} digits
+ * @return {number[]}
+ */
+var plusOne = function(digits) {
+  let res = [];
+  let flag = 1;
+  for(let i = digits.length - 1;i >= 0;i --){
+    if(flag){
+      const num = digits[i] + 1;
+      if(num > 9){
+        res.unshift(0);
+      }else{
+        res.unshift(num);
+        flag = 0;
+      }
+    }else{
+      res.unshift(digits[i]);
+    }
+  }
+  res[0] === 0 && res.unshift(1);
+  return res;
+};
+```
+
+----
+
+## 二进制求和
+
+这是leetCode的一道题，[传送门](https://leetcode-cn.com/problems/add-binary/)  
+
+> 给你两个二进制字符串，返回它们的和（用二进制表示）。  
+> 输入为 非空 字符串且只包含数字 1 和 0。  
+
+思路：先把两个二进制数转换成十进制数再把它们相加，把得到的结果再转成二进制就完成了  
+
+```javascript
+/**
+ * @param {string} a
+ * @param {string} b
+ * @return {string}
+ */
+var addBinary = function(a, b) {
+  return (parseInt(a, 2) + parseInt(b, 2)).toString(2);
+};
+```
+
+**但是这样做对于太大的数是行不通的，因为 js 的最大安全整数是2^53 - 1，超出这个范围的整数运算就不再准确**  
+
+下面的代码是一段改进后的代码，使用了 ES10 的 `BigInt`，兼容性目前还不算太好，API 可以看这里 [传送门](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/BigInt)  
+
+```javascript
+/**
+ * @param {string} a
+ * @param {string} b
+ * @return {string}
+ */
+var addBinary = function(a, b) {
+  return (BigInt("0b" + a) + BigInt("0b" + b)).toString(2);
+};
+```
+
+
