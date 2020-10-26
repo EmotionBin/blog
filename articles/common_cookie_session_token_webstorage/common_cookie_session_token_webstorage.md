@@ -8,7 +8,7 @@
 
 ### cookie 是什么
 
-cookie 指某些网站为了辨别用户身份而储存在用户浏览器上的数据(通常经过加密)，以便于用户再次访问时候对用户进行身份校验。cookie 是服务器保存在浏览器的一小段文本信息，每个 cookie 的大小一般不能超过 4KB。浏览器每次向服务器发出请求，就会自动附上这段信息  
+cookie 指某些网站为了辨别用户身份而储存在用户浏览器上的数据(通常经过加密)，以便于用户再次访问的时候对用户进行身份校验。cookie 是服务器保存在浏览器的一小段文本信息，每个 cookie 的大小一般不能超过 4KB。浏览器每次向服务器发出请求，就会自动附上这段信息  
 
 HTTP 是一种无状态传输协议，它不能以状态来区分和管理请求和响应。也就是说，服务器接收到了一个 HTTP 请求时，服务器并不知道这个请求是谁发来的，假如现在有三个人，A、B、C，他们的编号分别为1、2、3，这三个人向服务器发送请求时，把自己的编号带过去，服务器就可以知道请求是谁发来的了。cookie 也是一样的道理，cookie 中存储用户的信息，在发送请求时把 cookie 存储的用户信息带到服务器，服务器就可以根据带过来的用户信息来区分请求来自哪个用户了  
 
@@ -40,7 +40,7 @@ cookie 的 SameSite 属性用来限制第三方 cookie，从而减少安全风�
 Set-Cookie: CookieName=CookieValue; SameSite=Strict;
 ```  
 
-- Lax，规则稍稍放宽，大多数情况也是不发送第三方 cookie，但是导航到目标网址的 get 请求除外
+- Lax，规则稍稍放宽，大多数情况也是不发送第三方 cookie，但是导航到目标网址的 get 请求(链接、预加载、get 表单)除外
 
 | 请求类型        | 示例                                     |  正常情况       |  Lax              |
 |:--------:       |  :----:                                | :----:          |  :----:           |
@@ -55,7 +55,7 @@ Set-Cookie: CookieName=CookieValue; SameSite=Strict;
 Set-Cookie: widget_session=abc123; SameSite=None; Secure
 ```  
 
-cookie 还有一个属性 `HttpOnly`，指定该 cookie 无法通过 js 脚本拿到，主要是 `document.cookie` 属性、`XMLHttpRequest` 对象和 `Request API` 都拿不到该属性。这样就防止了该 cookie 被脚本读到，只有浏览器发出 HTTP 请求时，才会带上该 cookie  
+cookie 其中一个属性 `HttpOnly`，指定该 cookie 无法通过 js 脚本拿到，主要是 `document.cookie` 属性、`XMLHttpRequest` 对象和 `Request API` 都拿不到该属性。这样就防止了该 cookie 被脚本读到，只有浏览器发出 HTTP 请求时，才会带上该 cookie  
 
 ----
 
@@ -132,7 +132,7 @@ session 是另一种记录服务器和客户端会话状态的机制，只不过
 
 token 是一串字符串，通常作为鉴权凭据，最常用的使用场景是 API 鉴权  
 
-在用户登录成功后，服务端根据用户认证凭证使用特定算法生成一个字符串，这就是 token，然后把这个 token 返回给客户端，客户端每次向服务端请求资源的时候需要带着服务端签发的 token，服务端会对 token 进行验证过，验证成功则返回数据，验证失败则返回具体内容，前端再进行对应操作(比如跳转到登录)  
+在用户登录成功后，服务端根据用户认证凭证使用特定算法生成一个字符串，这就是 token，然后把这个 token 返回给客户端，客户端每次向服务端请求资源的时候需要带着服务端签发的 token，服务端会对 token 进行验证，验证成功则返回数据，验证失败则返回具体内容，前端再进行对应操作(比如跳转到登录页面)  
 
 目前比较常用的就是 JWT(jsonwebtoken)，这里不再赘述，可以看看阮一峰老师的文章 [JSON Web Token 入门教程](http://www.ruanyifeng.com/blog/2018/07/json_web_token-tutorial.html)  
 
@@ -140,7 +140,7 @@ token 是一串字符串，通常作为鉴权凭据，最常用的使用场景�
 
 - 适当减少服务端压力，服务端不需要像 session 那样为每个用户都存储一份认证信息
 - 支持跨域访问，cookie 是不支持跨域访问的，也就是说 HTTP 请求在跨域的情况下不会自动携带 cookie，但是 token 支持跨域访问
-- 防止 CSRF 攻击，CSRF 利用的就是 cookie，使用 token 跨域很好的预防
+- 防止 CSRF 攻击，CSRF 利用的就是 cookie，使用 token 可以很好的预防
 - 无状态，可以在多个服务间共享
 
 关于 cookie 不支持跨域与 CSRF 攻击的联系，cookie 在跨域 HTTP 请求确实是不会自动带上的，根本原因就是浏览器同源策略，CSRF 攻击是利用钓鱼网站携带用户认证的 cookie 向源站服务器发送请求，这种情况下是跨域的，cookie 不会自动携带，那么可以利用不受浏览器同源策略限制的手段进行 CSRF 攻击，比如用 script，img 或者 iframe 之类的请求源站服务器，浏览器就会自动带上 cookie，从而进行 CSRF 攻击，**script、image、iframe 的 src 都不受同源策略的影响，所以可以借助这一特点，实现跨域，进行 CSRF 攻击**   
@@ -204,9 +204,7 @@ window.localStorage.getItem('key');
 
 ```javascript
 window.sessionStorage.removeItem('key');
-window.
-
-localStorage.removeItem('key');
+window.localStorage.removeItem('key');
 ```
 
 **清除所有数据**  
