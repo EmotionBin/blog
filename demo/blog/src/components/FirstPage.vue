@@ -67,7 +67,7 @@
     }
     .beian-info{
       position: absolute;
-      bottom: 0;
+      bottom: 10px;
       color: #666;
       a{
         color: #666;
