@@ -8,6 +8,16 @@
     <router-link to="/home">
       <el-button type="primary">let's get it started!</el-button>
     </router-link>
+    <!-- 备案信息 -->
+    <div class="beian-info">
+      <div class="beian-num">
+        <a href="https://beian.miit.gov.cn/">桂ICP备2020008115号-1</a>
+        <span> • Version 1.0.0 • ALL RIGHTS RESERVED</span>
+      </div>
+      <div class="beian-year">
+        huangweibinupup.cn © 2020
+      </div>
+    </div>
 	</div>
 </template>
 
@@ -54,6 +64,19 @@
     flex-direction: column;
     .starCom{
       z-index: -1;
+    }
+    .beian-info{
+      position: absolute;
+      bottom: 0;
+      color: #666;
+      a{
+        color: #666;
+      }
+      .beian-year{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
     }
 	}
 
