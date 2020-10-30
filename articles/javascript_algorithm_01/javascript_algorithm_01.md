@@ -472,7 +472,7 @@ function doSomething(){
 
 ## 最大子序和
 
-这是leetCode的一道题，[传送门](https://leetcode-cn.com/problems/maximum-subarray/)  
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/maximum-subarray/)  
 
 > 给定一个整数数组 nums ，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和
 
@@ -515,7 +515,7 @@ var maxSubArray = function(nums) {
 
 ## 最后一个单词的长度
 
-这是leetCode的一道题，[传送门](https://leetcode-cn.com/problems/length-of-last-word/)  
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/length-of-last-word/)  
 
 > 给定一个仅包含大小写字母和空格 ' ' 的字符串 s，返回其最后一个单词的长度。如果字符串从左向右滚动显示，那么最后一个单词就是最后出现的单词。  
 > 如果不存在最后一个单词，请返回 0。  
@@ -581,7 +581,7 @@ String.prototype.trim = function() {
 
 ## 加一
 
-这是leetCode的一道题，[传送门](https://leetcode-cn.com/problems/plus-one/)  
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/plus-one/)  
 
 > 给定一个由整数组成的非空数组所表示的非负整数，在该数的基础上加一。  
 > 最高位数字存放在数组的首位， 数组中每个元素只存储单个数字。  
@@ -619,7 +619,7 @@ var plusOne = function(digits) {
 
 ## 二进制求和
 
-这是leetCode的一道题，[传送门](https://leetcode-cn.com/problems/add-binary/)  
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/add-binary/)  
 
 > 给你两个二进制字符串，返回它们的和（用二进制表示）。  
 > 输入为 非空 字符串且只包含数字 1 和 0。  
@@ -649,6 +649,44 @@ var addBinary = function(a, b) {
  */
 var addBinary = function(a, b) {
   return (BigInt("0b" + a) + BigInt("0b" + b)).toString(2);
+};
+```
+
+----
+
+## 合并两个有序数组
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/merge-sorted-array/)  
+
+> 给你两个有序整数数组 nums1 和 nums2，请你将 nums2 合并到 nums1 中，使 nums1 成为一个有序数组。  
+> - 初始化 nums1 和 nums2 的元素数量分别为 m 和 n 。  
+> - 你可以假设 nums1 有足够的空间（空间大小大于或等于 m + n）来保存 nums2 中的元素。  
+
+思路：双指针法，用两个指针分别指向两个数组的末尾，从后往前同时遍历两个数组元素，大的往后放即可  
+
+```javascript
+/**
+ * @param {number[]} nums1
+ * @param {number} m
+ * @param {number[]} nums2
+ * @param {number} n
+ * @return {void} Do not return anything, modify nums1 in-place instead.
+ */
+var merge = function(nums1, m, nums2, n) {
+  let index1 = m - 1;
+  let index2 = n - 1;
+  let tail = m + n - 1;
+  while(index2 >= 0){
+    if(nums1[index1] > nums2[index2]){
+      nums1[tail] = nums1[index1];
+      index1 --;
+      tail --;
+    }else{
+      nums1[tail] = nums2[index2];
+      index2 --;
+      tail --;
+    }
+  }
 };
 ```
 
