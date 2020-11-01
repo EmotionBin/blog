@@ -690,4 +690,33 @@ var merge = function(nums1, m, nums2, n) {
 };
 ```
 
+----
+
+## 计算一个数的平方根
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/sqrtx/)  
+
+> 实现 int sqrt(int x) 函数  
+> 计算并返回 x 的平方根，其中 x 是非负整数  
+> 由于返回类型是整数，结果只保留整数的部分，小数部分将被舍去  
+
+思路：从 0 开始遍历，每次加一，如果 i 的平方小于等于 x 并且 i + 1 的平方大于 x ，那么 x 的平方根就是 i  
+
+```javascript
+/**
+ * @param {number} x
+ * @return {number}
+ */
+var mySqrt = function(x) {
+  for(let i = 0;i < Infinity;i ++){
+    if(i * i <= x && (i + 1 ) * (i + 1) > x){
+      return i;
+    }
+  }
+};
+```
+
+这样确实是能解题，但是效率实在是太低，下面我会结合二分法进行解题  
+
+
 
