@@ -718,5 +718,64 @@ var mySqrt = function(x) {
 
 这样确实是能解题，但是效率实在是太低，下面我会结合二分法进行解题  
 
+使用二分法，废话不多说，直接上代码  
+
+```javascript
+/**
+ * @param {number} x
+ * @return {number}
+ */
+var mySqrt = function(x) {
+  let head = 0;
+  let tail = x;
+  let res = -1;
+  while(head <= tail){
+    let mid = Math.floor((head + tail) / 2);
+    if(mid * mid < x){
+      head = mid + 1;
+      res = mid;
+    }else if(mid * mid > x){
+      tail = mid - 1;
+    } else{
+      return mid;
+    }
+  }
+  return res;
+};
+```
+
+----
+
+## 爬楼梯
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/climbing-stairs/)  
+
+> 假设你正在爬楼梯。需要 n 阶你才能到达楼顶。  
+> 每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢？  
+> 注意：给定 n 是一个正整数。  
+
+思路：动态规划，分解成若干个子问题，爬第n阶楼梯的方法数量，等于这 2 部分之和  
+
+1. 爬上 n-1 阶楼梯的方法数量，因为再爬 1 阶就能到第 n 阶  
+2. 爬上 n-2 阶楼梯的方法数量，因为再爬 2 阶就能到第 n 阶  
+
+所以我们得到公式 `dp[n] = dp[n−1] + dp[n−2]`，同时需要初始化 `dp[0]=1` 和 `dp[1]=1`  
+
+```javascript
+/**
+ * @param {number} n
+ * @return {number}
+ */
+var climbStairs = function(n) {
+  const arr = [];
+  arr[0] = 1;
+  arr[1] = 1;
+  for(let i = 2;i <= n;i ++){
+    arr[i] = arr[i - 1] + arr[i - 2];
+  }
+  return arr[n];
+};
+```
+
 
 
