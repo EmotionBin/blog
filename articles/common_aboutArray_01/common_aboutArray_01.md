@@ -613,6 +613,57 @@ Array.isArray(a); // true
 
 ----
 
+## 数组合并
+
+### 合并两个有序数组
+
+对于两个有序的数组，要将他们合并到一个数组中，最快的方法可能是**双指针法**，假设是从小到大排序，同时遍历两个数组，把两个数组当前的元素作比较，大的加入到数组末尾，指针左移.....  
+
+说的可能有点抽象，下面来直接看代码，其实这是 LeetCode 上的一道题：  
+
+> 88. 合并两个有序数组  
+> 给你两个有序整数数组 nums1 和 nums2，请你将 nums2 合并到 nums1 中，使 nums1 成为一个有序数组。  
+>  
+> 说明：  
+> - 初始化 nums1 和 nums2 的元素数量分别为 m 和 n 。  
+> - 你可以假设 nums1 有足够的空间（空间大小大于或等于 m + n）来保存 nums2 中的元素。  
+>  
+> 示例：  
+>   输入：  
+>   nums1 = [1,2,3,0,0,0], m = 3  
+>   nums2 = [2,5,6],       n = 3  
+>   输出：[1,2,2,3,5,6]
+
+```javascript
+/**
+ * @param {number[]} nums1
+ * @param {number} m
+ * @param {number[]} nums2
+ * @param {number} n
+ * @return {void} Do not return anything, modify nums1 in-place instead.
+ */
+var merge = function(nums1, m, nums2, n) {
+  let index1 = m - 1;
+  let index2 = n - 1;
+  let tail = m + n - 1;
+  while (index2 >= 0) {
+    if (nums1[index1] > nums2[index2]) { 
+      nums1[tail] = nums1[index1];
+      index1--;
+      tail--;
+    } else {
+      nums1[tail] = nums2[index2];
+      index2--;
+      tail--;
+    }
+  }
+};
+```
+
+这里有两个指针，index1 和 index2 分别指向 nums1 和 nums2 中元素的末尾，有一个指针 tail，直接指向 num1 的末尾(可以假设 nums1 有足够的空间(空间大小大于或等于 m + n))，两个数组一起遍历，比较 index1 和 index2 当前指向元素的大小，大的赋值给 tail 指针指向的元素，并且大的元素的指针左移一位，tail 指针也左移一位，直到 index2 小于 0，遍历结束  
+
+----
+
 ## Vue对于数组的响应式监听
 
 ### Vue对数组监听的坑
