@@ -112,7 +112,6 @@ document.getElementById('box3').addEventListener('click', sayBox3, false);
 具体实现直接看代码  
 
 ```javascript
-// 这里不讲IE，结尾再说
 function clickLi() {
   alert('你点击了li');
 }
@@ -129,7 +128,7 @@ document.getElementById('isUl').addEventListener('click', function(event) {
 
 这样我们就通过给 ul 绑定一个点击事件，让所有的 li 都触发了函数，那如果想给不同的li绑定不同的函数怎么办？  
 
-假设有 3 个 li，我们先写 3 个不同的函数，再给 3 个 li 设置不同的 id 名，通过判断 id 名是不是就能给不同的 li 绑定不同的函数啦：  
+假设有 3 个 li，我们先写 3 个不同的函数，再给 3 个 li 设置不同的 id 名，通过判断 id 名就能给不同的 li 绑定不同的函数，看代码  
 
 ```html
 <body>
@@ -164,7 +163,7 @@ document.getElementById('isUl').addEventListener('click', function(event) {
 
 这就是所谓的事件委托，通过监听一个父元素，来给不同的子元素绑定事件，减少监听次数，从而提升速度  
 
-**事件委托是利用冒泡阶段的运行机制来实现的，给父元素监听事件，只要子元素触发了事件，会一级一级一次网上冒泡，这样父元素必然能触发事件**  
+**事件委托是利用事件冒泡的运行机制来实现的，给父元素监听事件，只要子元素触发了事件，会一级一级依次往上冒泡，这样父元素必然能触发事件**  
 
 ----
 
