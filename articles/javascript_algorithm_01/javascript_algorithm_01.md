@@ -777,5 +777,93 @@ var climbStairs = function(n) {
 };
 ```
 
+----
+
+## 相同的树
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/same-tree/)  
+
+> 给定两个二叉树，编写一个函数来检验它们是否相同。
+> 如果两个树在结构上相同，并且节点具有相同的值，则认为它们是相同的。
+
+思路:递归判断，当两棵树当前节点都为 `null` 时返回 `true`，当其中一个为 `null`，另一个不为 `null` 时返回 `false`，当两个都不为 `null` 并且值不相等时返回 `false`，递归判断树的左右子节点    
+
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} p
+ * @param {TreeNode} q
+ * @return {boolean}
+ */
+var isSameTree = function(p, q) {
+  if(p === null && q === null) return true;
+  if(p === null || q === null) return false;
+  if(p.val !== q.val) return false;
+  return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+};
+```
+
+### 这里总结一下写树算法的套路框架
+
+二叉树算法的设计的总路线：明确一个节点要做的事情，然后剩下的事抛给框架  
+
+```java
+void traverse(TreeNode root) {
+  // root 需要做什么？在这做。
+  // 其他的不用 root 操心，抛给框架
+  traverse(root.left);
+  traverse(root.right);
+}
+```
+
+举两个简单的例子体会一下这个思路，热热身  
+
+**1.如何把二叉树所有的节点中的值加一？**  
+
+```java
+void plusOne(TreeNode root) {
+  if (root == null) return;
+  root.val += 1;
+
+  plusOne(root.left);
+  plusOne(root.right);
+}
+```
+
+**2.如何判断两棵二叉树是否完全相同？**  
+
+```java
+boolean isSameTree(TreeNode root1, TreeNode root2) {
+  // 都为空的话，显然相同
+  if (root1 == null && root2 == null) return true;
+  // 一个为空，一个非空，显然不同
+  if (root1 == null || root2 == null) return false;
+  // 两个都非空，但 val 不一样也不行
+  if (root1.val != root2.val) return false;
+
+  // root1 和 root2 该比的都比完了
+  return isSameTree(root1.left, root2.left) && isSameTree(root1.right, root2.right);
+}
+```
+
+总之就是，只处理当前节点，剩下的操作利用递归进行处理  
+
+本文参考自 [传送门](https://leetcode-cn.com/problems/same-tree/solution/xie-shu-suan-fa-de-tao-lu-kuang-jia-by-wei-lai-bu-/)  
+
+
+
+
+
+
+
+
+
 
 
