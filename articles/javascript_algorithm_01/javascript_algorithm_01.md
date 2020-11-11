@@ -810,7 +810,7 @@ var isSameTree = function(p, q) {
 };
 ```
 
-### 这里总结一下写树算法的套路框架
+**这里总结一下写树算法的套路框架**  
 
 二叉树算法的设计的总路线：明确一个节点要做的事情，然后剩下的事抛给框架  
 
@@ -857,6 +857,48 @@ boolean isSameTree(TreeNode root1, TreeNode root2) {
 
 本文参考自 [传送门](https://leetcode-cn.com/problems/same-tree/solution/xie-shu-suan-fa-de-tao-lu-kuang-jia-by-wei-lai-bu-/)  
 
+## 对称二叉树
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/symmetric-tree/)  
+
+> 给定一个二叉树，检查它是否是镜像对称的。  
+> 例如，二叉树 [1,2,2,3,4,4,3] 是对称的。  
+> 但是下面这个 [1,2,2,null,3,null,3] 则不是镜像对称的。
+
+思路:递归判断，两棵树为对称二叉树有两个条件  
+
+1. 根节点相同
+2. 一棵树的左子树和另一棵树的右子树为对称二叉树，并且它的右子树和另一棵树的左子树为对称二叉树
+
+由以上条件，递归可得  
+
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {boolean}
+ */
+var isSymmetric = function(root) {
+  if(!root) return true;
+  return isDiff(root.left, root.right);
+  function isDiff(leftTree, rightTree){
+    // 两个都为 null 显然对称
+    if(!leftTree && !rightTree) return true;
+    // 一个为 null 另一个不为 null 显然不对称
+    if(!leftTree || !rightTree) return false;
+    // 值不同 显然不对称
+    if(leftTree.val !== rightTree.val) return false;
+    // 递归
+    return isDiff(leftTree.left, rightTree.right) && isDiff(leftTree.right, rightTree.left);
+  }
+};
+```
 
 
 
