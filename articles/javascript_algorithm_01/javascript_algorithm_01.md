@@ -900,6 +900,32 @@ var isSymmetric = function(root) {
 };
 ```
 
+----
+
+## 二叉树的最大深度
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/)  
+
+思路:递归，一句话完事，一棵树的最大高度等于它的左子树的高度与右子树的高度的最大值加一   
+
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+var maxDepth = function(root) {
+  if(!root) return 0
+  return Math.max(maxDepth(root.left), maxDepth(root.right)) + 1
+};
+```
+
 
 
 
