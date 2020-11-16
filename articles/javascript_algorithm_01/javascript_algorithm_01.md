@@ -906,6 +906,9 @@ var isSymmetric = function(root) {
 
 这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/)  
 
+> 给定一个二叉树，找出其最大深度。  
+> 二叉树的深度为根节点到最远叶子节点的最长路径上的节点数。  
+
 思路:递归，一句话完事，一棵树的最大高度等于它的左子树的高度与右子树的高度的最大值加一   
 
 ```javascript
@@ -925,6 +928,48 @@ var maxDepth = function(root) {
   return Math.max(maxDepth(root.left), maxDepth(root.right)) + 1
 };
 ```
+
+----
+
+## 二叉树的层次遍历
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/binary-tree-level-order-traversal-ii/)  
+
+> 给定一个二叉树，返回其节点值自底向上的层次遍历。 （即按从叶子节点所在层到根节点所在的层，逐层从左向右遍历）
+
+思路:创建一个队列，先把根节点放进去。对于当前队列中的所有节点，即当前层的节点，按顺序出列，节点值记录一下，让它们的子节点加入队列，重复上述步骤，直到队列为空，就遍历完所有节点  
+
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number[][]}
+ */
+var levelOrderBottom = function(root) {
+  if(!root) return []
+  const res = []
+  const queue = [root]
+  while(queue.length){
+    const data = []
+    const levelSize = queue.length;
+    for(let i = 0;i < levelSize;i ++){
+      const cur = queue.shift()
+      data.push(cur.val)
+      if(cur.left) queue.push(cur.left)
+      if(cur.right) queue.push(cur.right)
+    }
+    res.unshift(data)
+  }
+  return res
+};
+```
+
 
 
 
