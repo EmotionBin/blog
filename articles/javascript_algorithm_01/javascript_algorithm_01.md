@@ -970,6 +970,45 @@ var levelOrderBottom = function(root) {
 };
 ```
 
+----
+
+## 平衡二叉树
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/balanced-binary-tree/)  
+
+> 给定一个二叉树，判断它是否是高度平衡的二叉树  
+> 本题中，一棵高度平衡二叉树定义为：  
+> 一个二叉树每个节点 的左右两个子树的高度差的绝对值不超过 1 。  
+
+思路:递归，先判断当前节点的左右子树的高度是否满足条件，若满足则继续递归判断左右子树  
+
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {boolean}
+ */
+var isBalanced = function(root) {
+  if(!root) return true
+  return Math.abs(depth(root.left) - depth(root.right)) <= 1 
+    && isBalanced(root.left) 
+    && isBalanced(root.right)
+};
+
+var depth = function(root) {
+  if(!root) return 0
+  return Math.max(depth(root.left), depth(root.right)) + 1
+};
+```
+
+但是这样感觉会存在大量冗余操作，因为在计算树的高度的时候，也使用了递归，会一直递归到树的最底部，所以这里会有两个嵌套的递归，待优化~  
 
 
 
