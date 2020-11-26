@@ -1010,7 +1010,39 @@ var depth = function(root) {
 
 但是这样感觉会存在大量冗余操作，因为在计算树的高度的时候，也使用了递归，会一直递归到树的最底部，所以这里会有两个嵌套的递归，待优化~  
 
+----
 
+## 二叉树的最小深度
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/minimum-depth-of-binary-tree/)  
+
+> 给定一个二叉树，找出其最小深度。  
+> 最小深度是从根节点到最近叶子节点的最短路径上的节点数量。  
+> 说明：叶子节点是指没有子节点的节点。  
+
+思路:递归，如果当前节点既有左子树又有右子树，则向左右两个子树分别递归，这个二叉树的最小深度就是左右子树中小的那个加 1，如果只有左子树，则向最子树递归，这个二叉树的最小深度就是左子树深度加 1，如果只有右子树，则向右子树递归，这个二叉树的最小深度就是右子树深度加 1  
+
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+var minDepth = function(root) {
+  if(!root) return 0
+  if(root.left && root.right) return 1 + Math.min(minDepth(root.left), minDepth(root.right))
+  if(root.left) return 1 + minDepth(root.left)
+  if(root.right) return 1 + minDepth(root.right)
+  return 1
+};
+```
 
 
 
