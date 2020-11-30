@@ -1044,9 +1044,41 @@ var minDepth = function(root) {
 };
 ```
 
+----
 
+## 买卖股票的最佳时机
 
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock/)  
 
+> 给定一个数组，它的第 i 个元素是一支给定股票第 i 天的价格。  
+> 如果你最多只允许完成一笔交易（即买入和卖出一支股票一次），设计一个算法来计算你所能获取的最大利润。  
+> 注意：你不能在买入股票前卖出股票。  
+
+思路：双指针，双重 for 循环，外层遍历，遍历数组各个元素，外层指针指向当前元素，内层遍历，遍历数组剩余元素，内层指针指向当前元素，内层指针减去外层指针的最大值即为最大利润  
+
+```javascript
+/**
+ * @param {number[]} prices
+ * @return {number}
+ */
+var maxProfit = function(prices) {
+  let profit = 0
+  let buy = -1,sold = -1; 
+  const { length } = prices
+  for(let i = 0;i < length;i ++){
+    buy = prices[i]
+    for(let j = i + 1;j < length;j ++){
+      sold = prices[j]
+      if(sold > buy) profit = Math.max(profit, sold - buy)
+    }
+  }
+  return profit
+};
+```
+
+但是这里利用了双重 for 循环，时间复杂度开销太大，下面会用动态规划的方法来解决  
+
+待补充!!!!!!!!!!!!!!!!!
 
 
 
