@@ -1078,7 +1078,31 @@ var maxProfit = function(prices) {
 
 但是这里利用了双重 for 循环，时间复杂度开销太大，下面会用动态规划的方法来解决  
 
-待补充!!!!!!!!!!!!!!!!!
+思路：动态规划，用文字描述优点抽象，直接看代码  
+
+```javascript
+/**
+ * @param {number[]} prices
+ * @return {number}
+ */
+ /*
+ * dp[i] 前i天卖出的最大利润
+ * min : prices 前i项中的最小值
+ * prices[i] - min: 当前位置卖出可得最大利润
+ * dp[i - 1] : 前i-1项目卖出可得的最大利润
+ */
+var maxProfit = function(prices) {
+  if (!prices || !prices.length) return 0
+  const len = prices.length, dp = new Array(len).fill(0)
+  let min = prices[0] 
+  for (let i = 1, price; i < len; i++) {
+    price = prices[i]
+    min = Math.min(min, price)
+    dp[i] = Math.max(dp[i - 1], price - min )
+  }
+  return dp[len - 1]
+};
+```
 
 
 
