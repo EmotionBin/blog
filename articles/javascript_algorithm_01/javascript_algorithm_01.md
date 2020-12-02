@@ -1104,6 +1104,34 @@ var maxProfit = function(prices) {
 };
 ```
 
+----
+
+## 买卖股票的最佳时机 II
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii/)  
+
+> 给定一个数组，它的第 i 个元素是一支给定股票第 i 天的价格。  
+> 设计一个算法来计算你所能获取的最大利润。你可以尽可能地完成更多的交易（多次买卖一支股票）。  
+> 注意：你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。  
+
+思路：贪心算法，要想收益最大化，只要明天的价格比今天高，则今天买入，明天卖出，赚取差价，但是这样进行交易是与题目有冲突的，这题算的是最大收益，所以不关心买入过程，只关心结果，贪心算法只能用于计算最大利润，计算的过程并不是实际的交易过程，这也是贪心算法的意义所在  
+
+```javascript
+/**
+ * @param {number[]} prices
+ * @return {number}
+ */
+var maxProfit = function(prices) {
+  // 贪心算法
+  let res = 0
+  const { length } = prices
+  for(let i = 1;i < length;i ++){
+    res += Math.max(0, prices[i] - prices[i - 1])
+  }
+  return res
+};
+```
+
 
 
 
