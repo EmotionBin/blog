@@ -1132,6 +1132,34 @@ var maxProfit = function(prices) {
 };
 ```
 
+----
+
+## 只出现一次的数字
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/single-number/)  
+
+> 给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。  
+
+思路：声明一个对象用来记录各个数字出现的次数，循环遍历，如果对象中有该数字的记录，则次数加 1，如果没有，则往对象中写入该值，次数记为 1，循环结束后再进行一次循环找出次数为 1 的数字返回即可  
+
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var singleNumber = function(nums) {
+  const MAP = {}
+  const { length } = nums
+  for(let i = 0;i < length;i ++){
+    const item = nums[i]
+    if(MAP[item]) MAP[item] ++
+    else MAP[item] = 1
+  }
+  for(let key in MAP){
+    if(MAP[key] === 1) return key
+  }
+};
+```
 
 
 
