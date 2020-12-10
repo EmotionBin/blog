@@ -1206,6 +1206,42 @@ var hasCycle = function(head) {
 };
 ```
 
+----
+
+## 相交链表
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/intersection-of-two-linked-lists/)  
+
+> 编写一个程序，找到两个单链表相交的起始节点。  
+
+思路：标记法，遍历其中一个链表，每经过一个节点，就给节点进行标记，完成后再遍历另一个链表，如果该链表上的节点有标记，则该节点为相交节点  
+
+```javascript
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+
+/**
+ * @param {ListNode} headA
+ * @param {ListNode} headB
+ * @return {ListNode}
+ */
+var getIntersectionNode = function(headA, headB) {
+  while(headA){
+    headA.flag = true
+    headA = headA.next
+  }
+  while(headB){
+    if(headB.flag) return headB
+    headB = headB.next
+  }
+  return null
+};
+```
 
 
 
