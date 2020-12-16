@@ -1243,5 +1243,41 @@ var getIntersectionNode = function(headA, headB) {
 };
 ```
 
+----
+
+## Excel表列名称
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/excel-sheet-column-title/)  
+
+> 给定一个正整数，返回它在 Excel 表中相对应的列名称  
+> 1 -> A  
+> 2 -> B  
+> 3 -> C  
+> ...  
+> 26 -> Z  
+> 27 -> AA  
+> 28 -> AB  
+> ...
+
+思路：这道题无非就是二十六进制的转换罢了，想一下我们平时熟悉的十进制，再把它转换成二十六进制就可以了  
+
+```javascript
+/**
+ * @param {number} n
+ * @return {string}
+ */
+var convertToTitle = function(n) {
+  const MAP = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T'
+  , 'U', 'V', 'W', 'X', 'Y', 'Z']
+  let result = ''
+  while (n > 0) {
+    n--
+    result = MAP[(n % 26)] + result
+    n = Math.floor(n / 26)
+  }
+  return result
+};
+```
+
 
 
