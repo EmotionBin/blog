@@ -1279,5 +1279,29 @@ var convertToTitle = function(n) {
 };
 ```
 
+----
 
+## 阶乘后的零
 
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/factorial-trailing-zeroes/)  
+
+> 给定一个整数 n，返回 n! 结果尾数中零的数量。  
+
+思路：5 的阶乘尾数有 1 个零，10 的阶乘尾数有 2 个零，15 的阶乘尾数有 3 个零...有零说明能被 10 整除，又因为 2 乘 5 等于 10，所以找出所有的因数为 2 和 5 的即可，每 2 个数出现一次 2，每 5 个数出现一次5，因为 5 比 2 少，由于木桶效应，找出所有的因数 5 即可，那就是5, 10，15，20，25，但是 25 会出现 2 个 5，125 会出现 3 个 5，所以所有包含 5 的数为 n / 5 + n / 25 + n / 125...用程序算出来这个算术式的结果就是答案  
+
+```javascript
+/**
+ * @param {number} n
+ * @return {number}
+ */
+var trailingZeroes = function(n) {
+  let count = 0
+  while (n > 0) {
+    count += Math.floor(n / 5)
+    n = n / 5
+  }
+  return count
+};
+```
+
+[思路参考](https://leetcode-cn.com/problems/factorial-trailing-zeroes/solution/xiang-xi-tong-su-de-si-lu-fen-xi-by-windliang-3/)  
