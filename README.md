@@ -25,6 +25,12 @@
 - [防抖节流](https://github.com/EmotionBin/blog/blob/master/articles/javascript_debounceAndthrottle_01/javascript_debounceAndthrottle_01.md)
 - [关于编码](https://github.com/EmotionBin/blog/blob/master/articles/common_encoded_01/common_encoded_01.md)
 - [前端性能优化](https://github.com/EmotionBin/blog/blob/master/articles/common_performance_optimization_01/common_performance_optimization_01.md)
+- [Web前端安全](https://github.com/EmotionBin/blog/blob/master/articles/common_web_security_01/common_web_security_01.md)
+- [关于前端鉴权的那些事](https://github.com/EmotionBin/blog/blob/master/articles/common_cookie_session_token_webstorage/common_cookie_session_token_webstorage.md)
+- [事件冒泡、事件捕获、事件委托](https://github.com/EmotionBin/blog/blob/master/articles/javascript_event_01/javascript_event_01.md)
+- [第三方登录与单点登录](https://github.com/EmotionBin/blog/blob/master/articles/common_login_mode_01/common_login_mode_01.md)
+- [关于移动端适配](https://github.com/EmotionBin/blog/blob/master/articles/mobile_mobileAdaptation_01/mobile_mobileAdaptation_01.md)
+- [vue-router实现原理](https://github.com/EmotionBin/blog/blob/master/articles/vue-router_principle_01/vue-router_principle_01.md)
 
 ## 小尾巴
 
