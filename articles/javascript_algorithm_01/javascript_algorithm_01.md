@@ -1334,4 +1334,42 @@ var rob = function(nums) {
 };
 ```
 
+----
+
+## 快乐数
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/happy-number/)  
+
+> 编写一个算法来判断一个数 n 是不是快乐数。
+> 「快乐数」定义为：对于一个正整数，每一次将该数替换为它每个位置上的数字的平方和，然后重复这个过程直到这个数变为 1，也可能是 无限循环 但始终变不到 1。如果 可以变为  1，那么这个数就是快乐数。
+> 如果 n 是快乐数就返回 True ；不是，则返回 False 。
+
+思路：用对象记录每次出现的新数字，对当前数字先从低位到高位依次拆解，求平方和得到新数字，如果新数字不为 1，则记录到该对象中，如果为 1，则返回 `true`，如果数字在对象中已经有过记录，说明出现了循环，直接返回 `false`  
+
+```javascript
+/**
+ * @param {number} n
+ * @return {boolean}
+ */
+var isHappy = function(n) {
+  const map = {}
+  let res = getNumber(n)
+  while (res != 1) {
+    if( res in map) return false
+    map[res] = 1
+    res = getNumber(res)
+  }
+  return true
+};
+
+function getNumber(n) {
+  let sum = 0
+  while(n > 0){
+    const remaider = n % 10
+    sum += Math.pow(remaider, 2)
+    n = Math.floor(n / 10)
+  }
+  return sum
+}
+```
 
