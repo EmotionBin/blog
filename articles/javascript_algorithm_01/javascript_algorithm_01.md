@@ -1408,3 +1408,26 @@ var isIsomorphic = function(s, t) {
 };
 ```
 
+----
+
+## 存在重复元素
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/contains-duplicate/)  
+
+> 给定一个整数数组，判断是否存在重复元素。  
+> 如果存在一值在数组中出现至少两次，函数返回 true 。如果数组中每个元素都不相同，则返回 false 。  
+
+思路：先对数组去重，如果去重后得到的新数组的长度不等于原数组长度，说明有重复值，返回 true，否则返回 false  
+
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {boolean}
+ */
+var containsDuplicate = function(nums) {
+  return [...new Set(nums)].length !== nums.length
+};
+```
+
+其实这道题的思路非常多，这里我只列举了其中一种  
+
