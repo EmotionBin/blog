@@ -1431,3 +1431,33 @@ var containsDuplicate = function(nums) {
 
 其实这道题的思路非常多，这里我只列举了其中一种  
 
+----
+
+## 存在重复元素 II
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/contains-duplicate-ii/)  
+
+> 给定一个整数数组和一个整数 k，判断数组中是否存在两个不同的索引 i 和 j，使得 nums [i] = nums [j]，并且 i 和 j 的差的 绝对值 至多为 k。  
+
+思路：搞对象，建立一个对象存储值与索引，遍历数组，如果对象中没有该值的记录，则存入该值与其对应的索引，如果有记录，则判断当前索引与对象中记录的索引的差值是否小于 k，小于 k 则返回 true，若数组遍历完后还没有找到满足条件的项目，则直接返回 false  
+
+```javascript
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {boolean}
+ */
+var containsNearbyDuplicate = function(nums, k) {
+  const map = {}
+  const { length } = nums
+  for (let i = 0; i < length; i++) {
+    const cur = nums[i]
+    if (map[cur] >=0 && i - map[cur] <= k) {
+      return true
+    } else {
+      map[cur] = i
+    }
+  }
+  return false
+};
+```
