@@ -1503,4 +1503,28 @@ var summaryRanges = function(nums) {
 
 这是我自己写的代码，判断条件相对有点多，我觉得并不是最优的代码~  
 
+----
+
+## 2的幂
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/power-of-two/)  
+
+> 给定一个整数，编写一个函数来判断它是否是 2 的幂次方。
+
+思路：用一个 while 循环，一直让那个数除以 2，如果能达到 1，则返回 true，如果这个数对 2 除余除不尽，直接返回 false  
+
+```javascript
+/**
+ * @param {number} n
+ * @return {boolean}
+ */
+var isPowerOfTwo = function(n) {
+  if(n <= 0) return false
+  while (n > 0) {
+    if (n === 1) return true
+    if (n % 2) return false
+    n = n / 2
+  }
+};
+```
 
