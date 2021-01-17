@@ -1528,3 +1528,41 @@ var isPowerOfTwo = function(n) {
 };
 ```
 
+----
+
+## 回文链表
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/palindrome-linked-list/)  
+
+> 请判断一个链表是否为回文链表。  
+
+思路：先遍历链表，用一个数组存储链表中所有结点的值，再遍历数组，判断当前索引 i 与对称索引 length - i - 1 的值是否相等，如果不相等说明不对称，直接返回 false，如果能遍历完整个数组，则说明是对称的，直接返回 true  
+
+```javascript
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @return {boolean}
+ */
+var isPalindrome = function(head) {
+  const val = []
+  while (head) {
+    val.push(head.val)
+    head = head.next
+  }
+  const { length } = val
+  for (let i = 0; i < length; i++) {
+    if (val[i] !== val[length - i - 1]) {
+      return false
+    }
+  }
+  return true
+};
+```
+
