@@ -1604,3 +1604,24 @@ var lowestCommonAncestor = function(root, p, q) {
 
 其实这道题一开始没做出来，后来看了解析才恍然大悟的，我认为比较好理解的解析在这里 [传送门](https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-search-tree/solution/di-gui-he-die-dai-fa-by-hyj8/)  
 
+----
+
+## 有效的字母异位词
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/valid-anagram/)  
+
+> 给定两个字符串 s 和 t ，编写一个函数来判断 t 是否是 s 的字母异位词。  
+
+思路：两个字符串异位等价于他们排序后相等，直接看代码  
+
+```javascript
+/**
+ * @param {string} s
+ * @param {string} t
+ * @return {boolean}
+ */
+var isAnagram = function(s, t) {
+  return s.split('').sort().join('') === t.split('').sort().join('')
+};
+```
+
