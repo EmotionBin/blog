@@ -1566,3 +1566,41 @@ var isPalindrome = function(head) {
 };
 ```
 
+----
+
+## 二叉搜索树的最近公共祖先
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-search-tree/)  
+
+> 给定一个二叉搜索树, 找到该树中两个指定节点的最近公共祖先。  
+
+思路：如果 p.val 与 q.val 都比 root.val 小，那么 p, q 肯定在 root 左子树，此时递归左子树，如果 p.val 与 q.val 都比 root.val 大，同理递归右子树，其他情况，root 即为所求  
+
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+
+/**
+ * @param {TreeNode} root
+ * @param {TreeNode} p
+ * @param {TreeNode} q
+ * @return {TreeNode}
+ */
+var lowestCommonAncestor = function(root, p, q) {
+  if (p.val < root.val && q.val < root.val) {
+    return lowestCommonAncestor(root.left, p, q)
+  }
+  if (p.val > root.val && q.val > root.val) {
+    return lowestCommonAncestor(root.right, p, q)
+  }
+  return root
+};
+```
+
+其实这道题一开始没做出来，后来看了解析才恍然大悟的，我认为比较好理解的解析在这里 [传送门](https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-search-tree/solution/di-gui-he-die-dai-fa-by-hyj8/)  
+
