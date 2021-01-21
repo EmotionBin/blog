@@ -65,6 +65,96 @@ this.addEventListener('install', function (event) {
 })
 ```
 
+同样的，Service Worker 在安装完成后会被激活，所以我们也可监听 activate 事件  
 
+```javascript
+// sw.js
+this.addEventListener('activate', function (event) {
+  console.log('Service Worker activate')
+})
+```
 
+这时，我们可以在 Chorme 的开发者工具中看到我们注册的 Service Worker。  
+
+F12 打开控制台，选择 Application，再选择 Service Workers 就可以看到我们注册的 Service Worker。  
+
+在同一个 Origin 下，我们可以注册多个 Service Worker。但是请注意，这些 Service Worker 所使用的 **scope 必须是不相同的。**  
+
+```javascript
+// index.js
+if ('serviceWorker' in window.navigator) {
+  navigator.serviceWorker.register('./sw/sw.js', { scope: './sw' })
+    .then(function (reg) {
+      console.log('success', reg)
+    })
+  navigator.serviceWorker.register('./sw2/sw2.js', { scope: './sw2' })
+    .then(function (reg) {
+      console.log('success', reg)
+    })
+}
+```
+
+----
+
+## 信息通讯
+
+使用 postMessage 方法可以进行 Service Worker 和页面之间的通讯，下面来看一下如何实现。  
+
+----
+
+### 从页面到 Service Worker
+
+首先是从页面发送信息到 Serivce Worker 。  
+
+```javascript
+// index.js
+if ('serviceWorker' in window.navigator) {
+  navigator.serviceWorker.register('./sw.js', { scope: './' })
+    .then(function (reg) {
+      console.log('success', reg)
+      navigator.serviceWorker.controller && navigator.serviceWorker.controller.postMessage("this message is from page")
+    })
+    .catch(function (err) {
+      console.log('fail', err)
+    })
+}
+```
+
+为了保证 Service Worker 能够接收到信息，我们在它被注册完成之后再发送信息，和普通的 `window.postMessage()` 的使用方法不同，为了向 Service Worker 发送信息，我们要在 ServiceWorker 实例上调用 `postMessage()` 方法，这里我们使用到的是 `navigator.serviceWorker.controller` 。  
+
+```javascript
+// sw.js
+this.addEventListener('message', function (event) {
+  console.log(event.data) // this message is from page
+})
+```
+
+在 service worker 文件中我们可以直接在 `this` 上绑定 message 事件，这样就能够接收到页面发来的信息了。  
+
+对于不同 scope 的多个 Service Worker ，也可以给指定的 Service Worker 发送信息。  
+
+```javascript
+if ('serviceWorker' in window.navigator) {
+  navigator.serviceWorker.register('./sw.js', { scope: './sw' })
+    .then(function (reg) {
+      console.log('success', reg)
+      reg.active.postMessage("this message is from page, to sw")
+    })
+  navigator.serviceWorker.register('./sw2.js', { scope: './sw2' })
+    .then(function (reg) {
+      console.log('success', reg)
+      reg.active.postMessage("this message is from page, to sw 2")
+    })
+}
+
+// sw.js
+this.addEventListener('message', function (event) {
+  console.log(event.data) // this message is from page, to sw
+})
+
+// sw2.js
+this.addEventListener('message', function (event) {
+  console.log(event.data) // this message is from page, to sw 2
+})
+```
 
