@@ -1625,3 +1625,45 @@ var isAnagram = function(s, t) {
 };
 ```
 
+----
+
+## 二叉树的所有路径
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/binary-tree-paths/)  
+
+> 给定一个二叉树，返回所有从根节点到叶子节点的路径。
+
+思路：递归，先判断当前节点是不是叶子结点，如果当前节点的左子树和右子树都为空，那么就是叶子结点，如果是叶子结点，则给 path 拼接上当前叶子结点的值，如果不是叶子结点，则拼接上 `->` ，并继续递归左子树和右子树  
+
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {string[]}
+ */
+var binaryTreePaths = function(root) {
+  const res = []
+  const getPath = function (root, path) {
+    if (root) {
+      path += root.val.toString()
+      if (!root.left && !root.right) {
+        res.push(path)
+      } else {
+        path += '->'
+        getPath(root.left, path)
+        getPath(root.right, path)
+      }
+    }
+  }
+  getPath(root, '')
+  return res
+};
+```
+
