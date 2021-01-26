@@ -1667,3 +1667,31 @@ var binaryTreePaths = function(root) {
 };
 ```
 
+----
+
+## 各位相加
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/add-digits/)  
+
+> 给定一个非负整数 num，反复将各个位上的数字相加，直到结果为一位数。  
+
+思路：提取各位上的数字，求和，和大于 10 则继续递归即可  
+
+```javascript
+/**
+ * @param {number} num
+ * @return {number}
+ */
+var addDigits = function(num) {
+  if (num < 10) {
+    return num
+  }
+  let next = 0
+  while (num !== 0) {
+    next += Math.floor(num % 10)
+    num /= 10
+  }
+  return addDigits(next)
+};
+```
+
