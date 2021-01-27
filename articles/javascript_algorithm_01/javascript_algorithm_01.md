@@ -1695,3 +1695,36 @@ var addDigits = function(num) {
 };
 ```
 
+----
+
+## 丑数
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/ugly-number/)  
+
+> 编写一个程序判断给定的数是否为丑数。  
+> 丑数就是只包含质因数 2, 3, 5 的正整数。  
+
+思路：看看这个数能不能被 2、3、5 整除，如果能整除则继续检查，看这个数被除后的结果是否能被 2、3、5 整除，不断检查，如果当前数字小于 6 则为丑数，返回 true，否则返回 false  
+
+```javascript
+/**
+ * @param {number} num
+ * @return {boolean}
+ */
+var isUgly = function(num) {
+  if (num <= 0) return false
+  while (num > 0) {
+    if (num < 6) return true
+    if (num % 2 === 0) {
+      num /= 2
+    } else if (num % 3 === 0) {
+      num /= 3
+    } else if (num % 5 === 0) {
+      num /= 5
+    } else {
+      return false
+    }
+  }
+};
+```
+
