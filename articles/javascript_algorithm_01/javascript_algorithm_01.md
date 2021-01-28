@@ -1728,3 +1728,28 @@ var isUgly = function(num) {
 };
 ```
 
+----
+
+## 丢失的数字
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/missing-number/)  
+
+> 给定一个包含 [0, n] 中 n 个数的数组 nums ，找出 [0, n] 这个范围内没有出现在数组中的那个数。  
+
+思路：首先对这个数组进行排序，再遍历，如果索引值与当前值不匹配，说明索引值丢失，返回索引值，如果遍历结束还没有返回，说明最后一个数丢失，直接返回数组长度  
+
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var missingNumber = function(nums) {
+  const arr = nums.sort((a, b) => a - b)
+  for (let i = 0; i < arr.length; i ++) {
+    if (arr[i] !== i) return i
+  }
+  return nums.length
+};
+```
+
+
