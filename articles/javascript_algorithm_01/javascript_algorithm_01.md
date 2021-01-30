@@ -1756,3 +1756,31 @@ var missingNumber = function(nums) {
 
 ## 移动零
 
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/move-zeroes/)  
+
+> 给定一个数组 nums，编写一个函数将所有 0 移动到数组的末尾，同时保持非零元素的相对顺序。  
+
+思路：变量 count 统计 0 的个数，遍历数组，遇到 0 则删除同时在数组末尾加入 0，count 加 1，如果不是 0 则继续往下遍历，当 i 大于或等于数组长度减去 count 时跳出循环  
+
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {void} Do not return anything, modify nums in-place instead.
+ */
+var moveZeroes = function(nums) {
+  const { length } = nums
+  let i = 0
+  let count = 0
+  while (i < length - count) {
+    if (nums[i] === 0) {
+      nums.splice(i, 1)
+      nums.push(0)
+      count ++
+    } else {
+      i++
+    }
+  }
+  return nums
+};
+```
+
