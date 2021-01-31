@@ -1784,3 +1784,38 @@ var moveZeroes = function(nums) {
 };
 ```
 
+----
+
+## 单词规律
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/word-pattern/)  
+
+> 给定一种规律 pattern 和一个字符串 str ，判断 str 是否遵循相同的规律。  
+> 这里的 遵循 指完全匹配，例如， pattern 里的每个字母和字符串 str 中的每个非空单词之间存在着双向连接的对应规律。  
+
+思路：哈希表，两用个哈希表记录相互之间的映射关系，如果出现了有冲突的映射，直接返回 false，如果遍历结束都没有出现冲突，返回 true    
+
+```javascript
+/**
+ * @param {string} pattern
+ * @param {string} s
+ * @return {boolean}
+ */
+var wordPattern = function(pattern, s) {
+  const strArr = s.split(' ')
+  const pattern2s = {}
+  const s2pattern = {}
+  for (let i = 0; i < s.length; i++) {
+    const str = pattern[i]
+    const word = strArr[i]
+    if ((pattern2s[str] && pattern2s[str] !== word) || (s2pattern[word] && s2pattern[word] !== str)) {
+      return false
+    }
+    pattern2s[str] = word
+    s2pattern[word] = str
+  }
+  return true
+};
+```
+
+
