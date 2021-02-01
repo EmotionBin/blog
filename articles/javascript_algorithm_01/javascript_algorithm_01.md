@@ -1842,4 +1842,30 @@ var wordPattern = function(pattern, s) {
 };
 ```
 
+----
+
+## 3的幂
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/power-of-three/)  
+
+> 给定一个整数，写一个函数来判断它是否是 3 的幂次方。如果是，返回 true ；否则，返回 false 。  
+> 整数 n 是 3 的幂次方需满足：存在整数 x 使得 n == 3的 x 次幂  
+
+思路：如果这个数不能被 3 除尽则直接返回 false，否则除以 3 继续判断，到最后结果为 0 返回 false，结果为 1 返回 true  
+
+```javascript
+/**
+ * @param {number} n
+ * @return {boolean}
+ */
+var isPowerOfThree = function(n) {
+  if (n <= 0) return false
+  while (n > 0) {
+    if (n === 0) return false
+    if (n === 1) return true
+    if (n % 3 !== 0) return false
+    n /= 3
+  }
+};
+```
 
