@@ -1898,3 +1898,51 @@ var reverseString = function(s) {
 };
 ```
 
+----
+
+## 反转字符串中的元音字母
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/reverse-vowels-of-a-string/)  
+
+> 编写一个函数，以字符串作为输入，反转该字符串中的元音字母。  
+
+思路：双指针，头尾两个指针，不断往中间逼近，任意一个指针遇到元音字母，则停下，等到另一个指针也找到元音字母，此时，两个指针都指向元音字母，进行交换  
+
+```javascript
+/**
+ * @param {string} s
+ * @return {string}
+ */
+var reverseVowels = function(s) {
+  const VOWEL_LIST = ['a','e','i','o','u', 'A', 'E', 'I', 'O', 'U']
+  let head = 0
+  let tail = s.length - 1
+  s = s.split('')
+  while (head < tail) {
+    const isHeadVowel = isVowel(s[head])
+    const isTailVowel = isVowel(s[tail])
+    if (isHeadVowel && isTailVowel) {
+      [s[head], s[tail]] = [s[tail], s[head]]
+      head++
+      tail--
+    }
+    if (isHeadVowel && !isTailVowel) {
+      tail--
+    }
+    if (!isHeadVowel && isTailVowel) {
+      head++
+    }
+    if (!isHeadVowel && !isTailVowel) {
+      head++
+      tail--
+    }
+  }
+  function isVowel(str) {
+    return VOWEL_LIST.indexOf(str) !== -1
+  } 
+  return s.join('')
+};
+```
+
+
+
