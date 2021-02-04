@@ -1944,5 +1944,37 @@ var reverseVowels = function(s) {
 };
 ```
 
+----
 
+## 两个数组的交集
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/intersection-of-two-arrays/)  
+
+> 给定两个数组，编写一个函数来计算它们的交集。  
+
+思路：先对两个数组去重再排序，遍历长度短的那个数组，如果长度一样随便遍历一个，依次寻找当前元素是否在另一个数组中出现，出现则 push 到新数组中，最后把新数组返回  
+
+```javascript
+/**
+ * @param {number[]} nums1
+ * @param {number[]} nums2
+ * @return {number[]}
+ */
+var intersection = function(nums1, nums2) {
+  const arr1 = [...new Set(nums1)].sort((a, b) => a - b)
+  const arr2 = [...new Set(nums2)].sort((a, b) => a - b)
+  const res = []
+  const flag = arr1.length > arr2.length
+  const length = flag ? arr2.length : arr1.length
+  for (let i = 0; i < length; i++) {
+    if (flag && arr1.includes(arr2[i])) {
+      res.push(arr2[i])
+    }
+    if (!flag && arr2.includes(arr1[i])) {
+      res.push(arr1[i])
+    }
+  }
+  return res
+};
+```
 
