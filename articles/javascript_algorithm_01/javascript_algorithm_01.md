@@ -1842,4 +1842,107 @@ var wordPattern = function(pattern, s) {
 };
 ```
 
+----
+
+## 3的幂
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/power-of-three/)  
+
+> 给定一个整数，写一个函数来判断它是否是 3 的幂次方。如果是，返回 true ；否则，返回 false 。  
+> 整数 n 是 3 的幂次方需满足：存在整数 x 使得 n == 3的 x 次幂  
+
+思路：如果这个数不能被 3 除尽则直接返回 false，否则除以 3 继续判断，到最后结果为 0 返回 false，结果为 1 返回 true  
+
+```javascript
+/**
+ * @param {number} n
+ * @return {boolean}
+ */
+var isPowerOfThree = function(n) {
+  if (n <= 0) return false
+  while (n > 0) {
+    if (n === 0) return false
+    if (n === 1) return true
+    if (n % 3 !== 0) return false
+    n /= 3
+  }
+};
+```
+
+----
+
+## 反转字符串
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/reverse-string/)  
+
+> 编写一个函数，其作用是将输入的字符串反转过来。输入字符串以字符数组 char[] 的形式给出。  
+> 不要给另外的数组分配额外的空间，你必须原地修改输入数组、使用 O(1) 的额外空间解决这一问题。  
+> 你可以假设数组中的所有字符都是 ASCII 码表中的可打印字符。  
+
+思路：双指针，从两侧向数组中间夹，每走一步交换一次值  
+
+```javascript
+/**
+ * @param {character[]} s
+ * @return {void} Do not return anything, modify s in-place instead.
+ */
+var reverseString = function(s) {
+  let head = 0
+  let tail = s.length - 1
+  while (head < tail) {
+    [s[head], s[tail]] = [s[tail], s[head]]
+    head ++
+    tail --
+  }
+  return s
+};
+```
+
+----
+
+## 反转字符串中的元音字母
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/reverse-vowels-of-a-string/)  
+
+> 编写一个函数，以字符串作为输入，反转该字符串中的元音字母。  
+
+思路：双指针，头尾两个指针，不断往中间逼近，任意一个指针遇到元音字母，则停下，等到另一个指针也找到元音字母，此时，两个指针都指向元音字母，进行交换  
+
+```javascript
+/**
+ * @param {string} s
+ * @return {string}
+ */
+var reverseVowels = function(s) {
+  const VOWEL_LIST = ['a','e','i','o','u', 'A', 'E', 'I', 'O', 'U']
+  let head = 0
+  let tail = s.length - 1
+  s = s.split('')
+  while (head < tail) {
+    const isHeadVowel = isVowel(s[head])
+    const isTailVowel = isVowel(s[tail])
+    if (isHeadVowel && isTailVowel) {
+      [s[head], s[tail]] = [s[tail], s[head]]
+      head++
+      tail--
+    }
+    if (isHeadVowel && !isTailVowel) {
+      tail--
+    }
+    if (!isHeadVowel && isTailVowel) {
+      head++
+    }
+    if (!isHeadVowel && !isTailVowel) {
+      head++
+      tail--
+    }
+  }
+  function isVowel(str) {
+    return VOWEL_LIST.indexOf(str) !== -1
+  } 
+  return s.join('')
+};
+```
+
+
 
