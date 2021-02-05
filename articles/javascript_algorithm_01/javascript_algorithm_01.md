@@ -1978,3 +1978,42 @@ var intersection = function(nums1, nums2) {
 };
 ```
 
+----
+
+## 两个数组的交集 II
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/intersection-of-two-arrays-ii/)  
+
+> 给定两个数组，编写一个函数来计算它们的交集。  
+
+思路：双指针，先对两个数组进行排序，创建两个指针分别指向两个排序后的数组的头部，遍历数组，如果此时两个指针指向的数相等，则直接 push 到 res 中，两个指针都前进一步，如果此时两个指针指向的数不相等，则大的指针不动，小的前进一步，直到遍历结束  
+
+```javascript
+/**
+ * @param {number[]} nums1
+ * @param {number[]} nums2
+ * @return {number[]}
+ */
+var intersect = function(nums1, nums2) {
+  nums1.sort((a, b) => a - b)
+  nums2.sort((a, b) => a - b)
+  const res = []
+  let p1 = 0
+  let p2 = 0
+  while (p1 < nums1.length && p2 < nums2.length) {
+    if (nums1[p1] > nums2[p2]) {
+      p2++
+    } else if (nums1[p1] < nums2[p2]) {
+      p1++
+    } else {
+      res.push(nums1[p1])
+      p1++
+      p2++
+    }
+  }
+  return res
+};
+```
+
+
+
