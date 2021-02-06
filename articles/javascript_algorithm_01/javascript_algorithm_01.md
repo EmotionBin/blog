@@ -90,6 +90,30 @@ Array.prototype.reduce = function (cb, initValue) {
 
 ----
 
+## 实现 instanceof
+
+```javascript
+// L 表示左表达式，R 表示右表达式
+function instance_of (L, R) {
+  // 取 R 的显示原型
+  var O = R.prototype;
+  // 取 L 的隐式原型
+  L = L.__proto__;
+  while (true) {
+    if (L === null) {
+      return false;
+    }
+    if (O === L) {
+      // 当 O 显式原型 严格等于  L隐式原型 时，返回true
+      return true;
+    }
+    L = L.__proto__;
+  }
+}
+```
+
+----
+
 ## 实现indexOf
 
 这是leetCode的一道题，[传送门](https://leetcode-cn.com/problems/implement-strstr/)  
@@ -1333,5 +1357,663 @@ var rob = function(nums) {
   return dp[length]
 };
 ```
+
+----
+
+## 快乐数
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/happy-number/)  
+
+> 编写一个算法来判断一个数 n 是不是快乐数。
+> 「快乐数」定义为：对于一个正整数，每一次将该数替换为它每个位置上的数字的平方和，然后重复这个过程直到这个数变为 1，也可能是 无限循环 但始终变不到 1。如果 可以变为  1，那么这个数就是快乐数。
+> 如果 n 是快乐数就返回 True ；不是，则返回 False 。
+
+思路：用对象记录每次出现的新数字，对当前数字先从低位到高位依次拆解，求平方和得到新数字，如果新数字不为 1，则记录到该对象中，如果为 1，则返回 `true`，如果数字在对象中已经有过记录，说明出现了循环，直接返回 `false`  
+
+```javascript
+/**
+ * @param {number} n
+ * @return {boolean}
+ */
+var isHappy = function(n) {
+  const map = {}
+  let res = getNumber(n)
+  while (res != 1) {
+    if( res in map) return false
+    map[res] = 1
+    res = getNumber(res)
+  }
+  return true
+};
+
+function getNumber(n) {
+  let sum = 0
+  while(n > 0){
+    const remaider = n % 10
+    sum += Math.pow(remaider, 2)
+    n = Math.floor(n / 10)
+  }
+  return sum
+}
+```
+
+----
+
+## 同构字符串
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/isomorphic-strings/)  
+
+> 给定两个字符串 s 和 t，判断它们是否是同构的。  
+> 如果 s 中的字符可以按某种映射关系替换得到 t ，那么这两个字符串是同构的。  
+> 每个出现的字符都应当映射到另一个字符，同时不改变字符的顺序。不同字符不能映射到同一个字符上，相同字符只能映射到同一个字符上，字符可以映射到自己本身。  
+
+思路：哈希表。用两个哈希表记录他们的映射关系，s2t记录s映射到t，t2s记录t映射到s，如果出现重复的记录，且记录的映射不一致时，则发生冲突，直接返回 false  
+
+```javascript
+/**
+ * @param {string} s
+ * @param {string} t
+ * @return {boolean}
+ */
+var isIsomorphic = function(s, t) {
+  const s2t = {}
+  const t2s = {}
+  const { length } = s
+  for (let i = 0; i < length; i ++) {
+    const charS = s[i]
+    const charT = t[i]
+    if((s2t[charS] && s2t[charS] !== charT) || (t2s[charT] && t2s[charT] !== charS)){
+      return false
+    }
+    s2t[charS] = charT
+    t2s[charT] = charS
+  }
+  return true
+};
+```
+
+----
+
+## 存在重复元素
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/contains-duplicate/)  
+
+> 给定一个整数数组，判断是否存在重复元素。  
+> 如果存在一值在数组中出现至少两次，函数返回 true 。如果数组中每个元素都不相同，则返回 false 。  
+
+思路：先对数组去重，如果去重后得到的新数组的长度不等于原数组长度，说明有重复值，返回 true，否则返回 false  
+
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {boolean}
+ */
+var containsDuplicate = function(nums) {
+  return [...new Set(nums)].length !== nums.length
+};
+```
+
+其实这道题的思路非常多，这里我只列举了其中一种  
+
+----
+
+## 存在重复元素 II
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/contains-duplicate-ii/)  
+
+> 给定一个整数数组和一个整数 k，判断数组中是否存在两个不同的索引 i 和 j，使得 nums [i] = nums [j]，并且 i 和 j 的差的 绝对值 至多为 k。  
+
+思路：搞对象，建立一个对象存储值与索引，遍历数组，如果对象中没有该值的记录，则存入该值与其对应的索引，如果有记录，则判断当前索引与对象中记录的索引的差值是否小于 k，小于 k 则返回 true，若数组遍历完后还没有找到满足条件的项目，则直接返回 false  
+
+```javascript
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {boolean}
+ */
+var containsNearbyDuplicate = function(nums, k) {
+  const map = {}
+  const { length } = nums
+  for (let i = 0; i < length; i++) {
+    const cur = nums[i]
+    if (map[cur] >=0 && i - map[cur] <= k) {
+      return true
+    } else {
+      map[cur] = i
+    }
+  }
+  return false
+};
+```
+
+----
+
+## 汇总区间
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/summary-ranges/)  
+
+> 给定一个无重复元素的有序整数数组 nums 。  
+> 返回 恰好覆盖数组中所有数字 的 最小有序 区间范围列表。也就是说，nums 的每个元素都恰好被某个区间范围所覆盖，并且不存在属于某个范围但不属于 nums 的数字 x 。  
+
+思路：不太好口述，直接看代码  
+
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {string[]}
+ */
+var summaryRanges = function(nums) {
+  if (!nums.length) return []
+  if (nums.length === 1) return [nums[0] + '']
+  const { length } = nums
+  let start = nums[0]
+  let range = 1
+  const res = []
+  for (let i = 1; i < length; i++) {
+    if (start + range !== nums[i]) {
+      range === 1 ? res.push(start + '') : res.push(`${start}->${start + range - 1}`)
+      start = nums[i]
+      range = 1
+    } else {
+      range ++
+    }
+    if (i === length - 1) {
+      range > 1 ? res.push(`${start}->${start + range - 1}`) : res.push(start + '')
+    }
+  }
+  return res
+};
+```
+
+这是我自己写的代码，判断条件相对有点多，我觉得并不是最优的代码~  
+
+----
+
+## 2的幂
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/power-of-two/)  
+
+> 给定一个整数，编写一个函数来判断它是否是 2 的幂次方。
+
+思路：用一个 while 循环，一直让那个数除以 2，如果能达到 1，则返回 true，如果这个数对 2 除余除不尽，直接返回 false  
+
+```javascript
+/**
+ * @param {number} n
+ * @return {boolean}
+ */
+var isPowerOfTwo = function(n) {
+  if(n <= 0) return false
+  while (n > 0) {
+    if (n === 1) return true
+    if (n % 2) return false
+    n = n / 2
+  }
+};
+```
+
+----
+
+## 回文链表
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/palindrome-linked-list/)  
+
+> 请判断一个链表是否为回文链表。  
+
+思路：先遍历链表，用一个数组存储链表中所有结点的值，再遍历数组，判断当前索引 i 与对称索引 length - i - 1 的值是否相等，如果不相等说明不对称，直接返回 false，如果能遍历完整个数组，则说明是对称的，直接返回 true  
+
+```javascript
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @return {boolean}
+ */
+var isPalindrome = function(head) {
+  const val = []
+  while (head) {
+    val.push(head.val)
+    head = head.next
+  }
+  const { length } = val
+  for (let i = 0; i < length; i++) {
+    if (val[i] !== val[length - i - 1]) {
+      return false
+    }
+  }
+  return true
+};
+```
+
+----
+
+## 二叉搜索树的最近公共祖先
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-search-tree/)  
+
+> 给定一个二叉搜索树, 找到该树中两个指定节点的最近公共祖先。  
+
+思路：如果 p.val 与 q.val 都比 root.val 小，那么 p, q 肯定在 root 左子树，此时递归左子树，如果 p.val 与 q.val 都比 root.val 大，同理递归右子树，其他情况，root 即为所求  
+
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+
+/**
+ * @param {TreeNode} root
+ * @param {TreeNode} p
+ * @param {TreeNode} q
+ * @return {TreeNode}
+ */
+var lowestCommonAncestor = function(root, p, q) {
+  if (p.val < root.val && q.val < root.val) {
+    return lowestCommonAncestor(root.left, p, q)
+  }
+  if (p.val > root.val && q.val > root.val) {
+    return lowestCommonAncestor(root.right, p, q)
+  }
+  return root
+};
+```
+
+其实这道题一开始没做出来，后来看了解析才恍然大悟的，我认为比较好理解的解析在这里 [传送门](https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-search-tree/solution/di-gui-he-die-dai-fa-by-hyj8/)  
+
+----
+
+## 有效的字母异位词
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/valid-anagram/)  
+
+> 给定两个字符串 s 和 t ，编写一个函数来判断 t 是否是 s 的字母异位词。  
+
+思路：两个字符串异位等价于他们排序后相等，直接看代码  
+
+```javascript
+/**
+ * @param {string} s
+ * @param {string} t
+ * @return {boolean}
+ */
+var isAnagram = function(s, t) {
+  return s.split('').sort().join('') === t.split('').sort().join('')
+};
+```
+
+----
+
+## 二叉树的所有路径
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/binary-tree-paths/)  
+
+> 给定一个二叉树，返回所有从根节点到叶子节点的路径。
+
+思路：递归，先判断当前节点是不是叶子结点，如果当前节点的左子树和右子树都为空，那么就是叶子结点，如果是叶子结点，则给 path 拼接上当前叶子结点的值，如果不是叶子结点，则拼接上 `->` ，并继续递归左子树和右子树  
+
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {string[]}
+ */
+var binaryTreePaths = function(root) {
+  const res = []
+  const getPath = function (root, path) {
+    if (root) {
+      path += root.val.toString()
+      if (!root.left && !root.right) {
+        res.push(path)
+      } else {
+        path += '->'
+        getPath(root.left, path)
+        getPath(root.right, path)
+      }
+    }
+  }
+  getPath(root, '')
+  return res
+};
+```
+
+----
+
+## 各位相加
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/add-digits/)  
+
+> 给定一个非负整数 num，反复将各个位上的数字相加，直到结果为一位数。  
+
+思路：提取各位上的数字，求和，和大于 10 则继续递归即可  
+
+```javascript
+/**
+ * @param {number} num
+ * @return {number}
+ */
+var addDigits = function(num) {
+  if (num < 10) {
+    return num
+  }
+  let next = 0
+  while (num !== 0) {
+    next += Math.floor(num % 10)
+    num /= 10
+  }
+  return addDigits(next)
+};
+```
+
+----
+
+## 丑数
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/ugly-number/)  
+
+> 编写一个程序判断给定的数是否为丑数。  
+> 丑数就是只包含质因数 2, 3, 5 的正整数。  
+
+思路：看看这个数能不能被 2、3、5 整除，如果能整除则继续检查，看这个数被除后的结果是否能被 2、3、5 整除，不断检查，如果当前数字小于 6 则为丑数，返回 true，否则返回 false  
+
+```javascript
+/**
+ * @param {number} num
+ * @return {boolean}
+ */
+var isUgly = function(num) {
+  if (num <= 0) return false
+  while (num > 0) {
+    if (num < 6) return true
+    if (num % 2 === 0) {
+      num /= 2
+    } else if (num % 3 === 0) {
+      num /= 3
+    } else if (num % 5 === 0) {
+      num /= 5
+    } else {
+      return false
+    }
+  }
+};
+```
+
+----
+
+## 丢失的数字
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/missing-number/)  
+
+> 给定一个包含 [0, n] 中 n 个数的数组 nums ，找出 [0, n] 这个范围内没有出现在数组中的那个数。  
+
+思路：首先对这个数组进行排序，再遍历，如果索引值与当前值不匹配，说明索引值丢失，返回索引值，如果遍历结束还没有返回，说明最后一个数丢失，直接返回数组长度  
+
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var missingNumber = function(nums) {
+  const arr = nums.sort((a, b) => a - b)
+  for (let i = 0; i < arr.length; i ++) {
+    if (arr[i] !== i) return i
+  }
+  return nums.length
+};
+```
+
+----
+
+## 移动零
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/move-zeroes/)  
+
+> 给定一个数组 nums，编写一个函数将所有 0 移动到数组的末尾，同时保持非零元素的相对顺序。  
+
+思路：变量 count 统计 0 的个数，遍历数组，遇到 0 则删除同时在数组末尾加入 0，count 加 1，如果不是 0 则继续往下遍历，当 i 大于或等于数组长度减去 count 时跳出循环  
+
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {void} Do not return anything, modify nums in-place instead.
+ */
+var moveZeroes = function(nums) {
+  const { length } = nums
+  let i = 0
+  let count = 0
+  while (i < length - count) {
+    if (nums[i] === 0) {
+      nums.splice(i, 1)
+      nums.push(0)
+      count ++
+    } else {
+      i++
+    }
+  }
+  return nums
+};
+```
+
+----
+
+## 单词规律
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/word-pattern/)  
+
+> 给定一种规律 pattern 和一个字符串 str ，判断 str 是否遵循相同的规律。  
+> 这里的 遵循 指完全匹配，例如， pattern 里的每个字母和字符串 str 中的每个非空单词之间存在着双向连接的对应规律。  
+
+思路：哈希表，两用个哈希表记录相互之间的映射关系，如果出现了有冲突的映射，直接返回 false，如果遍历结束都没有出现冲突，返回 true    
+
+```javascript
+/**
+ * @param {string} pattern
+ * @param {string} s
+ * @return {boolean}
+ */
+var wordPattern = function(pattern, s) {
+  const strArr = s.split(' ')
+  const pattern2s = {}
+  const s2pattern = {}
+  for (let i = 0; i < s.length; i++) {
+    const str = pattern[i]
+    const word = strArr[i]
+    if ((pattern2s[str] && pattern2s[str] !== word) || (s2pattern[word] && s2pattern[word] !== str)) {
+      return false
+    }
+    pattern2s[str] = word
+    s2pattern[word] = str
+  }
+  return true
+};
+```
+
+----
+
+## 3的幂
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/power-of-three/)  
+
+> 给定一个整数，写一个函数来判断它是否是 3 的幂次方。如果是，返回 true ；否则，返回 false 。  
+> 整数 n 是 3 的幂次方需满足：存在整数 x 使得 n == 3的 x 次幂  
+
+思路：如果这个数不能被 3 除尽则直接返回 false，否则除以 3 继续判断，到最后结果为 0 返回 false，结果为 1 返回 true  
+
+```javascript
+/**
+ * @param {number} n
+ * @return {boolean}
+ */
+var isPowerOfThree = function(n) {
+  if (n <= 0) return false
+  while (n > 0) {
+    if (n === 0) return false
+    if (n === 1) return true
+    if (n % 3 !== 0) return false
+    n /= 3
+  }
+};
+```
+
+----
+
+## 反转字符串
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/reverse-string/)  
+
+> 编写一个函数，其作用是将输入的字符串反转过来。输入字符串以字符数组 char[] 的形式给出。  
+> 不要给另外的数组分配额外的空间，你必须原地修改输入数组、使用 O(1) 的额外空间解决这一问题。  
+> 你可以假设数组中的所有字符都是 ASCII 码表中的可打印字符。  
+
+思路：双指针，从两侧向数组中间夹，每走一步交换一次值  
+
+```javascript
+/**
+ * @param {character[]} s
+ * @return {void} Do not return anything, modify s in-place instead.
+ */
+var reverseString = function(s) {
+  let head = 0
+  let tail = s.length - 1
+  while (head < tail) {
+    [s[head], s[tail]] = [s[tail], s[head]]
+    head ++
+    tail --
+  }
+  return s
+};
+```
+
+----
+
+## 反转字符串中的元音字母
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/reverse-vowels-of-a-string/)  
+
+> 编写一个函数，以字符串作为输入，反转该字符串中的元音字母。  
+
+思路：双指针，头尾两个指针，不断往中间逼近，任意一个指针遇到元音字母，则停下，等到另一个指针也找到元音字母，此时，两个指针都指向元音字母，进行交换  
+
+```javascript
+/**
+ * @param {string} s
+ * @return {string}
+ */
+var reverseVowels = function(s) {
+  const VOWEL_LIST = ['a','e','i','o','u', 'A', 'E', 'I', 'O', 'U']
+  let head = 0
+  let tail = s.length - 1
+  s = s.split('')
+  while (head < tail) {
+    const isHeadVowel = isVowel(s[head])
+    const isTailVowel = isVowel(s[tail])
+    if (isHeadVowel && isTailVowel) {
+      [s[head], s[tail]] = [s[tail], s[head]]
+      head++
+      tail--
+    }
+    if (isHeadVowel && !isTailVowel) {
+      tail--
+    }
+    if (!isHeadVowel && isTailVowel) {
+      head++
+    }
+    if (!isHeadVowel && !isTailVowel) {
+      head++
+      tail--
+    }
+  }
+  function isVowel(str) {
+    return VOWEL_LIST.indexOf(str) !== -1
+  } 
+  return s.join('')
+};
+```
+
+----
+
+## 两个数组的交集
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/intersection-of-two-arrays/)  
+
+> 给定两个数组，编写一个函数来计算它们的交集。  
+
+思路：先对两个数组去重再排序，遍历长度短的那个数组，如果长度一样随便遍历一个，依次寻找当前元素是否在另一个数组中出现，出现则 push 到新数组中，最后把新数组返回  
+
+```javascript
+/**
+ * @param {number[]} nums1
+ * @param {number[]} nums2
+ * @return {number[]}
+ */
+var intersection = function(nums1, nums2) {
+  const arr1 = [...new Set(nums1)].sort((a, b) => a - b)
+  const arr2 = [...new Set(nums2)].sort((a, b) => a - b)
+  const res = []
+  const flag = arr1.length > arr2.length
+  const length = flag ? arr2.length : arr1.length
+  for (let i = 0; i < length; i++) {
+    if (flag && arr1.includes(arr2[i])) {
+      res.push(arr2[i])
+    }
+    if (!flag && arr2.includes(arr1[i])) {
+      res.push(arr1[i])
+    }
+  }
+  return res
+};
+```
+
+----
+
+## 两个数组的交集 II
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/intersection-of-two-arrays-ii/)  
+
+> 给定两个数组，编写一个函数来计算它们的交集。  
+
+思路：双指针，先对两个数组进行排序，创建两个指针分别指向两个排序后的数组的头部，遍历数组，如果此时两个指针指向的数相等，则直接 push 到 res 中，两个指针都前进一步，如果此时两个指针指向的数不相等，则大的指针不动，小的前进一步，直到遍历结束  
+
+```javascript
+/**
+ * @param {number[]} nums1
+ * @param {number[]} nums2
+ * @return {number[]}
+ */
+var intersect = function(nums1, nums2) {
+  nums1.sort((a, b) => a - b)
+  nums2.sort((a, b) => a - b)
+  const res = []
+  let p1 = 0
+  let p2 = 0
+  while (p1 < nums1.length && p2 < nums2.length) {
+    if (nums1[p1] > nums2[p2]) {
+      p2++
+    } else if (nums1[p1] < nums2[p2]) {
+      p1++
+    } else {
+      res.push(nums1[p1])
+      p1++
+      p2++
+    }
+  }
+  return res
+};
+```
+
 
 

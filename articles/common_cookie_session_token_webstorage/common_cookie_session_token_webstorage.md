@@ -236,6 +236,38 @@ window.addEventListener('storage', onStorageChange);
 
 ----
 
+## 实践
+
+来看一些面试题  
+
+### cookie、sessionStorage和localStorage的区别
+
+这是一道老生常谈的面试题了，我觉得这道题的回答思路可以分为以下几个方面  
+
+**从存储时效来说**  
+
+- cookie 可以手动设置失效期，默认为会话级(即浏览器关闭，会话结束后自动清空)
+- sessionStorage 的存储时长也是会话级
+- localStorage 的存储时长是永久，除非用户手动删除
+
+**从访问的局限性来说**  
+
+- cookie 可以设置路径 path，path 不一致不能访问，但是 path 设为根路径都可以访问，所以他要比另外两个多了一层访问限制
+- localStorage 和 sessionStorage 的访问受到浏览器同源策略限制，同协议、域名、端口才能访问
+- cookie 可以通过设置 domain 属性值，可以不同二级域名下共享 cookie，而 Storage 不可以(Storage 可以通过 iframe 实现跨域访问)
+
+**从存储大小限制来说**  
+
+- cookie 适合存储少量数据，他的大小限制是个数进行限制，每个浏览器的限制数量不同
+- Storage 可以存储数据的量较大，此外他是通过占用空间大小来做限制的
+
+**其他**  
+
+- 在发送 http 请求时，如果是非跨域请求，默认情况下浏览器会将 cookie 自动带上发送到服务端
+- cookie 可以由服务端通过 http 来设定
+
+----
+
 ## 结束语
 
 以上就是关于本文的所有内容。如果本文中有说的不正确的地方，欢迎大佬鞭策!  

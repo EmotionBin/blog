@@ -31,6 +31,7 @@
 - [第三方登录与单点登录](https://github.com/EmotionBin/blog/blob/master/articles/common_login_mode_01/common_login_mode_01.md)
 - [关于移动端适配](https://github.com/EmotionBin/blog/blob/master/articles/mobile_mobileAdaptation_01/mobile_mobileAdaptation_01.md)
 - [vue-router实现原理](https://github.com/EmotionBin/blog/blob/master/articles/vue-router_principle_01/vue-router_principle_01.md)
+- [web worker](https://github.com/EmotionBin/blog/blob/master/articles/common_web_worker_01/common_web_worker_01.md)
 
 ## 小尾巴
 

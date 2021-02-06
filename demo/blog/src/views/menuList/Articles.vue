@@ -173,6 +173,8 @@
 						//保存文章内容
 						that.articleData = marked(res);
 						const articleDom = that.$refs.article_ref;
+						// 每次新开文章的时候 滚动条强制置顶
+						document.documentElement.scrollTop = 0;
 						articleDom.innerHTML = that.articleData;
 						//手动给a标签加上属性
 						var aSymbol = articleDom.getElementsByTagName("a");
