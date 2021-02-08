@@ -2039,4 +2039,77 @@ var isPerfectSquare = function(num) {
 };
 ```
 
+----
+
+## 字符串中的第一个唯一字符
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/first-unique-character-in-a-string/)  
+
+> 给定一个字符串，找到它的第一个不重复的字符，并返回它的索引。如果不存在，则返回 -1。  
+
+思路：用一个对象记录各个单词出现的次数，找到只出现一次的字符返回其索引，没找到则返回 -1  
+
+```javascript
+/**
+ * @param {string} s
+ * @return {number}
+ */
+var firstUniqChar = function(s) {
+  const map = {}
+  const { length } = s
+  for (let i = 0; i < length; i++) {
+    const item = s[i]
+    if (map[item]) {
+      map[item] ++
+    } else {
+      map[item] = 1
+    }
+  }
+  const arr = Object.keys(map)
+  const index = arr.findIndex(item => map[item] === 1)
+  if (index === -1) return -1
+  const item = arr[index]
+  return s.indexOf(item)
+};
+```
+
+----
+
+## 找不同
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/find-the-difference/)  
+
+> 给定两个字符串 s 和 t，它们只包含小写字母。  
+> 字符串 t 由字符串 s 随机重排，然后在随机位置添加一个字母。  
+> 请找出在 t 中被添加的字母。  
+
+思路：先遍历 s，记录各个字符出现的次数，在遍历 t，每遍历到一个字符，记录的出现次数就减一，如果没有该字符出现次数的记录或次数为 0，直接返回该字符  
+
+```javascript
+/**
+ * @param {string} s
+ * @param {string} t
+ * @return {character}
+ */
+var findTheDifference = function(s, t) {
+  const map = {}
+  const { length } = s
+  for (let i = 0; i < length; i++) {
+    const item = s[i]
+    if (map[item]) {
+      map[item] ++
+    } else {
+      map[item] = 1
+    }
+  }
+  for (let i = 0; i < t.length; i++) {
+    const item = t[i]
+    if (map[item]) {
+      map[item] --
+    } else {
+      return item
+    }
+  }
+};
+```
 
