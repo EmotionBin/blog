@@ -2113,3 +2113,7 @@ var findTheDifference = function(s, t) {
 };
 ```
 
+----
+
+##  判断子序列
+
