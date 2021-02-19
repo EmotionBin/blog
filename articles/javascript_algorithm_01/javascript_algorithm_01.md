@@ -2115,5 +2115,30 @@ var findTheDifference = function(s, t) {
 
 ----
 
-##  判断子序列
+##  数组中重复的数字
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/shu-zu-zhong-zhong-fu-de-shu-zi-lcof/)  
+
+> 找出数组中重复的数字。  
+
+思路：搞对象，遍历数组，用一个对象记录数组中各个值出现的次数，如果对象中出现重复的记录，直接返回该值  
+
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var findRepeatNumber = function(nums) {
+  const { length } = nums
+  const map = {}
+  for (let i = 0; i < length; i++) {
+    const item = nums[i]
+    if (map[item]) {
+      return item
+    } else {
+      map[item] = 1
+    }
+  }
+};
+```
 
