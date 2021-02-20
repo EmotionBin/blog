@@ -2142,3 +2142,32 @@ var findRepeatNumber = function(nums) {
 };
 ```
 
+----
+
+## 合并两个有序链表
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/merge-two-sorted-lists/)  
+
+> 将两个升序链表合并为一个新的 升序 链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。  
+
+思路：先创建一个新链表，遍历 l1 和 l2，让新链表的 next 指针指向 l1 或 l2 值小的那个，若小的是 l1，则 l1 后移，l2 同理，同时 pre 后移，直到遍历结束后，返回新链表的 next  
+
+```javascript
+var mergeTwoLists = function(l1, l2) {
+  const prehead = new ListNode(-1)
+  let pre = prehead
+  while (l1 !== null && l2 !== null) {
+    if (l2.val > l1.val) {
+      pre.next = l1
+      l1 = l1.next
+    } else {
+      pre.next = l2
+      l2 = l2.next
+    }
+    pre = pre.next
+  }
+  pre.next = l1 === null ? l2 : l1
+  return prehead.next
+};
+```
+
