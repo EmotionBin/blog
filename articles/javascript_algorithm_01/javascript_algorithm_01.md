@@ -2171,3 +2171,34 @@ var mergeTwoLists = function(l1, l2) {
 };
 ```
 
+----
+
+## 从尾到头打印链表
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/cong-wei-dao-tou-da-yin-lian-biao-lcof/)  
+
+> 输入一个链表的头节点，从尾到头反过来返回每个节点的值（用数组返回）。  
+
+思路：遍历链表，用一个数组记录链表中各个节点的值，最后将这个数组反转并返回  
+
+```javascript
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @return {number[]}
+ */
+var reversePrint = function(head) {
+  const res = []
+  while (head) {
+    res.push(head.val)
+    head = head.next
+  }
+  return res.reverse()
+};
+```
