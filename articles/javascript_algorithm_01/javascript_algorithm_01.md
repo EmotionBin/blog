@@ -2202,3 +2202,39 @@ var reversePrint = function(head) {
   return res.reverse()
 };
 ```
+
+----
+
+## 旋转数组的最小数字
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/xuan-zhuan-shu-zu-de-zui-xiao-shu-zi-lcof/)  
+
+> 把一个数组最开始的若干个元素搬到数组的末尾，我们称之为数组的旋转。输入一个递增排序的数组的一个旋转，输出旋转数组的最小元素。例如，数组 [3,4,5,1,2] 为 [1,2,3,4,5] 的一个旋转，该数组的最小值为1。  
+
+思路：遍历数组，只要出现不是递增的元素，直接返回该元素的值，若遍历结束，则返回第一个元素  
+
+```javascript
+/**
+ * @param {number[]} numbers
+ * @return {number}
+ */
+var minArray = function(numbers) {
+  const { length } = numbers
+  let last = -Infinity
+  for (let i = 0; i < length; i++) {
+    if (numbers[i] >= last) {
+      last = numbers[i]
+    } else {
+      return numbers[i]
+    }
+  }
+  return numbers[0]
+};
+```
+
+
+
+
+
+
+
