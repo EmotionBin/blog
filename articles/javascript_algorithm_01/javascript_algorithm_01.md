@@ -2253,8 +2253,68 @@ var hammingWeight = function(n) {
 };
 ```
 
+----
 
+## 打印从1到最大的n位数
 
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/da-yin-cong-1dao-zui-da-de-nwei-shu-lcof/)  
+
+> 输入数字 n，按顺序打印出从 1 到最大的 n 位十进制数。比如输入 3，则打印出 1、2、3 一直到最大的 3 位数 999。  
+
+思路：先算出最大值，即为 10 的 n 次方减一，for 循环把数字装入一个数组中，最后将数组返回  
+
+```javascript
+/**
+ * @param {number} n
+ * @return {number[]}
+ */
+var printNumbers = function(n) {
+  const res = []
+  const max = Math.pow(10, n)
+  for (let i = 1; i < max; i++) {
+    res.push(i)
+  }
+  return res
+};
+```
+
+----
+
+## 删除链表的节点
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/shan-chu-lian-biao-de-jie-dian-lcof/)  
+
+> 给定单向链表的头指针和一个要删除的节点的值，定义一个函数删除该节点。  
+
+思路：先创建一个哑结点接入链表，遍历链表，找到要删除的节点，删掉后将哑结点的 next 返回  
+
+```javascript
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @param {number} val
+ * @return {ListNode}
+ */
+var deleteNode = function(head, val) {
+  const list = new ListNode(-1)
+  list.next = head
+  let prev = list
+  while (prev.next) {
+    if (prev.next.val === val) {
+      prev.next = prev.next.next
+      break
+    }
+    prev = prev.next
+  }
+  return list.next
+};
+```
 
 
 
