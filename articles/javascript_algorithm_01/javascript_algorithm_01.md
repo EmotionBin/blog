@@ -2316,5 +2316,125 @@ var deleteNode = function(head, val) {
 };
 ```
 
+----
 
+## 调整数组顺序使奇数位于偶数前面
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/diao-zheng-shu-zu-shun-xu-shi-qi-shu-wei-yu-ou-shu-qian-mian-lcof/)  
+
+思路：遍历数组，如果是奇数就放到奇数数组中，如果是偶数就放到偶数数组中，按规定返回即可  
+
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+var exchange = function(nums) {
+  const { length } = nums
+  const odd = []
+  const even = []
+  for (let i = 0; i < length; i++) {
+    nums[i] % 2 ? odd.push(nums[i]) : even.push(nums[i])
+  }
+  return [...odd, ...even]
+};
+```
+
+思路2：双指针，让两个指针分别指向头和尾，判断头指针是不是奇数，如果是，则头指针后移，如果不是，再判断尾指针是不是奇数，如果是奇数，则头尾指针交换，否则尾指针前移  
+
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+var exchange = function(nums) {
+  const { length } = nums
+  let start = 0
+  let end = length - 1
+  while (end > start) {
+    if (!isOdd(nums[start])) {
+      if (isOdd(nums[end])) {
+        [nums[start], nums[end]] = [nums[end], nums[start]]
+      }
+      end--
+    } else {
+      start++
+    }
+  }
+  function isOdd (num) {
+    return num % 2
+  }
+  return nums
+};
+```
+
+----
+
+## 链表中倒数第k个节点
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/lian-biao-zhong-dao-shu-di-kge-jie-dian-lcof/)  
+
+思路：快慢指针，让快指针先走 k 步，慢指针才开始走，这样一来，快指针走到链表末尾的时候，慢指针刚好走到倒数第 k 个节点  
+
+```javascript
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @param {number} k
+ * @return {ListNode}
+ */
+var getKthFromEnd = function(head, k) {
+  const list = new ListNode(-1)
+  list.next = head
+  let fast = list
+  let slow = list
+  while (fast.next) {
+    fast = fast.next
+    k--
+    if (k <= 0) {
+      slow = slow.next
+    }
+  }
+  return slow
+};
+```
+
+----
+
+## 反转链表
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/fan-zhuan-lian-biao-lcof/)  
+
+思路：口头比较难叙述，直接看代码  
+
+```javascript
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @return {ListNode}
+ */
+var reverseList = function(head) {
+  let prev = null
+  let cur = head
+  while (cur) {
+    const next = cur.next
+    cur.next = prev
+    prev = cur
+    cur = next
+  }
+  return prev
+};
+```
 
