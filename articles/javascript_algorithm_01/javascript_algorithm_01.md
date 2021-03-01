@@ -2231,6 +2231,280 @@ var searchBST = function(root, val) {
   if (!root) return root
   if (root.val === val) return root
   return root.val > val ? searchBST(root.left, val) : searchBST(root.right, val)
+}
+```
+
+----
+
+## 旋转数组的最小数字
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/xuan-zhuan-shu-zu-de-zui-xiao-shu-zi-lcof/)  
+
+> 把一个数组最开始的若干个元素搬到数组的末尾，我们称之为数组的旋转。输入一个递增排序的数组的一个旋转，输出旋转数组的最小元素。例如，数组 [3,4,5,1,2] 为 [1,2,3,4,5] 的一个旋转，该数组的最小值为1。  
+
+思路：遍历数组，只要出现不是递增的元素，直接返回该元素的值，若遍历结束，则返回第一个元素  
+
+```javascript
+/**
+ * @param {number[]} numbers
+ * @return {number}
+ */
+var minArray = function(numbers) {
+  const { length } = numbers
+  let last = -Infinity
+  for (let i = 0; i < length; i++) {
+    if (numbers[i] >= last) {
+      last = numbers[i]
+    } else {
+      return numbers[i]
+    }
+  }
+  return numbers[0]
+};
+```
+
+----
+
+## 二进制中1的个数
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/er-jin-zhi-zhong-1de-ge-shu-lcof/)  
+
+> 请实现一个函数，输入一个整数（以二进制串形式），输出该数二进制表示中 1 的个数。例如，把 9 表示成二进制是 1001，有 2 位是 1。因此，如果输入 9，则该函数输出 2。  
+
+思路：对于输入的整数，调用 `toString(2)` 转换成 2 进制，再用正则匹配 1，统计 1 的个数  
+
+```javascript
+/**
+ * @param {number} n - a positive integer
+ * @return {number}
+ */
+var hammingWeight = function(n) {
+  const list =  n.toString(2).match(/1/g)
+  return list ? list.length : 0
+};
+```
+
+----
+
+## 打印从1到最大的n位数
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/da-yin-cong-1dao-zui-da-de-nwei-shu-lcof/)  
+
+> 输入数字 n，按顺序打印出从 1 到最大的 n 位十进制数。比如输入 3，则打印出 1、2、3 一直到最大的 3 位数 999。  
+
+思路：先算出最大值，即为 10 的 n 次方减一，for 循环把数字装入一个数组中，最后将数组返回  
+
+```javascript
+/**
+ * @param {number} n
+ * @return {number[]}
+ */
+var printNumbers = function(n) {
+  const res = []
+  const max = Math.pow(10, n)
+  for (let i = 1; i < max; i++) {
+    res.push(i)
+  }
+  return res
+};
+```
+
+----
+
+## 删除链表的节点
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/shan-chu-lian-biao-de-jie-dian-lcof/)  
+
+> 给定单向链表的头指针和一个要删除的节点的值，定义一个函数删除该节点。  
+
+思路：先创建一个哑结点接入链表，遍历链表，找到要删除的节点，删掉后将哑结点的 next 返回  
+
+```javascript
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @param {number} val
+ * @return {ListNode}
+ */
+var deleteNode = function(head, val) {
+  const list = new ListNode(-1)
+  list.next = head
+  let prev = list
+  while (prev.next) {
+    if (prev.next.val === val) {
+      prev.next = prev.next.next
+      break
+    }
+    prev = prev.next
+  }
+  return list.next
+};
+```
+
+----
+
+## 调整数组顺序使奇数位于偶数前面
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/diao-zheng-shu-zu-shun-xu-shi-qi-shu-wei-yu-ou-shu-qian-mian-lcof/)  
+
+思路：遍历数组，如果是奇数就放到奇数数组中，如果是偶数就放到偶数数组中，按规定返回即可  
+
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+var exchange = function(nums) {
+  const { length } = nums
+  const odd = []
+  const even = []
+  for (let i = 0; i < length; i++) {
+    nums[i] % 2 ? odd.push(nums[i]) : even.push(nums[i])
+  }
+  return [...odd, ...even]
+};
+```
+
+思路2：双指针，让两个指针分别指向头和尾，判断头指针是不是奇数，如果是，则头指针后移，如果不是，再判断尾指针是不是奇数，如果是奇数，则头尾指针交换，否则尾指针前移  
+
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+var exchange = function(nums) {
+  const { length } = nums
+  let start = 0
+  let end = length - 1
+  while (end > start) {
+    if (!isOdd(nums[start])) {
+      if (isOdd(nums[end])) {
+        [nums[start], nums[end]] = [nums[end], nums[start]]
+      }
+      end--
+    } else {
+      start++
+    }
+  }
+  function isOdd (num) {
+    return num % 2
+  }
+  return nums
+};
+```
+
+----
+
+## 链表中倒数第k个节点
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/lian-biao-zhong-dao-shu-di-kge-jie-dian-lcof/)  
+
+思路：快慢指针，让快指针先走 k 步，慢指针才开始走，这样一来，快指针走到链表末尾的时候，慢指针刚好走到倒数第 k 个节点  
+
+```javascript
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @param {number} k
+ * @return {ListNode}
+ */
+var getKthFromEnd = function(head, k) {
+  const list = new ListNode(-1)
+  list.next = head
+  let fast = list
+  let slow = list
+  while (fast.next) {
+    fast = fast.next
+    k--
+    if (k <= 0) {
+      slow = slow.next
+    }
+  }
+  return slow
+};
+```
+
+----
+
+## 反转链表
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/fan-zhuan-lian-biao-lcof/)  
+
+思路：口头比较难叙述，直接看代码  
+
+```javascript
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @return {ListNode}
+ */
+var reverseList = function(head) {
+  let prev = null
+  let cur = head
+  while (cur) {
+    const next = cur.next
+    cur.next = prev
+    prev = cur
+    cur = next
+  }
+  return prev
+};
+```
+
+----
+
+## 合并两个排序的链表
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/he-bing-liang-ge-pai-xu-de-lian-biao-lcof/)  
+
+思路：新建一个空列表依次接入两个链表中小的值  
+
+```javascript
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+/**
+ * @param {ListNode} l1
+ * @param {ListNode} l2
+ * @return {ListNode}
+ */
+var mergeTwoLists = function(l1, l2) {
+  const list = new ListNode(-1)
+  let head = list
+  while (l1 && l2) {
+    if (l1.val > l2.val) {
+      head.next = l2
+      l2 = l2.next
+    } else {
+      head.next = l1
+      l1 = l1.next
+    }
+    head = head.next
+  }
+  head.next = l1 === null ? l2 : l1
+  return list.next
 };
 ```
 
