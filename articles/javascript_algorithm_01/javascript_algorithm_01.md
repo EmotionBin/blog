@@ -2508,3 +2508,68 @@ var mergeTwoLists = function(l1, l2) {
 };
 ```
 
+----
+
+## 二叉树的镜像
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/er-cha-shu-de-jing-xiang-lcof/)  
+
+思路：递归，先交换当前节点的左右子树节点，在依次递归左右子树即可  
+
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {TreeNode}
+ */
+var mirrorTree = function(root) {
+  if (!root) {
+    return null
+  }
+  [root.left, root.right] = [root.right, root.left]
+  mirrorTree(root.left)
+  mirrorTree(root.right)
+  return root
+};
+```
+
+----
+
+## 对称的二叉树
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/dui-cheng-de-er-cha-shu-lcof/)  
+
+思路：递归，判断一棵树是否是对称的，即它左子树节点的值和它的右子树节点的值相等，依次递归  
+
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {boolean}
+ */
+var isSymmetric = function(root) {
+  function isMirror (r1, r2) {
+    if (!r1 && !r2) {
+      return true
+    }
+    if (!r1 || !r2) {
+      return false
+    }
+    return r1.val === r2.val && isMirror(r1.left, r2.right) && isMirror(r1.right, r2.left)
+  };
+  return isMirror(root, root)
+};
+```
+
