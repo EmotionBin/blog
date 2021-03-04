@@ -2573,3 +2573,46 @@ var isSymmetric = function(root) {
 };
 ```
 
+----
+
+## 从上到下打印二叉树 II
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/cong-shang-dao-xia-da-yin-er-cha-shu-ii-lcof/)  
+
+思路：队列循环，直接看代码  
+
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number[][]}
+ */
+var levelOrder = function(root) {
+  if (!root) return []
+  const queue = [root]
+  const res = []
+  let level = 0
+  while (queue.length) {
+    res[level] = []
+    let levelNum = queue.length
+    while (levelNum--) {
+      const front = queue.shift()
+      res[level].push(front.val)
+      if (front.left) queue.push(front.left)
+      if (front.right) queue.push(front.right)
+    }
+    level++
+  }
+  return res
+};
+```
+
+这题其实一开始我并没有做出来，后来看了解析才恍然大悟的 [解析](https://leetcode-cn.com/problems/cong-shang-dao-xia-da-yin-er-cha-shu-ii-lcof/solution/jie-zhu-dui-lie-zai-jie-guo-zhong-ti-xian-chu-ceng/)  
+
+
