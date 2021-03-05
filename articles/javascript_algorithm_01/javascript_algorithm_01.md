@@ -2616,3 +2616,39 @@ var levelOrder = function(root) {
 这题其实一开始我并没有做出来，后来看了解析才恍然大悟的 [解析](https://leetcode-cn.com/problems/cong-shang-dao-xia-da-yin-er-cha-shu-ii-lcof/solution/jie-zhu-dui-lie-zai-jie-guo-zhong-ti-xian-chu-ceng/)  
 
 
+----
+
+## 数组中出现次数超过一半的数字
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/shu-zu-zhong-chu-xian-ci-shu-chao-guo-yi-ban-de-shu-zi-lcof/)  
+
+思路：用一个对象记录各个数字出现的次数，如果有数字出现的次数大于数组长度的一半，直接返回  
+
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var majorityElement = function(nums) {
+  const { length } = nums
+  if (length <= 1) return nums[0]
+  const map = {}
+  for (let i = 0; i < length; i++) {
+    const item = nums[i]
+    if (map[item]) {
+      map[item] ++
+      if (map[item] > Math.floor(length / 2)) return item
+    } else {
+      map[item] = 1
+    }
+  }
+};
+```
+
+看了别人的解答后，发现还有一种不错的思路 [传送门](https://leetcode-cn.com/problems/shu-zu-zhong-chu-xian-ci-shu-chao-guo-yi-ban-de-shu-zi-lcof/solution/yi-dong-jsliang-xing-jie-jue-jian-zhi-of-371h/)  
+
+
+
+
+
+
