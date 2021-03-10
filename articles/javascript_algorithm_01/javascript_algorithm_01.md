@@ -2647,7 +2647,61 @@ var majorityElement = function(nums) {
 
 看了别人的解答后，发现还有一种不错的思路 [传送门](https://leetcode-cn.com/problems/shu-zu-zhong-chu-xian-ci-shu-chao-guo-yi-ban-de-shu-zi-lcof/solution/yi-dong-jsliang-xing-jie-jue-jian-zhi-of-371h/)  
 
+----
 
+## 连续子数组的最大和
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/lian-xu-zi-shu-zu-de-zui-da-he-lcof/)  
+
+思路：动态规划，遍历数组，当遍历到第 i 个的时候，如果前 i - 1 个的和大于 0，则累加，否则置为 0 并重新计数，求出最大值即可，可以这样理解，如果前 i - 1 个的和大于 0，说明前 i - 1 个元素有正贡献，暂时保留，如果前 i - 1 个的和小于 0，说明前 i - 1 个元素是负贡献，重新计数  
+
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var maxSubArray = function(nums) {
+  let { length } = nums
+  let res = nums[0]
+  for(let i = 1; i < length; i++) {
+    nums[i] += Math.max(nums[i - 1], 0)
+    res = Math.max(res, nums[i])
+  }
+  return res
+};
+```
+
+----
+
+## 第一个只出现一次的字符
+
+这是 leetCode 的一道题，[传送门](https://leetcode-cn.com/problems/di-yi-ge-zhi-chu-xian-yi-ci-de-zi-fu-lcof/)  
+
+思路：哈希表，遍历字符串，用一个对象记录各个字符出现的次数，找一下有没有出现一次的，有则将该字符返回，没有则返回空字符串  
+
+```javascript
+/**
+ * @param {string} s
+ * @return {character}
+ */
+var firstUniqChar = function(s) {
+  const map = {}
+  const { length } = s
+  for (let i = 0; i < length; i++) {
+    const item = s[i]
+    if (map[item]) {
+      map[item] ++
+    } else {
+      map[item] = 1
+    }
+  }
+  const arr = Object.keys(map)
+  for (const key of arr) {
+    if (map[key] === 1) return key
+  }
+  return ' '
+};
+```
 
 
 
