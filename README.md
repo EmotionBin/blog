@@ -4,6 +4,10 @@
 
 **keep going,shout up to every coder,respect!**
 
+2021.05.22
+
+此仓库已经不再维护，新博客地址 [blog](https://emotionbin.github.io/blog/)
+
 ## 目录
 
 - [详解JavaScript中的事件循环机制](https://github.com/EmotionBin/myBlog/blob/master/articles/javascript_eventLoop_01/javascript_eventLoop_01.md)
